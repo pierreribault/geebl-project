@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Data\CompanyData;
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class CompanyController
 {
@@ -18,7 +16,13 @@ class CompanyController
      */
     public function index()
     {
-        return CompanyData::collection(Company::all());
+        //return CompanyData::collection(Company::all());
+        return Inertia::render(
+            'Company',
+            [
+                'title' => 'Homepage',
+            ]
+        );
     }
 
     /**
@@ -76,6 +80,8 @@ class CompanyController
     public function update(CompanyData $data, Company $company)
     {
         $company->update($data->all());
+
+        redirect()->back();
     }
 
     /**
