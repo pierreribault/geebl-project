@@ -17,12 +17,9 @@ class CompanyController
     public function index()
     {
         //return CompanyData::collection(Company::all());
-        return Inertia::render(
-            'Company',
-            [
-                'title' => 'Homepage',
-            ]
-        );
+        return Inertia::render('Company', [
+            'models' => CompanyData::collection(Company::paginate())
+        ]);
     }
 
     /**

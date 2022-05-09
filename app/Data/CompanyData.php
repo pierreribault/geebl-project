@@ -11,6 +11,8 @@ use Spatie\LaravelData\Attributes\Validation\Min;
 class CompanyData extends Data
 {
     public function __construct(
+        public readonly ?int $id,
+
         #[Required]
         public string $name,
 
