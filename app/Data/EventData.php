@@ -5,7 +5,6 @@ namespace App\Data;
 use App\Enums\EventStatus;
 use App\Models\Event;
 use Carbon\Carbon;
-use DateTime;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\WithCast;
