@@ -2,25 +2,30 @@
 
 namespace App\Data;
 
-use Illuminate\Http\Request;
+use App\Models\Company;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Attributes\Validation\Min;
-
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\Lazy;
 
 class CompanyData extends Data
 {
     public function __construct(
         public readonly ?int $id,
-
-        #[Required]
         public string $name,
-
-        #[Required]
         public string $crn,
-
-        #[Required]
-        public string $location
+        public string $location,
+        #[DataCollectionOf(SellerData::class)]
+        public Lazy|DataCollection $sellers,
     ) {
+    }
+
+    public static function fromModel(Company $company): self
+    {
+        return self::from([
+            ...$company->toArray(),
+            'sellers' => Lazy::create(fn () => SellerData::collection($company->sellers)),
+        ]);
     }
 }

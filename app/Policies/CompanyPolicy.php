@@ -11,6 +11,20 @@ class CompanyPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  \App\Models\User  $user
+     * @param  string  $ability
+     * @return void|bool
+     */
+    public function before(User $user)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
@@ -18,7 +32,7 @@ class CompanyPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +44,7 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +55,7 @@ class CompanyPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +67,7 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +79,7 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company)
     {
-        //
+        return true;
     }
 
     /**
@@ -77,7 +91,7 @@ class CompanyPolicy
      */
     public function restore(User $user, Company $company)
     {
-        //
+        return true;
     }
 
     /**
@@ -89,6 +103,6 @@ class CompanyPolicy
      */
     public function forceDelete(User $user, Company $company)
     {
-        //
+        return true;
     }
 }
