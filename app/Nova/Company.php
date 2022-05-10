@@ -43,7 +43,7 @@ class Company extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make(__('ID'), 'id')->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
             Text::make('Name', 'name')->sortable(),
             Text::make('CRN', 'crn')->sortable(),
             Text::make('Location', 'location')->sortable(),
@@ -93,5 +93,14 @@ class Company extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query;
+        }
+
+        return $query->where('id', $request->user()->seller->company->id);
     }
 }

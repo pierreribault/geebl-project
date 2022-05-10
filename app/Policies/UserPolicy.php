@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CompanyPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -25,37 +24,26 @@ class CompanyPolicy
     }
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        return $user->seller->isOwner();
-    }
-
-    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Company $company)
+    public function view(User $user, User $model)
     {
-        return $user->seller->isOwner() && $user->seller->company == $company;
+        return $user->seller->company == $model->seller->company;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Company $company)
+    public function update(User $user, User $model)
     {
-        return $user->seller->isOwner() && $user->seller->company == $company;
+        return $user->seller->isOwner() && $user->seller->company == $model->seller->company;
     }
 }

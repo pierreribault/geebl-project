@@ -46,7 +46,7 @@ class Event extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
             Text::make('Name', 'name')->sortable(),
             Text::make('Slug', 'slug')->sortable(),
             Text::make('Location', 'location')->sortable(),

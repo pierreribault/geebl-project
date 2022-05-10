@@ -3,12 +3,14 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
 {
@@ -44,7 +46,7 @@ class User extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
 
             Gravatar::make()->maxWidth(50),
 
@@ -66,6 +68,8 @@ class User extends Resource
             HasOne::make('Seller', 'seller', Seller::class),
 
             Boolean::make('Is Seller', fn () => $this->isSeller())->exceptOnForms(),
+
+            Impersonate::make($this),
         ];
     }
 
@@ -111,5 +115,14 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query;
+        }
+
+        return $query->whereRelation('seller.company', 'id', $request->user()->seller->company->id);
     }
 }

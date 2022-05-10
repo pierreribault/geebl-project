@@ -12,6 +12,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelData\WithData;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Impersonate;
     use WithData;
 
     protected $dataClass = UserData::class;
@@ -78,5 +80,15 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->is_admin;
+    }
+
+    public function canImpersonate()
+    {
+        return $this->is_admin;
+    }
+
+    public function canBeImpersonated()
+    {
+        return !$this->is_admin;
     }
 }

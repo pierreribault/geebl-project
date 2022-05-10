@@ -37,7 +37,7 @@ class Seller extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
             BelongsTo::make('User', 'user', User::class),
             BelongsTo::make('Company', 'company', Company::class),
             Boolean::make('Is Owner', 'is_owner'),
@@ -103,6 +103,15 @@ class Seller extends Resource
     }
 
     public static function relatableQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query;
+        }
+
+        return $query->whereRelation('company', 'id', $request->user()->seller->company->id);
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
     {
         if ($request->user()->isAdmin()) {
             return $query;
