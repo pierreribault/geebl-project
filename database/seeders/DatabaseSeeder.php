@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->admin()->create(['email' => 'test@test.fr']);
+
         for ($i = 0; $i < 10; $i++) {
             Company::factory()
                 ->has(Seller::factory()->for(User::factory())->owner())
