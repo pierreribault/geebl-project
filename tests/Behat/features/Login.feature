@@ -24,7 +24,7 @@ Feature: Login
         And I visit the path "/nova/resources/events/new"
         When I type "Mon event" in the field "Name"
         * I type "mon-event" in the field "Slug"
-        * I select "20221002" in the datepicker "Date"
+        #* I select "20221002" in the datepicker "Date"
         * I type "Paris" in the field "Location"
         * I type "Mon super event de fou" in the field "Description"
         * I type "89,99" in the field "Price"

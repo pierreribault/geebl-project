@@ -7,12 +7,8 @@ use Behat\Behat\Context\Context;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Support\Collection;
-use Laravel\Dusk\Browser;
 use Tests\BrowserBuilder;
 use Tests\DuskTestCase;
-use Tests\TestCase;
 
 /**
  * Defines application features from the specific context.
