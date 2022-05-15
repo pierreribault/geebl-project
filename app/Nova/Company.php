@@ -47,7 +47,7 @@ class Company extends Resource
             Text::make('Name', 'name')->sortable(),
             Text::make('CRN', 'crn')->sortable(),
             Text::make('Location', 'location')->sortable(),
-            HasMany::make('Sellers', 'sellers', Seller::class),
+            HasMany::make('Users', 'users', User::class),
         ];
     }
 
@@ -101,6 +101,6 @@ class Company extends Resource
             return $query;
         }
 
-        return $query->where('id', $request->user()->seller->company->id);
+        return $query->where('id', $request->user()->company->id);
     }
 }

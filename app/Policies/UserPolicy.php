@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->seller->company == $model->seller->company;
+        return $user->isInSameCompanyThan($model);
     }
 
     /**
@@ -44,6 +44,6 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->seller->isOwner() && $user->seller->company == $model->seller->company;
+        return $user->isOwner() && $user->isInSameCompanyThan($model);
     }
 }

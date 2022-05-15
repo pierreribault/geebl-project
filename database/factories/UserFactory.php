@@ -53,6 +53,26 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => ['is_admin' => true]);
     }
 
+    public function owner()
+    {
+        return $this->state(fn (array $attributes) => ['is_owner' => true]);
+    }
+
+    public function redactor()
+    {
+        return $this->state(fn (array $attributes) => ['is_redactor' => true]);
+    }
+
+    public function reviewer()
+    {
+        return $this->state(fn (array $attributes) => ['is_reviewer' => true]);
+    }
+
+    public function consumer()
+    {
+        return $this->state(fn (array $attributes) => ['is_consumer' => true]);
+    }
+
     /**
      * Indicate that the user should have a personal team.
      *

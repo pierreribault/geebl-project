@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Company;
-use App\Models\Seller;
+use App\Models\Event;
 use App\Models\User;
 use Behat\Behat\Context\Context;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,6 +18,7 @@ class FeatureContext extends DuskTestCase implements Context
     use DatabaseMigrations;
 
     protected BrowserBuilder $builder;
+    protected User $currentUser;
 
     /**
      * Initializes context.
@@ -78,6 +79,14 @@ class FeatureContext extends DuskTestCase implements Context
     }
 
     /**
+     * @Then I should not see the text :text in dashboard sidebar
+     */
+    public function iShouldNotSeeTheTextInDashboardSidebar($text)
+    {
+        $this->builder->assertDontSeeIn('ul.list-reset', $text);
+    }
+
+    /**
      * @Then I take a screenshot :name
      */
     public function iTakeScreenshot($filename)
@@ -104,12 +113,42 @@ class FeatureContext extends DuskTestCase implements Context
     }
 
     /**
+     * @Given a owner called :user exists
+     */
+    public function aOwnerCalledExists($user)
+    {
+        Company::factory()
+            ->has(User::factory()->set('name', $user)->owner())
+            ->create();
+    }
+
+    /**
      * @Given a redactor called :user exists
      */
     public function aRedactorCalledExists($user)
     {
         Company::factory()
-            ->has(Seller::factory()->for(User::factory()->set('name', $user))->redactor())
+            ->has(User::factory()->set('name', $user)->redactor())
+            ->create();
+    }
+
+    /**
+     * @Given a reviewer called :user exists
+     */
+    public function aReviewerCalledExists($user)
+    {
+        Company::factory()
+            ->has(User::factory()->set('name', $user)->reviewer())
+            ->create();
+    }
+
+    /**
+     * @Given a consumer called :user exists
+     */
+    public function aConsumerCalledExists($user)
+    {
+        Company::factory()
+            ->has(User::factory()->set('name', $user)->consumer())
             ->create();
     }
 
@@ -120,15 +159,26 @@ class FeatureContext extends DuskTestCase implements Context
     {
         $user = User::where('name', $user)->first();
 
+        $this->currentUser = $user;
+
         $this->builder->loginAs($user);
     }
 
     /**
-     * @Given I press on the button :text
+     * @Given I press on the button :button
      */
-    public function iPressOnTheButton($text)
+    public function iPressOnTheButtonAndWaitForText($button)
     {
-        $this->builder->pressAndWaitFor($text);
+        $this->builder->press($button);
+        $this->builder->pause(400);
+    }
+
+    /**
+     * @Given I'm waiting to see the text :text in the page
+     */
+    public function imWaitingToSeeText($text)
+    {
+        $this->builder->waitForText($text);
     }
 
     /**
@@ -140,11 +190,12 @@ class FeatureContext extends DuskTestCase implements Context
     }
 
     /**
-     * @Then I select :text in the datepicker :field
+     * @Then I select :date in the datepicker :field
      */
     public function iSelectInDatePicker($date, $field)
     {
-        $this->builder->keys("@" . str()->lower($field), $date);
+        $selector = sprintf('.flatpickr-input[dusk="%s"] + input', str()->lower($field));
+        $this->builder->keys($selector, $date);
     }
 
     /**
@@ -153,5 +204,15 @@ class FeatureContext extends DuskTestCase implements Context
     public function iSelectInField($text, $field)
     {
         $this->builder->select("@" . str()->lower($field));
+    }
+
+    /**
+     * @Given I have an event called :text
+     */
+    public function iHaveAnEventCalled($text)
+    {
+        Event::factory()->for($this->currentUser, 'author')->create([
+            'name' => $text,
+        ]);
     }
 }

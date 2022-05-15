@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
-use App\Models\Event;
-use App\Models\Seller;
-use App\Models\User;
+use App\Models\Event;use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,12 +20,11 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             Company::factory()
-                ->has(Seller::factory()->for(User::factory())->owner())
-                ->has(Seller::factory()->for(User::factory())->reviewer())
-                ->has(Seller::factory()->for(User::factory())->consumer())
+                ->has(User::factory()->owner())
+                ->has(User::factory()->reviewer())
+                ->has(User::factory()->consumer())
                 ->has(
-                    Seller::factory()
-                        ->for(User::factory())
+                    User::factory()
                         ->has(Event::factory()->count(3))
                         ->redactor()
                 )

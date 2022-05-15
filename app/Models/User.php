@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Data\UserData;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +37,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_owner',
+        'is_redactor',
+        'is_reviewer',
+        'is_consumer',
     ];
 
     /**
@@ -67,20 +73,88 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function isSeller(): bool
+    //===> RELATIONSHIPS <==================================//
+
+    public function company(): ?BelongsTo
     {
-        return $this->seller()->exists();
+        return $this->belongsTo(Company::class);
     }
 
-    public function seller(): ?HasOne
+    public function events(): ?HasMany
     {
-        return $this->hasOne(Seller::class);
+        return $this->hasMany(Event::class, 'author_id');
+    }
+
+    //===> STATUS <==================================//
+
+    public function isProfesionnal(): bool
+    {
+        return $this->company()->exists();
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->isProfesionnal() && $this->is_owner;
+    }
+
+    public function isRedactor(): bool
+    {
+        return $this->isProfesionnal() && $this->is_redactor;
+    }
+
+    public function isReviewer(): bool
+    {
+        return $this->isProfesionnal() && $this->is_reviewer;
+    }
+
+    public function isConsumer(): bool
+    {
+        return $this->isProfesionnal() && $this->is_consumer;
     }
 
     public function isAdmin(): bool
     {
         return $this->is_admin;
     }
+
+    public function isInSameCompanyThan(User $user): bool
+    {
+        return $this->company_id === $user->company_id;
+    }
+
+    public function isInCompany(Company $company): bool
+    {
+        return $this->company_id === $company->id;
+    }
+
+    //===> SCOPES <==================================//
+
+    public function scopeIsProfesionnal($query)
+    {
+        return $query->whereNotNull('company_id');
+    }
+
+    public function scopeIsOwner($query)
+    {
+        return $query->isProfesionnal()->where('is_owner', true);
+    }
+
+    public function scopeIsRedactor($query)
+    {
+        return $query->isProfesionnal()->where('is_redactor', true);
+    }
+
+    public function scopeIsReviewer($query)
+    {
+        return $query->isProfesionnal()->where('is_reviewer', true);
+    }
+
+    public function scopeIsConsumer($query)
+    {
+        return $query->isProfesionnal()->where('is_consumer', true);
+    }
+
+    //===> PERMISSIONS <==================================//
 
     public function canImpersonate()
     {
