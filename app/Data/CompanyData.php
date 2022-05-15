@@ -16,8 +16,8 @@ class CompanyData extends Data
         public string $name,
         public string $crn,
         public string $location,
-        #[DataCollectionOf(SellerData::class)]
-        public Lazy|DataCollection $sellers,
+        #[DataCollectionOf(UserData::class)]
+        public Lazy|DataCollection $users,
     ) {
     }
 
@@ -25,7 +25,7 @@ class CompanyData extends Data
     {
         return self::from([
             ...$company->toArray(),
-            'sellers' => Lazy::create(fn () => SellerData::collection($company->sellers)),
+            'users' => Lazy::create(fn () => UserData::collection($company->users)),
         ]);
     }
 }

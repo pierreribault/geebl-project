@@ -40,16 +40,11 @@ class Event extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(Seller::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function canBeViewedBy(Seller $seller): bool
-    {
-        return $this->author->company == $seller->company;
     }
 }

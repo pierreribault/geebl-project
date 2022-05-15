@@ -32,7 +32,7 @@ class EventPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->seller()->exists();
+        return $user->isProfesionnal();
     }
 
     /**
@@ -44,7 +44,7 @@ class EventPolicy
      */
     public function view(User $user, Event $event)
     {
-        return $event->canBeViewedBy($user->seller);
+        return $user->isInSameCompanyThan($event->author);
     }
 
     /**
@@ -55,7 +55,7 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        return $user->seller->isRedactor() || $user->seller->isOwner();
+        return $user->isRedactor() || $user->isOwner();
     }
 
     /**
@@ -67,11 +67,11 @@ class EventPolicy
      */
     public function update(User $user, Event $event)
     {
-        if (!$event->canBeViewedBy($user->seller)) {
+        if (!$user->isInSameCompanyThan($event->author)) {
             return false;
         }
 
-        return $user->seller->isReviewer() || $user->seller->isRedactor() || $user->seller->isOwner();
+        return $user->isReviewer() || $user->isRedactor() || $user->isOwner();
     }
 
     /**
@@ -83,11 +83,11 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        if (!$event->canBeViewedBy($user->seller)) {
+        if (!$user->isInSameCompanyThan($event->author)) {
             return false;
         }
 
-        return $user->seller->isOwner();
+        return $user->isOwner();
     }
 
     /**

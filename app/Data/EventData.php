@@ -26,7 +26,7 @@ class EventData extends Data
         public readonly float $price,
         #[Min(1)]
         public readonly int $seats,
-        public readonly Lazy|SellerData $author,
+        public readonly Lazy|UserData $author,
         #[WithCast(EnumCast::class)]
         public readonly ?EventStatus $status = EventStatus::Draft,
     ) {
@@ -36,7 +36,7 @@ class EventData extends Data
     {
         return self::from([
             ...$event->toArray(),
-            'author' => Lazy::create(fn () => SellerData::from($event->author)),
+            'author' => Lazy::create(fn () => UserData::from($event->author)),
         ]);
     }
 }

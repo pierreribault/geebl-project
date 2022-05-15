@@ -21,13 +21,13 @@ class Company extends Model
         'location',
     ];
 
-    public function sellers(): HasMany
+    public function users(): HasMany
     {
-        return $this->hasMany(Seller::class);
+        return $this->hasMany(User::class);
     }
 
     public function getOwners()
     {
-        return $this->sellers()->where('is_owner', true)->get();
+        return $this->users()->isOwner()->get();
     }
 }

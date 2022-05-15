@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Company;
-use App\Models\Seller;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->text('description');
             $table->float('price');
             $table->integer('seats');
-            $table->foreignIdFor(Seller::class, 'author_id');
+            $table->foreignIdFor(User::class, 'author_id');
             $table->string('status');
             $table->timestamps();
         });

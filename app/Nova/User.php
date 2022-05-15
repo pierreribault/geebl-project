@@ -4,8 +4,10 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use KABBOUCHI\NovaImpersonate\Impersonate;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -65,9 +67,13 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            HasOne::make('Seller', 'seller', Seller::class),
+            BelongsTo::make('Company', 'company', Company::class)->nullable(),
+            Boolean::make('Is Owner', 'is_owner'),
+            Boolean::make('Is Redactor', 'is_redactor'),
+            Boolean::make('Is Reviewer', 'is_reviewer'),
+            Boolean::make('Is Consumer', 'is_consumer'),
 
-            Boolean::make('Is Seller', fn () => $this->isSeller())->exceptOnForms(),
+            HasMany::make('Events', 'events', Event::class),
 
             Impersonate::make($this),
         ];
@@ -123,6 +129,6 @@ class User extends Resource
             return $query;
         }
 
-        return $query->whereRelation('seller.company', 'id', $request->user()->seller->company->id);
+        return $query->whereRelation('company', 'id', $request->user()->company->id);
     }
 }

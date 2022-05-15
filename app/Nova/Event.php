@@ -6,6 +6,7 @@ use App\Enums\EventStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -47,15 +48,15 @@ class Event extends Resource
     {
         return [
             ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
-            Text::make('Name', 'name')->sortable(),
-            Text::make('Slug', 'slug')->sortable(),
-            Text::make('Location', 'location')->sortable(),
-            Date::make('Date', 'date')->sortable(),
-            Text::make('Description', 'description')->sortable(),
-            Number::make('Price', 'price')->sortable(),
-            Number::make('Seats', 'seats')->sortable(),
+            Text::make('Name', 'name')->sortable()->required(),
+            Text::make('Slug', 'slug')->sortable()->required(),
+            Text::make('Location', 'location')->sortable()->required(),
+            Date::make('Date', 'date')->sortable()->required(),
+            Text::make('Description', 'description')->sortable()->required(),
+            Number::make('Price', 'price')->step('0.01')->min(1)->sortable()->required(),
+            Number::make('Seats', 'seats')->min(1)->sortable()->required(),
             Select::make('Status', 'status')->options(EventStatus::toSelectArray())->sortable(),
-            BelongsTo::make('Author', 'author', Seller::class),
+            BelongsTo::make('Author', 'author', User::class),
         ];
     }
 
@@ -109,6 +110,6 @@ class Event extends Resource
             return $query;
         }
 
-        return $query->whereRelation('author.company', 'id', $request->user()->seller->company->id);
+        return $query->whereRelation('author.company', 'id', $request->user()->company->id);
     }
 }

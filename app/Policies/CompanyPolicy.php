@@ -32,7 +32,7 @@ class CompanyPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->seller->isOwner();
+        return $user->isOwner();
     }
 
     /**
@@ -44,7 +44,7 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company)
     {
-        return $user->seller->isOwner() && $user->seller->company == $company;
+        return $user->isOwner() && $user->isInCompany($company);
     }
 
     /**
@@ -56,6 +56,6 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company)
     {
-        return $user->seller->isOwner() && $user->seller->company == $company;
+        return $user->isOwner() && $user->isInCompany($company);
     }
 }
