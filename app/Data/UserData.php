@@ -18,14 +18,16 @@ class UserData extends Data
         public readonly string $name,
         #[Required, Email, Unique('users', 'email')]
         public readonly string $email,
+        public readonly null|Lazy|CompanyData $company,
+        #[DataCollectionOf(EventData::class)]
+        public readonly null|Lazy|DataCollection $events,
+        #[DataCollectionOf(SlotData::class)]
+        public readonly null|Lazy|DataCollection $slots,
         public readonly bool $is_admin = false,
         public readonly bool $is_owner = false,
         public readonly bool $is_redactor = false,
         public readonly bool $is_reviewer = false,
         public readonly bool $is_consumer = false,
-        public readonly null|Lazy|CompanyData $company,
-        #[DataCollectionOf(EventData::class)]
-        public readonly null|Lazy|DataCollection $events,
     ) {
     }
 
@@ -35,6 +37,7 @@ class UserData extends Data
             ...$user->toArray(),
             'company' => Lazy::create(fn () => CompanyData::from($user->company)),
             'events' => Lazy::create(fn () => EventData::collection($user->events)),
+            'slots' => Lazy::create(fn () => SlotData::collection($user->slots)),
         ]);
     }
 }

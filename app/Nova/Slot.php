@@ -2,33 +2,30 @@
 
 namespace App\Nova;
 
-use App\Enums\EventStatus;
+use App\Enums\SlotStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Event extends Resource
+class Slot extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Event::class;
+    public static $model = \App\Models\Slot::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -48,17 +45,12 @@ class Event extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
-            Text::make('Name', 'name')->sortable()->required(),
-            Text::make('Slug', 'slug')->sortable()->required(),
-            Text::make('Location', 'location')->sortable()->required(),
-            Date::make('Date', 'date')->sortable()->required(),
-            Text::make('Description', 'description')->sortable()->required(),
-            Number::make('Price', 'price')->step('0.01')->min(1)->sortable()->required(),
-            Number::make('Seats', 'seats')->min(1)->sortable()->required(),
-            Select::make('Status', 'status')->options(EventStatus::getKeysValues())->sortable(),
-            BelongsTo::make('Author', 'author', User::class),
-            HasMany::make('Slots', 'slots', Slot::class),
+            ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Transaction', 'transaction')->sortable()->nullable(),
+            Number::make('Quantity', 'quantity')->sortable()->required(),
+            Select::make('Status', 'status')->options(SlotStatus::getKeysValues())->sortable(),
+            BelongsTo::make('Event', 'event', Event::class)->sortable(),
+            BelongsTo::make('User', 'user', User::class)->sortable(),
         ];
     }
 
@@ -104,14 +96,5 @@ class Event extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if ($request->user()->isAdmin()) {
-            return $query;
-        }
-
-        return $query->whereRelation('author.company', 'id', $request->user()->company->id);
     }
 }

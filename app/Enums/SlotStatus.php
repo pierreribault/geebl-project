@@ -2,15 +2,14 @@
 
 namespace App\Enums;
 
+use App\Enums\Traits\ArrayRender;
+
 enum SlotStatus: String
 {
+    use ArrayRender;
+
     case Pending = 'pending';
     case Canceled = 'canceled';
     case Completed = 'completed';
     case Refund = 'refund';
-
-    public static function toSelectArray(): array
-    {
-        return collect(EventStatus::cases())->pluck('name', 'value')->toArray();
-    }
 }
