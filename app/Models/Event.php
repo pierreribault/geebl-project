@@ -16,7 +16,7 @@ class Event extends Model
     use HasFactory;
     use WithData;
     use Searchable;
-    
+
     protected $fillable = [
         'name',
         'slug',

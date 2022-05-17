@@ -39,6 +39,8 @@ class User extends Resource
         'id', 'name', 'email',
     ];
 
+    public static $group = "Utilisateur";
+
     /**
      * Get the fields displayed by the resource.
      *
