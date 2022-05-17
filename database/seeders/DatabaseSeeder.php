@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\City;
-use App\Models\Company;
 use App\Models\Country;
-use App\Models\Event;
 use App\Models\News;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Company;
+use App\Models\Invoice;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +34,14 @@ class DatabaseSeeder extends Seeder
                         ->redactor()
                 )
                 ->create();
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            Invoice::factory()
+            ->for(User::factory())
+            ->for(Product::factory()->for(User::factory()->admin()))
+            ->for(Company::factory())
+            ->create();
         }
     }
 }
