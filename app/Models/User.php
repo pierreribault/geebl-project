@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Data\UserData;
+use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -85,6 +86,11 @@ class User extends Authenticatable
         return $this->hasMany(Event::class, 'author_id');
     }
 
+    public function slots(): ?HasMany
+    {
+        return $this->hasMany(Slot::class);
+    }
+
     //===> STATUS <==================================//
 
     public function isProfesionnal(): bool
@@ -161,7 +167,7 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
-    public function canBeImpersonated()
+    public function canBeImpersonated(?AuthAuthenticatable $impersonator = null)
     {
         return !$this->is_admin;
     }

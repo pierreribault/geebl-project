@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,6 +25,7 @@ class EventFactory extends Factory
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 0, 100),
             'seats' => $this->faker->numberBetween(0, 100),
+            'status' => $this->faker->randomElement(EventStatus::getValues()),
         ];
     }
 }

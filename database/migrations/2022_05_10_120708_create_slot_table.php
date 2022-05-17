@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\SlotStatus;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->string('transaction')->nullable();
             $table->string('quantity');
-            $table->string('status');
+            $table->string('status')->default(SlotStatus::Pending->value);
             $table->foreignIdFor(Event::class);
             $table->foreignIdFor(User::class);
             $table->timestamps();
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slot');
+        Schema::dropIfExists('slots');
     }
 };

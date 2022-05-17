@@ -15,10 +15,10 @@ class SlotData extends Data
         public readonly ?int $id,
         public readonly ?string $transation,
         public readonly ?string $quantity,
+        public readonly Lazy|UserData $user,
+        public readonly Lazy|EventData $event,
         #[WithCast(EnumCast::class)]
         public readonly ?SlotStatus $status = SlotStatus::Pending,
-        public readonly Lazy|UserData $user,
-        public readonly Lazy|EventData $eventData,
     ) {
     }
 
