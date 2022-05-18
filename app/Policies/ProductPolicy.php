@@ -33,4 +33,24 @@ class ProductPolicy
     {
         return false;
     }
+
+    public function view(User $user, Product $product)
+    {
+        return false;
+    }
+
+    public function create(User $user)
+    {
+        //
+    }
+
+    public function update(User $user, Product $product)
+    {
+        //
+    }
+
+    public function delete(User $user)
+    {
+        //
+    }
 }

@@ -46,4 +46,9 @@ class UserPolicy
     {
         return $user->isOwner() && $user->isInSameCompanyThan($model);
     }
+
+    public function create(User $user)
+    {
+        //
+    }
 }
