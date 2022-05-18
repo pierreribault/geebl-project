@@ -20,7 +20,7 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'quantity' => $this->faker->randomNumber(),
+            'quantity' => $this->faker->randomNumber(2),
             'status' => $this->faker->randomElement(array_column(InvoiceStatus::cases(), 'value')),
         ];
     }

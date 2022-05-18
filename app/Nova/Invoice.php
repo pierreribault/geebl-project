@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Enums\InvoiceStatus;
 use App\Nova\User;
 use App\Nova\Company;
 use App\Nova\Product;
@@ -11,6 +12,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Invoice extends Resource
@@ -51,13 +53,13 @@ class Invoice extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make('Produit', 'product', Product::class),
-            Text::make('Quantité', 'quantity')->sortable(),
-            Text::make('Status', 'status')->sortable(),
-            Date::make('Date de la commande', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable(),
-            Text::make('Prix', 'price')->sortable(),
-            BelongsTo::make('Vendeur', 'user', User::class),
-            BelongsTo::make('Acheteur', 'company', Company::class),
+            BelongsTo::make('Product', 'product', Product::class),
+            Text::make('Quantity', 'quantity')->sortable(),
+            Select::make('Status', 'status')->options(InvoiceStatus::toSelectArray())->sortable(),
+            Date::make('Purchase date', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable(),
+            Number::make('Price', 'price')->step('0,01')->sortable()->exceptOnForms(),
+            BelongsTo::make('Admin', 'user', User::class),
+            BelongsTo::make('Company', 'company', Company::class),
         ];
     }
 
@@ -111,6 +113,6 @@ class Invoice extends Resource
             return $query;
         }
 
-        return $query->whereRelation('user.company', 'id', $request->user()->company->id);
+        return $query->whereRelation('company', 'id', $request->user()->company->id);
     }
 }
