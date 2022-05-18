@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Traits;
+namespace App\Traits\Enums;
 
 trait ArrayRender {
     public static function getKeysValues(): array

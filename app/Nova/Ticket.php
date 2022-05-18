@@ -2,24 +2,23 @@
 
 namespace App\Nova;
 
-use App\Enums\SlotStatus;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Slot extends Resource
+class Ticket extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Slot::class;
+    public static $model = \App\Models\Ticket::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -47,12 +46,10 @@ class Slot extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Transaction', 'transaction')->sortable()->nullable(),
-            Number::make('Quantity', 'quantity')->sortable()->required(),
-            Select::make('Status', 'status')->options(SlotStatus::getKeysValues())->sortable(),
-            BelongsTo::make('Event', 'event', Event::class)->sortable(),
-            BelongsTo::make('User', 'user', User::class)->sortable(),
-            HasMany::make('Tickets', 'tickets', Ticket::class),
+            Text::make('UUID', 'uuid')->sortable()->exceptOnForms(),
+            Boolean::make('Used', 'used')->sortable(),
+            Images::make('QRCode', 'qrcode')->temporary(now()->addMinutes(5))->exceptOnForms(),
+            HasOne::make('Slot', 'slot', Slot::class),
         ];
     }
 

@@ -3,7 +3,10 @@
 namespace App\Data;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\Validation\Email;
@@ -18,6 +21,8 @@ class UserData extends Data
         public readonly string $name,
         #[Required, Email, Unique('users', 'email')]
         public readonly string $email,
+        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
+        public readonly Carbon $birthday,
         public readonly null|Lazy|CompanyData $company,
         #[DataCollectionOf(EventData::class)]
         public readonly null|Lazy|DataCollection $events,
@@ -35,9 +40,9 @@ class UserData extends Data
     {
         return self::from([
             ...$user->toArray(),
-            'company' => Lazy::create(fn () => CompanyData::from($user->company)),
-            'events' => Lazy::create(fn () => EventData::collection($user->events)),
-            'slots' => Lazy::create(fn () => SlotData::collection($user->slots)),
+            'company' => Lazy::create(static fn () => CompanyData::from($user->company)),
+            'events' => Lazy::create(static fn () => EventData::collection($user->events)),
+            'slots' => Lazy::create(static fn () => SlotData::collection($user->slots)),
         ]);
     }
 }
