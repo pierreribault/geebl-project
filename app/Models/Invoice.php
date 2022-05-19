@@ -47,6 +47,6 @@ class Invoice extends Model
 
     public function getPriceAttribute()
     {
-        return round((float)$this->product->price * $this->quantity, 2);
+        return number_format($this->product->price * $this->quantity, 2, '.', '');
     }
 }

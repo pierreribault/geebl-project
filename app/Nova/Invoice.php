@@ -54,10 +54,10 @@ class Invoice extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('Product', 'product', Product::class),
-            Text::make('Quantity', 'quantity')->sortable(),
-            Select::make('Status', 'status')->options(InvoiceStatus::toSelectArray())->sortable(),
-            Date::make('Purchase date', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable(),
-            Number::make('Price', 'price')->step('0,01')->sortable()->exceptOnForms(),
+            Text::make('Quantity', 'quantity')->sortable()->required(),
+            Select::make('Status', 'status')->options(InvoiceStatus::toSelectArray())->sortable()->required(),
+            Date::make('Purchase date', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable()->required(),
+            Text::make('Price', 'price')->sortable()->exceptOnForms()->required(),
             BelongsTo::make('Admin', 'user', User::class),
             BelongsTo::make('Company', 'company', Company::class),
         ];

@@ -31,7 +31,7 @@ class Company extends Model
         return $this->users()->isOwner()->get();
     }
 
-    public function invoice(): HasMany
+    public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
     }
