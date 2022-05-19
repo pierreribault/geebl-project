@@ -51,10 +51,11 @@ class Product extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Nom', 'name')->sortable(),
             Textarea::make('Description', 'description')->sortable(),
-            Number::make('Quantité', 'quantity')->sortable(),
-            Number::make('Prix', 'price')->sortable(),
-            DateTime::make('Date de mise en vente', 'created_at')->format('DD/MM/YYYY')->sortable(),
-            BelongsTo::make('Vendeur', 'user', User::class),
+            Number::make('Quantity', 'quantity')->sortable(),
+            Number::make('Price', 'price')->sortable(),
+            Text::make('Slug', 'slug')->sortable()->exceptOnForms()->required(),
+            DateTime::make('Date', 'created_at')->format('DD/MM/YYYY')->sortable(),
+            BelongsTo::make('Admin', 'user', User::class),
         ];
     }
 

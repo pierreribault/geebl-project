@@ -31,12 +31,12 @@ class ProductPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        //
     }
 
     public function view(User $user, Product $product)
     {
-        return false;
+        //
     }
 
     public function create(User $user)
