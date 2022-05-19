@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,8 +22,19 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'countries' => [ // @todo: move to a service or something like that
+            '🇫🇷 France' => [
+                'Paris',
+                'Angers',
+            ],
+        ]
     ]);
 });
+
+/**
+ * Events
+ */
+Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
 
 Route::middleware([
     'auth:sanctum',
