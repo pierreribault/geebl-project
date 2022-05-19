@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Data\EventData;
 use App\Enums\EventStatus;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,8 @@ class Event extends Model
 {
     use HasFactory;
     use WithData;
-
+    use Searchable;
+    
     protected $fillable = [
         'name',
         'slug',
@@ -51,5 +53,10 @@ class Event extends Model
     public function canBeViewedBy(Seller $seller): bool
     {
         return $this->author->company == $seller->company;
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }
