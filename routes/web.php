@@ -35,6 +35,7 @@ Route::get('/', function () {
  * Events
  */
 Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
 
 Route::middleware([
     'auth:sanctum',
