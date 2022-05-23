@@ -31,6 +31,7 @@ class EventData extends Data
         public readonly Lazy|UserData $author,
         #[DataCollectionOf(SlotData::class)]
         public readonly null|Lazy|DataCollection $slots,
+        public readonly null|Lazy|DataCollection $kinds,
         #[WithCast(EnumCast::class)]
         public readonly ?EventStatus $status = EventStatus::Draft,
     ) {
@@ -40,8 +41,9 @@ class EventData extends Data
     {
         return self::from([
             ...$event->toArray(),
-            'author' => Lazy::create(static fn () => UserData::from($event->author)),
-            'slots' => Lazy::create(static fn () => SlotData::collection($event->slots)),
+            'author' => Lazy::create(fn () => UserData::from($event->author)),
+            'slots' => Lazy::create(fn () => SlotData::collection($event->slots)),
+            'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
         ]);
     }
 }

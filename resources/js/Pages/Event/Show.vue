@@ -114,7 +114,7 @@ const pay = async () => {
 
 <template>
 
-  <Head :title="$page.props.event.name" />
+  <Head :title="'💃 Tickets for ' + $page.props.event.name" />
 
   <div style="background-color: #121212">
     <div class="w-min-full min-h-screen">
@@ -126,6 +126,9 @@ const pay = async () => {
           <h1 class="text-white font-bold text-4xl">{{ $page.props.event.name }}</h1>
           <p class="text-gray-400">{{ $page.props.event.date }}</p>
           <p class="text-gray-400 uppercase relative top-8">Lineup : DJ Snake</p>
+          <p class="text-gray-400 uppercase relative top-9" v-if="$page.props.event.kinds">
+            <span style="color: #0079ff; background-color: #121b31;" v-bind:key="index" v-for="(kind, index) in $page.props.event.kinds" class="inline-block rounded px-3 py-1 text-sm mr-2">{{ kind.name.en }}</span>
+          </p>
           <a class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-20 px-12 py-3 rounded text-white uppercase font-bold text-sm"
             href="#tickets">Tickets</a>
         </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Data\EventData;
 use App\Enums\Carousels;
+use Spatie\Tags\HasTags;
 use App\Enums\EventStatus;
 use Laravel\Scout\Searchable;
 use Spatie\LaravelData\WithData;
@@ -17,6 +18,7 @@ class Event extends Model
     use HasFactory;
     use WithData;
     use Searchable;
+    use HasTags;
     
     protected $fillable = [
         'name',

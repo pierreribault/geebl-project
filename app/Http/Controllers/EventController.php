@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Actions\Events\SearchAction;
+use App\Data\EventData;
 use App\Http\Requests\EventPreparePaymentRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\Events\SearchRequest;
@@ -24,7 +25,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         return Inertia::render('Event/Show', [
-            'event' => $event,
+            'event' => EventData::fromModel($event)->include('kinds'),
             'pspPublicKey' => config('services.stripe.public_key'),
         ]);
     }
