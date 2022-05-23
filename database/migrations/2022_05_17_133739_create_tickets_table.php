@@ -1,8 +1,6 @@
 <?php
 
-use App\Enums\SlotStatus;
-use App\Models\Event;
-use App\Models\User;
+use App\Models\Slot;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,13 +14,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('slots', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('transaction')->nullable();
-            $table->integer('quantity');
-            $table->string('status')->default(SlotStatus::Pending->value);
-            $table->foreignIdFor(Event::class);
-            $table->foreignIdFor(User::class);
+            $table->uuid('uuid')->unique();
+            $table->foreignIdFor(Slot::class);
+            $table->boolean('used')->default(false);
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('slots');
+        Schema::dropIfExists('tickets');
     }
 };
