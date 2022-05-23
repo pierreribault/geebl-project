@@ -54,13 +54,13 @@ defineProps({
 
   <Head title="Welcome" />
 
-  <div class="
+  <div
+    style="background-color: #121212"
+    class="
       relative
       items-top
       justify-center
       min-h-screen
-      bg-gray-100
-      dark:bg-gray-900
       sm:items-center sm:pt-0
     ">
     <div v-bind:class="{ invisible: !state.searchEventsModalOpen }" class="h-full w-full z-50 absolute bg-gray-900">
@@ -87,8 +87,8 @@ defineProps({
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ event.name }}</h5>
               <div class="flex justify-between items-center">
                 <span class="text-gray-900 dark:text-white">{{ event.date }}</span>
-                <a :href="'/events/' + event.slug"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Book</a>
+                <Link :href="'/events/' + event.slug"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Book</Link>
               </div>
             </a>
           </div>

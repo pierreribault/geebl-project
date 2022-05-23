@@ -29096,7 +29096,10 @@ var _withScopeId = function _withScopeId(n) {
 };
 
 var _hoisted_1 = {
-  "class": "relative items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"
+  style: {
+    "background-color": "#121212"
+  },
+  "class": "relative items-top justify-center min-h-screen sm:items-center sm:pt-0"
 };
 var _hoisted_2 = {
   "class": "drop-shadow-md bg-gray-700"
@@ -29147,7 +29150,9 @@ var _hoisted_11 = {
 var _hoisted_12 = {
   "class": "text-gray-900 dark:text-white"
 };
-var _hoisted_13 = ["href"];
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Book");
+
 var _hoisted_14 = {
   key: 1,
   "class": "container mx-auto mt-4"
@@ -29268,12 +29273,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.date), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
       href: '/events/' + event.slug,
       "class": "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    }, "Book", 8
-    /* PROPS */
-    , _hoisted_13)])], 8
+    }, {
+      "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+        return [_hoisted_13];
+      }),
+      _: 2
+      /* DYNAMIC */
+
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["href"])])], 8
     /* PROPS */
     , _hoisted_9)]);
   }), 128

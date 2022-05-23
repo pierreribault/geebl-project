@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\Views\LandingViewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,20 +17,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-        'countries' => [ // @todo: move to a service or something like that
-            '🇫🇷 France' => [
-                'Paris',
-                'Angers',
-            ],
-        ]
-    ]);
-});
+Route::get('/', [LandingViewController::class, 'index'])->name('index');
 
 /**
  * Events
