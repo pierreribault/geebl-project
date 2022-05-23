@@ -9,8 +9,13 @@ use App\Data\EventData;
 use App\Http\Requests\EventPreparePaymentRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\Events\SearchRequest;
+use App\Http\Requests\EventSetupEmailRequest;
 use App\Services\StripeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Stripe\StripeClient;
 
 class EventController extends Controller
@@ -33,9 +38,23 @@ class EventController extends Controller
         ]);
     }
 
-    public function preparePayment(EventPreparePaymentRequest $request)
+    public function preparePayment(string $id, EventPreparePaymentRequest $request)
     {
         $this->abortIfNotJson();
+
+        $event = Event::findOrFail($id);
+
+        $email = session('event.payment.email');
+
+        /**
+         * @todo: move to an action
+         */
+
+        if (! $email) {
+            return ValidationException::withMessages([
+                'email' => ['Please provide an email address.'],
+            ]);
+        }
 
         /** @var StripeClient $stripe */
         $stripe = app(StripeService::class);
@@ -43,10 +62,23 @@ class EventController extends Controller
             'amount' => $request->getTotalAmountUnits(),
             'currency' => 'eur',
             'automatic_payment_methods' => ['enabled' => true],
+            'metadata' => [
+                'email' => $email,
+                'event' => $event->id,
+            ]
         ]);
 
         return [
             'client_secret' => $intent->client_secret,
         ];
+    }
+
+    public function setupEmail(EventSetupEmailRequest $request)
+    {
+        $this->abortIfNotJson();
+
+        Session::put('event.payment.email', $request->getEmail());
+
+        return new JsonResponse(null, Response::HTTP_OK);
     }
 }

@@ -4,6 +4,7 @@ import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
 import axios from "axios";
 import { loadStripe } from '@stripe/stripe-js';
 import Header from "../../Components/Header.vue";
+import MinusPlus from "../../Components/MinusPlus.vue";
 
 // ----------------------------------------------------------------------------------------------------------------
 // Core                                                                                                  Core
@@ -23,7 +24,9 @@ const state = reactive({
     stripeElements: null,
     stripeInstance: null,
     stripeElementsInstance: null,
+    email: null,
     readyToAcceptOrder: false,
+    readyToAcceptEmail: false,
     readyToAcceptPayment: false,
     readyToSuccessFullPayment: false,
   },
@@ -32,14 +35,17 @@ const state = reactive({
 const eventId = usePage().props.value.event.id;
 const eventName = usePage().props.value.event.name;
 
-console.log(usePage().props.value.event)
-
 // ----------------------------------------------------------------------------------------------------------------
 // Tickets                                                                                                  Tickets
 
-const chooseTicket = () => {
-  state.payment.readyToAcceptOrder = true
-  state.payment.readyToAcceptPayment = false
+const plus = (count, ticket) => {
+  state.payment.readyToAcceptOrder = count > 0;
+  state.payment.readyToAcceptPayment = false;
+}
+
+const minus = (count, ticket) => {
+  state.payment.readyToAcceptOrder = count > 0;
+  state.payment.readyToAcceptPayment = false;
 }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -55,6 +61,20 @@ const initStripe = () => {
   state.payment.stripeInstance = window.Stripe(
     usePage().props.value.pspPublicKey
   )
+}
+
+const paymentSetupEmail = async () => {
+  state.payment.readyToAcceptEmail = true;
+  state.payment.readyToAcceptOrder = false;
+}
+
+const paymentEmail = async () => {
+  const response = await axios.post(`/events/${eventId}/payment/email`, {
+    email: state.payment.email,
+  });
+
+  state.payment.readyToAcceptEmail = false;
+  paymentSetupPayment()
 }
 
 const paymentSetupPayment = async () => {
@@ -127,17 +147,20 @@ const pay = async () => {
         <div class="container mx-auto pb-36 z-10">
           <h1 class="text-white font-bold text-4xl">{{ $page.props.event.name }}</h1>
           <p class="text-gray-400">{{ $page.props.event.date }}</p>
-          <p class="text-gray-400 relative top-8">
-              <span class="text-sm uppercase">Lineup</span>
-              <span v-bind:key="key" v-for="(artist, key, index) in $page.props.event.artists">
-              <Link :href="'/artists/' + artist.id " class="text-white px-3 py-1 text-sm">
-                {{ artist.name }}
+          <p v-if="$page.props.event.artist" class="text-gray-400 relative top-8">
+            <span class="text-sm uppercase">Lineup</span>
+            <span v-bind:key="key" v-for="(artist, key, index) in $page.props.event.artists">
+              <Link :href="'/artists/' + artist.id" class="text-white px-3 py-1 text-sm">
+              {{ artist.name }}
               </Link>
               <span v-if="key !== $page.props.event.artists.length - 1" style="color: #c17afe" class="text-xs">■</span>
-              </span>
+            </span>
           </p>
           <p class="text-gray-400 uppercase relative top-9" v-if="$page.props.event.kinds">
-            <span style="color: #0079ff; background-color: #121b31;" v-bind:key="index" v-for="(kind, index) in $page.props.event.kinds" class="inline-block rounded px-3 py-1 text-sm mr-2">{{ kind.name.en }}</span>
+            <span style="color: #0079ff; background-color: #121b31;" v-bind:key="index"
+              v-for="(kind, index) in $page.props.event.kinds" class="inline-block rounded px-3 py-1 text-sm mr-2">{{
+                  kind.name.en
+              }}</span>
           </p>
           <a class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-20 px-12 py-3 rounded text-white uppercase font-bold text-sm"
             href="#tickets">Tickets</a>
@@ -155,25 +178,35 @@ const pay = async () => {
               <li class="py-3 sm:py-4">
                 <div class="flex bg-white p-4 rounded border-gray-700 items-center space-x-4">
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate text-black">
+                    <p class="text-sm font-medium text-gray-900 truncate font-bold text-black">
                       Regular
                     </p>
-                    <p class="text-sm text-gray-500 truncate text-gray-400">
+                    <!-- <p class="text-sm text-gray-500 truncate text-gray-400">
                       arrivée après 2H du matin
-                    </p>
+                    </p> -->
                   </div>
                   <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <input @click="chooseTicket()" type="checkbox" />
+                    <MinusPlus v-on:plus="plus($event, 'ok')" v-on:minus="minus($event, 'ok2')" />
                   </div>
                 </div>
               </li>
             </ul>
           </div>
           <div v-if="state.payment.readyToAcceptOrder" class="flex justify-between items-center mb-4">
-            <button @click="paymentSetupPayment()" v-if="state.payment.readyToAcceptOrder"
+            <button @click="paymentSetupEmail()" v-if="state.payment.readyToAcceptOrder"
               class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-2 px-12 py-3 rounded text-white uppercase font-bold text-sm"
               href="#tickets">
               Valider
+            </button>
+          </div>
+          <div v-if="state.payment.readyToAcceptEmail" class="flex flex-col justify-between">
+            <input required v-model="state.payment.email"
+              title="Si vous possédez un compte Geebl, votre ticket sera lié directement." type="email"
+              class="bg-white p-4 rounded border-gray-700 items-center space-x-4" placeholder="Email" />
+            <button @click="paymentEmail()" v-if="state.payment.readyToAcceptEmail"
+              class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-2 px-12 py-3 rounded text-white uppercase font-bold text-sm"
+              href="#tickets">
+              Paiement
             </button>
           </div>
           <form class="bg-gray-800 p-4 rounded border-gray-700"
@@ -197,9 +230,9 @@ const pay = async () => {
             </svg>
             <p class="ml-2 text-sm font-medium">
               Paiement réussi
-              <p class="text-sm font-medium">
-                Vous recevrez un email de confirmation
-              </p>
+            <p class="text-sm font-medium">
+              Vous recevrez un email de confirmation
+            </p>
             </p>
           </div>
         </div>
@@ -213,7 +246,7 @@ const pay = async () => {
             <h5 class="text-xl font-bold leading-none text-white dark:text-white">Description</h5>
           </div>
           <div class="flow-root text-white">
-            ok
+            {{ $page.props.event.description }}
           </div>
         </div>
       </div>
@@ -226,7 +259,7 @@ const pay = async () => {
             <h5 class="text-xl font-bold leading-none text-white dark:text-white">Logistical Information</h5>
           </div>
           <div class="flow-root text-white">
-            <p>📅  {{ $page.props.event.date }}</p>
+            <p>📅 {{ $page.props.event.date }}</p>
             <p>📍 {{ $page.props.event.location }}</p>
           </div>
         </div>

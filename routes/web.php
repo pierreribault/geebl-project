@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\Views\LandingViewController;
 
 /*
@@ -24,6 +25,7 @@ Route::get('/', [LandingViewController::class, 'index'])->name('index');
  */
 Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
+Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.prepare-payment');
 
 Route::middleware([
     'auth:sanctum',

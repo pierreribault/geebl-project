@@ -35,6 +35,23 @@ For front-end
     make ssr
 ```
 
+## Payment
+
+1. Check your .env
+```
+STRIPE_KEY=pk_test_51L1IXDIwaPxaMAE4VKDFY6JiR05BopCAE5T4MKXj1gJ6Lksmy6N3YsI8m77PN6OEE76yp2MhG92cKjn4NbZQN0GW00oB0BNyL3
+STRIPE_SECRET=sk_test_51L1IXDIwaPxaMAE4LYYiYHCP0nmnXWjNaDOYBRQtHya3Him5VLXk68bGxum0QQE4Os9HXh9fOwmjDxhibNe4qawR00Esy0Xv70
+```
+
+2. Install [Stripe CLI](https://stripe.com/docs/stripe-cli)
+
+3. Run the "listen" command
+```
+stripe listen --forward-to localhost/webhooks/stripe
+```
+
+You can find webhooks under the folder `App\Http\Controllers\Webhooks`.
+
 ## Tests
 
 We use Behat in front of Dusk
