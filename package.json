@@ -34,6 +34,7 @@
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
         "@inertiajs/server": "^0.1.0",
+        "@stripe/stripe-js": "^1.29.0",
         "@vue/server-renderer": "^3.2.33",
         "vue": "^3.2.33",
         "webpack-node-externals": "^3.0.0"
