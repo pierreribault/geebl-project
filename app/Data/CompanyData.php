@@ -25,7 +25,7 @@ class CompanyData extends Data
     {
         return self::from([
             ...$company->toArray(),
-            'users' => Lazy::create(fn () => UserData::collection($company->users)),
+            'users' => Lazy::create(static fn () => UserData::collection($company->users)),
         ]);
     }
 }

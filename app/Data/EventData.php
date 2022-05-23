@@ -40,8 +40,8 @@ class EventData extends Data
     {
         return self::from([
             ...$event->toArray(),
-            'author' => Lazy::create(fn () => UserData::from($event->author)),
-            'slots' => Lazy::create(fn () => SlotData::collection($event->slots)),
+            'author' => Lazy::create(static fn () => UserData::from($event->author)),
+            'slots' => Lazy::create(static fn () => SlotData::collection($event->slots)),
         ]);
     }
 }
