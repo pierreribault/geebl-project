@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrganizerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,12 +23,6 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'countries' => [ // @todo: move to a service or something like that
-            '🇫🇷 France' => [
-                'Paris',
-                'Angers',
-            ],
-        ]
     ]);
 });
 
@@ -45,4 +40,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+});
+
+/**
+ * Organizers
+ */
+Route::group(['prefix' => 'organizers'], function () {
+    Route::get('validator', [OrganizerController::class, 'validator']);
+    Route::post('validator', [OrganizerController::class, 'capture']);
 });

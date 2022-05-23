@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Scripts -->
-        @routes
-        <script src="{{ mix('js/app.js') }}" defer></script>
-        @inertiaHead
-    </head>
-    <body class="font-sans antialiased">
-        @inertia
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        @env ('local')
-            <script src="http://localhost:3000/browser-sync/browser-sync-client.js"></script>
-        @endenv
-    </body>
+    <!-- Scripts -->
+    @routes
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    @inertiaHead
+</head>
+
+<body
+style="background-color: #121212"
+class="relative
+    items-top
+    justify-center
+    min-h-screen
+    bg-gray-100
+    dark:bg-gray-900
+    sm:items-center sm:pt-0">
+    @inertia
+    @env ('local')
+    <script src="http://localhost:3000/browser-sync/browser-sync-client.js"></script>
+    @endenv
+</body>
+
 </html>

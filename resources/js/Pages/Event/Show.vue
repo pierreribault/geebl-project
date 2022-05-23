@@ -3,6 +3,7 @@ import { ref, onMounted, reactive, defineComponent, defineAsyncComponent } from 
 import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
 import axios from "axios";
 import { loadStripe } from '@stripe/stripe-js';
+import Header from "../../Components/Header.vue";
 
 // ----------------------------------------------------------------------------------------------------------------
 // Core                                                                                                  Core
