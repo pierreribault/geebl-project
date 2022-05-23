@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\CarouselController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * Events
  */
 Route::get('events/search', [EventController::class, 'search']);
+
+/**
+ * Carousels
+ */
+Route::get('carousels', [CarouselController::class, 'index']);
+Route::get('carousels/{key}', [CarouselController::class, 'show']);

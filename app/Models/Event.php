@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Data\EventData;
+use App\Enums\Carousels;
 use App\Enums\EventStatus;
 use Laravel\Scout\Searchable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\LaravelData\WithData;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
@@ -54,6 +55,16 @@ class Event extends Model
     public function slots(): ?HasMany
     {
         return $this->hasMany(Slot::class);
+    }
+
+    public function scopeCarousel($query, $key, $value = null)
+    {
+        if ($key === Carousels::Trending) {
+            return $query->where('status', EventStatus::Published)
+                ->orderBy('created_at', 'desc');
+        }
+
+        return $query;
     }
 
     public function getRouteKeyName(): string
