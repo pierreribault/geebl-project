@@ -132,19 +132,19 @@ const pay = async () => {
     </div>
     <div class="mt-5">
       <div id="tickets" class="container mx-auto">
-        <div class="p-4 max-w-md rounded-lg shadow-md sm:p-8">
+        <div class="p-4 max-w-md rounded-lg sm:p-8">
           <div class="flex justify-between items-center mb-4">
-            <h5 class="text-xl font-bold leading-none text-white dark:text-white">🎫 Tickets</h5>
+            <h5 class="text-xl font-bold leading-none text-white dark:text-white">Tickets</h5>
           </div>
           <div class="flow-root">
             <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
               <li class="py-3 sm:py-4">
-                <div class="flex bg-gray-800 p-4 rounded border-gray-700 items-center space-x-4">
+                <div class="flex bg-white p-4 rounded border-gray-700 items-center space-x-4">
                   <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    <p class="text-sm font-medium text-gray-900 truncate text-black">
                       Regular
                     </p>
-                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    <p class="text-sm text-gray-500 truncate text-gray-400">
                       arrivée après 2H du matin
                     </p>
                   </div>
@@ -187,6 +187,33 @@ const pay = async () => {
                 Vous recevrez un email de confirmation
               </p>
             </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Description-->
+    <div>
+      <div id="description" class="container mx-auto">
+        <div class="p-4 max-w-md rounded-lg sm:p-8">
+          <div class="flex justify-between items-center mb-4">
+            <h5 class="text-xl font-bold leading-none text-white dark:text-white">Description</h5>
+          </div>
+          <div class="flow-root text-white">
+            ok
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Logistical information-->
+    <div>
+      <div id="description" class="container mx-auto">
+        <div class="p-4 max-w-lg rounded-lg sm:p-8">
+          <div class="flex justify-between items-center mb-4">
+            <h5 class="text-xl font-bold leading-none text-white dark:text-white">Logistical Information</h5>
+          </div>
+          <div class="flow-root text-white">
+            <p>📅  {{ $page.props.event.date }}</p>
+            <p>📍 {{ $page.props.event.location }}</p>
           </div>
         </div>
       </div>
