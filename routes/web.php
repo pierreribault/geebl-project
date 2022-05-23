@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\Views\LandingViewController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\Views\LandingViewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,11 @@ Route::middleware([
 Route::group(['prefix' => 'organizers'], function () {
     Route::get('validator', [OrganizerController::class, 'validator']);
     Route::post('validator', [OrganizerController::class, 'capture']);
+});
+
+/**
+ * Artists
+ */
+Route::group(['prefix' => 'artists'], function () {
+    Route::get('{artist}', [ArtistController::class, 'show']);
 });

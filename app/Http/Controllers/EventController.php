@@ -25,7 +25,10 @@ class EventController extends Controller
     public function show(Event $event)
     {
         return Inertia::render('Event/Show', [
-            'event' => EventData::fromModel($event)->include('kinds'),
+            'event' => EventData::fromModel($event)->include(
+                'kinds',
+                'artists'
+            ),
             'pspPublicKey' => config('services.stripe.public_key'),
         ]);
     }

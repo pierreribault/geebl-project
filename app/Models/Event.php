@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Event extends Model
 {
@@ -57,6 +58,11 @@ class Event extends Model
     public function slots(): ?HasMany
     {
         return $this->hasMany(Slot::class);
+    }
+
+    public function artists(): ?BelongsToMany
+    {
+        return $this->belongsToMany(Artist::class);
     }
 
     public function scopeCarousel($query, $key, $value = null)

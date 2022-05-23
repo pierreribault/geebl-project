@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-use App\Enums\Traits\ArrayRender;
+use App\Traits\Enums\ArrayRender;
 
 enum Carousels: String
 {

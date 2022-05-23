@@ -2,17 +2,18 @@
 
 namespace App\Data;
 
-use App\Enums\EventStatus;
-use App\Models\Event;
 use Carbon\Carbon;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
+use App\Data\TagData;
+use App\Models\Event;
+use App\Enums\EventStatus;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
+use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\DataCollection;
-use Spatie\LaravelData\Lazy;
+use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Attributes\Validation\Min;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 class EventData extends Data
 {
@@ -32,6 +33,7 @@ class EventData extends Data
         #[DataCollectionOf(SlotData::class)]
         public readonly null|Lazy|DataCollection $slots,
         public readonly null|Lazy|DataCollection $kinds,
+        public readonly null|Lazy|DataCollection $artists,
         #[WithCast(EnumCast::class)]
         public readonly ?EventStatus $status = EventStatus::Draft,
     ) {
@@ -44,6 +46,7 @@ class EventData extends Data
             'author' => Lazy::create(fn () => UserData::from($event->author)),
             'slots' => Lazy::create(fn () => SlotData::collection($event->slots)),
             'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
+            'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
         ]);
     }
 }

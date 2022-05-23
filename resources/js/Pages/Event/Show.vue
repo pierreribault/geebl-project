@@ -32,6 +32,8 @@ const state = reactive({
 const eventId = usePage().props.value.event.id;
 const eventName = usePage().props.value.event.name;
 
+console.log(usePage().props.value.event)
+
 // ----------------------------------------------------------------------------------------------------------------
 // Tickets                                                                                                  Tickets
 
@@ -125,7 +127,15 @@ const pay = async () => {
         <div class="container mx-auto pb-36 z-10">
           <h1 class="text-white font-bold text-4xl">{{ $page.props.event.name }}</h1>
           <p class="text-gray-400">{{ $page.props.event.date }}</p>
-          <p class="text-gray-400 uppercase relative top-8">Lineup : DJ Snake</p>
+          <p class="text-gray-400 relative top-8">
+              <span class="text-sm uppercase">Lineup</span>
+              <span v-bind:key="key" v-for="(artist, key, index) in $page.props.event.artists">
+              <Link :href="'/artists/' + artist.id " class="text-white px-3 py-1 text-sm">
+                {{ artist.name }}
+              </Link>
+              <span v-if="key !== $page.props.event.artists.length - 1" style="color: #c17afe" class="text-xs">■</span>
+              </span>
+          </p>
           <p class="text-gray-400 uppercase relative top-9" v-if="$page.props.event.kinds">
             <span style="color: #0079ff; background-color: #121b31;" v-bind:key="index" v-for="(kind, index) in $page.props.event.kinds" class="inline-block rounded px-3 py-1 text-sm mr-2">{{ kind.name.en }}</span>
           </p>
