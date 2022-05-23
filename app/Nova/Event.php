@@ -3,15 +3,16 @@
 namespace App\Nova;
 
 use App\Enums\EventStatus;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
+use Spatie\TagsField\Tags;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Event extends Resource
@@ -59,6 +60,7 @@ class Event extends Resource
             Select::make('Status', 'status')->options(EventStatus::getKeysValues())->sortable(),
             BelongsTo::make('Author', 'author', User::class),
             HasMany::make('Slots', 'slots', Slot::class),
+            Tags::make('Kinds')->type('kinds')->required(),
         ];
     }
 

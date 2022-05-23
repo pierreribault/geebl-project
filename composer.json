@@ -20,6 +20,8 @@
         "meilisearch/meilisearch-php": "^0.23.2",
         "spatie/laravel-data": "^1.4",
         "spatie/laravel-ray": "^1.29",
+        "spatie/laravel-tags": "^4.3",
+        "spatie/nova-tags-field": "^3.0",
         "stripe/stripe-php": "^8.1",
         "tightenco/ziggy": "^1.0",
         "torann/geoip": "^3.0"
