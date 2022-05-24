@@ -2,24 +2,25 @@
 
 namespace App\Nova;
 
-use App\Enums\SlotStatus;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
+use App\Enums\OrderStatus;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Slot extends Resource
+class Order extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Slot::class;
+    public static $model = \App\Models\Order::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -48,8 +49,7 @@ class Slot extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Transaction', 'transaction')->sortable()->nullable(),
-            Number::make('Quantity', 'quantity')->sortable()->required(),
-            Select::make('Status', 'status')->options(SlotStatus::getKeysValues())->sortable(),
+            Select::make('Status', 'status')->options(OrderStatus::getKeysValues())->sortable(),
             BelongsTo::make('Event', 'event', Event::class)->sortable(),
             BelongsTo::make('User', 'user', User::class)->sortable(),
             HasMany::make('Tickets', 'tickets', Ticket::class),

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TicketCategory;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\In;
 
 class EventPreparePaymentRequest extends FormRequest
 {
@@ -24,16 +27,25 @@ class EventPreparePaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'tickets' => 'required|array',
-            'tickets.*.amount' => 'required',
+            'order' => 'required|array',
+            'order.*.quantity' => 'required|integer|min:1|max:10',
+            'order.*.id' => ['required', 'uuid', (new Exists('ticket_categories', 'id'))->where('event_id', $this->route('event')->id)],
         ];
+    }
+
+    public function getTotalAmountCents()
+    {
+        return collect($this->get('order'))
+            ->sum(function ($category) {
+                return TicketCategory::where('id', $category['id'])->firstOrFail()->price * $category['quantity'];
+            }) * 100;
     }
 
     public function getTotalAmountUnits()
     {
-        return collect($this->get('tickets'))
-            ->sum(function ($ticket) {
-                return $ticket['amount'];
-            }) * 1000;
+        return collect($this->get('order'))
+            ->sum(function ($category) {
+                return TicketCategory::where('id', $category['id'])->firstOrFail()->price * $category['quantity'];
+            });
     }
 }

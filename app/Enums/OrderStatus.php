@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Traits\Enums\ArrayRender;
 
-enum SlotStatus: String
+enum OrderStatus: String
 {
     use ArrayRender;
 

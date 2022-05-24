@@ -46,7 +46,7 @@ class Artist extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Name'), 'name')->sortable()->required(),
-            Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:artists,slug,'. $this->resource->id)->sortable(),
+            Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:artists,slug')->sortable(),
         ];
     }
 

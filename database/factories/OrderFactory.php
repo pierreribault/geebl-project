@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Enums\SlotStatus;
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Slot>
  */
-class SlotFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,7 @@ class SlotFactory extends Factory
     public function definition()
     {
         return [
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'status' => $this->faker->randomElement(SlotStatus::getValues()),
+            'status' => $this->faker->randomElement(OrderStatus::getValues()),
         ];
     }
 }

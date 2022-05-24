@@ -2,34 +2,38 @@
 
 namespace App\Models;
 
-use App\Data\SlotData;
-use App\Enums\SlotStatus;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Data\OrderData;
+use App\Enums\OrderStatus;
+use App\Traits\UuidPrimaryKey;
 use Spatie\LaravelData\WithData;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Slot extends Model
+class Order extends Model
 {
+    use UuidPrimaryKey;
     use HasFactory;
     use WithData;
 
     protected $fillable = [
         'transaction',
-        'quantity',
         'status',
+        'user_id',
+        'event_id',
     ];
 
     protected $casts = [
-        'status' => SlotStatus::class,
+        'status' => OrderStatus::class,
     ];
 
     protected $attributes = [
-        'status' => SlotStatus::Pending,
+        'status' => OrderStatus::Pending,
     ];
 
-    protected $dataClass = SlotData::class;
+    protected $dataClass = OrderData::class;
 
     public function event(): BelongsTo
     {

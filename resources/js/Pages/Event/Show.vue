@@ -20,7 +20,10 @@ const paymentError = ref(null)
 // Data                                                                                                  Data
 
 const state = reactive({
+  count: 0,
+  price: 0,
   payment: {
+    order: {},
     stripeElements: null,
     stripeInstance: null,
     stripeElementsInstance: null,
@@ -34,18 +37,25 @@ const state = reactive({
 
 const eventId = usePage().props.value.event.id;
 const eventName = usePage().props.value.event.name;
+const eventSlug = usePage().props.value.event.slug;
 
 // ----------------------------------------------------------------------------------------------------------------
 // Tickets                                                                                                  Tickets
 
-const plus = (count, ticket) => {
-  state.payment.readyToAcceptOrder = count > 0;
+const plus = (count, categoryId) => {
+  state.count = state.count + 1;
+  state.payment.order[categoryId] = {id: categoryId, quantity: count};
+  state.payment.readyToAcceptOrder = state.count > 0;
   state.payment.readyToAcceptPayment = false;
+  freshPrice();
 }
 
-const minus = (count, ticket) => {
-  state.payment.readyToAcceptOrder = count > 0;
+const minus = (count, categoryId) => {
+  state.count = state.count - 1;
+  state.payment.order[categoryId] = {id: categoryId, quantity: count};
+  state.payment.readyToAcceptOrder = state.count > 0;
   state.payment.readyToAcceptPayment = false;
+  freshPrice();
 }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -69,7 +79,7 @@ const paymentSetupEmail = async () => {
 }
 
 const paymentEmail = async () => {
-  const response = await axios.post(`/events/${eventId}/payment/email`, {
+  const response = await axios.post(`/events/${eventSlug}/payment/email`, {
     email: state.payment.email,
   });
 
@@ -80,10 +90,8 @@ const paymentEmail = async () => {
 const paymentSetupPayment = async () => {
   initStripe();
 
-  const { data } = await axios.post(`/events/${eventId}/payment/setup`, {
-    tickets: [{
-      amount: 5, // @todo: should be removed when slots are implemented
-    }],
+  const { data } = await axios.post(`/events/${eventSlug}/payment/setup`, {
+    order: state.payment.order,
   });
 
   state.payment.readyToAcceptOrder = false
@@ -129,7 +137,16 @@ const pay = async () => {
     messageContainer.textContent = error.message;
   }
 
-  state.payment.readyToSuccessFullPayment = true
+  state.payment.readyToAcceptPayment = false;
+  state.payment.readyToSuccessFullPayment = true;
+}
+
+const freshPrice = async () => {
+  const { data } = await axios.post(`/events/${eventSlug}/payment/price`, {
+    order: state.payment.order,
+  });
+
+  state.price = data.price
 }
 
 </script>
@@ -174,19 +191,28 @@ const pay = async () => {
             <h5 class="text-xl font-bold leading-none text-white dark:text-white">Tickets</h5>
           </div>
           <div class="flow-root">
-            <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-              <li class="py-3 sm:py-4">
-                <div class="flex bg-white p-4 rounded border-gray-700 items-center space-x-4">
+            <ul role="list">
+              <li v-bind:key="index" v-for="(category, index) in $page.props.event.categories" class="py-3 sm:py-4">
+                <div class="flex bg-white p-4 rounded items-center space-x-4">
                   <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate font-bold text-black">
-                      Regular
+                      {{ category.name }} <span class="text-gray-500"> - {{ category.price }}€</span>
                     </p>
-                    <!-- <p class="text-sm text-gray-500 truncate text-gray-400">
-                      arrivée après 2H du matin
-                    </p> -->
+                    <p v-if="category.description" class="text-sm text-gray-500 truncate text-gray-400">
+                      {{ category.description }}
+                    </p>
                   </div>
                   <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <MinusPlus v-on:plus="plus($event, 'ok')" v-on:minus="minus($event, 'ok2')" />
+                    <MinusPlus v-on:plus="plus($event, category.id)" v-on:minus="minus($event, category.id)" />
+                  </div>
+                </div>
+              </li>
+              <li v-if="state.payment.readyToAcceptOrder" class="py-3 sm:py-4">
+                <div class="flex bg-white p-4 rounded items-center space-x-4">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate text-black">
+                      💰 {{ state.price }}€
+                    </p>
                   </div>
                 </div>
               </li>

@@ -21,10 +21,9 @@ class EventFactory extends Factory
             'name' => $this->faker->name(),
             'slug' => $this->faker->slug(),
             'location' => $this->faker->address(),
-            'date' => $this->faker->date(),
+            'start_at' => $this->faker->date(),
+            'end_at' => $this->faker->date(),
             'description' => $this->faker->sentence(),
-            'price' => $this->faker->randomFloat(2, 0, 100),
-            'seats' => $this->faker->numberBetween(0, 100),
             'status' => $this->faker->randomElement(EventStatus::getValues()),
         ];
     }

@@ -26,6 +26,7 @@ Route::get('/', [LandingViewController::class, 'index'])->name('index');
 Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
 Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.prepare-payment');
+Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
 
 Route::middleware([
     'auth:sanctum',

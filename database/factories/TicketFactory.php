@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TicketStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class TicketFactory extends Factory
     public function definition()
     {
         return [
-            'used' => $this->faker->boolean(),
+            'status' => TicketStatus::NonUsed->value,
         ];
     }
 
@@ -30,7 +31,7 @@ class TicketFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'used' => false,
+                'status' => TicketStatus::NonUsed->value,
             ];
         });
     }

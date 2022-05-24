@@ -2,8 +2,8 @@
 
 namespace App\Data;
 
-use App\Enums\SlotStatus;
-use App\Models\Slot;
+use App\Enums\OrderStatus;
+use App\Models\Order;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\WithCast;
@@ -11,28 +11,27 @@ use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
 
-class SlotData extends Data
+class OrderData extends Data
 {
     public function __construct(
-        public readonly ?int $id,
+        public readonly ?string $string,
         public readonly ?string $transation,
-        public readonly ?int $quantity,
         public readonly Lazy|UserData $user,
         public readonly Lazy|EventData $event,
         #[DataCollectionOf(TicketData::class)]
         public readonly null|Lazy|DataCollection $tickets,
         #[WithCast(EnumCast::class)]
-        public readonly ?SlotStatus $status = SlotStatus::Pending
+        public readonly ?OrderStatus $status = OrderStatus::Pending
     ) {
     }
 
-    public static function fromModel(Slot $slot): self
+    public static function fromModel(Order $order): self
     {
         return self::from([
-            ...$slot->toArray(),
-            'user' => Lazy::create(static fn () => UserData::from($slot->user)),
-            'event' => Lazy::create(static fn () => EventData::from($slot->event)),
-            'tickets' => Lazy::create(static fn () => TicketData::collection($slot->tickets)),
+            ...$order->toArray(),
+            'user' => Lazy::create(static fn () => UserData::from($order->user)),
+            'event' => Lazy::create(static fn () => EventData::from($order->event)),
+            'tickets' => Lazy::create(static fn () => TicketData::collection($order->tickets)),
         ]);
     }
 }

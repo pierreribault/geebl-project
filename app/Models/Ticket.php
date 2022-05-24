@@ -6,6 +6,7 @@ use App\Data\TicketData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
@@ -21,9 +22,13 @@ class Ticket extends Model implements HasMedia
     public const QRCODE_MEDIA_COLLECTION = 'qrcode';
 
     protected $fillable = [
-        'slot_id',
+        'order_id',
+        'event_id',
+        'user_id',
+        'ticket_category_id',
         'qrcode',
-        'used',
+        'status',
+        'price'
     ];
 
     protected $dataClass = TicketData::class;
@@ -35,9 +40,24 @@ class Ticket extends Model implements HasMedia
         static::creating(static fn ($model) => $model->uuid = (string) Str::uuid());
     }
 
-    public function slot(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Slot::class);
+        return $this->belongsTo(Order::class);
+    }
+
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(TicketCategory::class, 'ticket_category_id', 'id');
     }
 
     public function registerMediaCollections(): void

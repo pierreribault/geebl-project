@@ -9,7 +9,7 @@ use Spatie\LaravelData\Lazy;
 class ArtistData extends Data
 {
     public function __construct(
-        public readonly ?int $id,
+        public readonly ?string $id,
         public string $name,
         public string $slug,
     ) {

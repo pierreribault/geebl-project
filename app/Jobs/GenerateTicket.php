@@ -3,8 +3,11 @@
 namespace App\Jobs;
 
 use App\Actions\QRCode\GenerateQRCode;
-use App\Models\Slot;
+use App\Models\Event;
+use App\Models\Order;
 use App\Models\Ticket;
+use App\Models\TicketCategory;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +25,12 @@ class GenerateTicket implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected Slot $slot)
+    public function __construct(
+        protected TicketCategory $ticketCategory,
+        protected Event $event,
+        protected Order $order = null,
+        protected User $user = null,
+    )
     {
     }
 
@@ -33,11 +41,13 @@ class GenerateTicket implements ShouldQueue
      */
     public function handle()
     {
-        $action = new GenerateQRCode();
+        $action = app(GenerateQRCode::class);
 
         $tickets = Ticket::factory()
-            ->for($this->slot)
-            ->count($this->slot->quantity)
+            ->for($this->order)
+            ->for($this->category)
+            ->for($this->user)
+            ->for($this->event)
             ->unused()
             ->create();
 

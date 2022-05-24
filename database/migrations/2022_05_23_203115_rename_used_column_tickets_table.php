@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TicketStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +14,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('artists', function (Blueprint $table) {
-            $table->uuid('id')->unique();
-            $table->string('name');
-            $table->string('slug')->unique();
+        Schema::table('tickets', function (Blueprint $schema) {
+            $schema->dropColumn('used');
+            $schema->string('status')->default('non-used');
         });
     }
 
@@ -27,6 +27,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('artists');
+        Schema::table('tickets', function (Blueprint $schema) {
+            $schema->boolean('used')->default(false);
+            $schema->dropColumn('status');
+        });
     }
 };

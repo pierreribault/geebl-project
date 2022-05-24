@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Artist;
+use App\Nova\Order;
 use App\Enums\EventStatus;
 use Spatie\TagsField\Tags;
 use Laravel\Nova\Fields\ID;
@@ -56,15 +57,16 @@ class Event extends Resource
             Text::make('Name', 'name')->sortable()->required(),
             Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:events,slug,'. $this->resource->id)->sortable(),
             Text::make('Location', 'location')->sortable()->required(),
-            Date::make('Date', 'date')->sortable()->required(),
+            Date::make('Start at', 'start_at')->sortable()->required(),
+            Date::make('End at', 'end_at')->sortable()->required(),
             Text::make('Description', 'description')->sortable()->required(),
-            Number::make('Price', 'price')->step('0.01')->min(1)->sortable()->required(),
-            Number::make('Seats', 'seats')->min(1)->sortable()->required(),
             Select::make('Status', 'status')->options(EventStatus::getKeysValues())->sortable(),
             BelongsTo::make('Author', 'author', User::class),
-            HasMany::make('Slots', 'slots', Slot::class),
             Tags::make('Kinds')->type('kinds')->required(),
             BelongsToMany::make('Artists', 'artists', Artist::class),
+            HasMany::make('Orders', 'orders', Order::class),
+            HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
+            HasMany::make('Tickets', 'tickets', Ticket::class),
         ];
     }
 

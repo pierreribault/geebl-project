@@ -2,26 +2,24 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\Status;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
-class Ticket extends Resource
+class TicketCategory extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Ticket::class;
+    public static $model = \App\Models\TicketCategory::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -37,6 +35,7 @@ class Ticket extends Resource
      */
     public static $search = [
         'id',
+        'name',
     ];
 
     /**
@@ -48,16 +47,12 @@ class Ticket extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            
-            Status::make('Status', 'status')->sortable(),
-            Images::make('QRCode', 'qrcode')->temporary(now()->addMinutes(5))->exceptOnForms(),
-            HasOne::make('Category', 'category', TicketCategory::class)->sortable(),
-            HasOne::make('User', 'user', User::class)->sortable(),
-            HasOne::make('Event', 'event', Event::class)->sortable(),
-            HasOne::make('Order', 'order', Order::class)->sortable(),
+            Text::make(__('Name'), 'name')->sortable(),
+            Textarea::make(__('Description'), 'description')->hideFromIndex(),
+            BelongsTo::make(__('Event'), 'event', Event::class)->sortable(),
+            HasMany::make(__('Tickets'), 'tickets', Ticket::class),
             Currency::make('Price')
-            ->currency('eur')
+                ->currency('eur')
         ];
     }
 
@@ -103,16 +98,5 @@ class Ticket extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-
-    /**
-     * We don't want to use policies for this action (create a ticket should be made from event resource).
-     *
-     * @param Request $request
-     * @return void
-     */
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;
     }
 }

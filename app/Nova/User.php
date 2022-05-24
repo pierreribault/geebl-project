@@ -74,7 +74,7 @@ class User extends Resource
             Boolean::make('Is Consumer', 'is_consumer'),
 
             HasMany::make('Events', 'events', Event::class),
-            HasMany::make('Slots', 'slots', Slot::class),
+            HasMany::make('Orders', 'orders', Order::class),
 
             Impersonate::make($this),
         ];

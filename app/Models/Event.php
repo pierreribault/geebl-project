@@ -6,6 +6,7 @@ use App\Data\EventData;
 use App\Enums\Carousels;
 use Spatie\Tags\HasTags;
 use App\Enums\EventStatus;
+use App\Traits\UuidPrimaryKey;
 use Laravel\Scout\Searchable;
 use Spatie\LaravelData\WithData;
 use Illuminate\Database\Eloquent\Model;
@@ -20,12 +21,14 @@ class Event extends Model
     use WithData;
     use Searchable;
     use HasTags;
+    use UuidPrimaryKey;
     
     protected $fillable = [
         'name',
         'slug',
         'location',
-        'date',
+        'start_at',
+        'end_at',
         'description',
         'price',
         'seats',
@@ -36,7 +39,8 @@ class Event extends Model
 
     protected $casts = [
         'status' => EventStatus::class,
-        'date' => 'date:Y-m-d',
+        'start_at' => 'date:Y-m-d',
+        'end_at' => 'date:Y-m-d',
     ];
 
     protected $attributes = [
@@ -55,9 +59,19 @@ class Event extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function slots(): ?HasMany
+    public function orders(): ?HasMany
     {
-        return $this->hasMany(Slot::class);
+        return $this->hasMany(Order::class);
+    }
+
+    public function tickets(): ?HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function ticketsCategories(): ?HasMany
+    {
+        return $this->hasMany(TicketCategory::class);
     }
 
     public function artists(): ?BelongsToMany

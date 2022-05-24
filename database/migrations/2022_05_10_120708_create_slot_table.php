@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\SlotStatus;
+use App\Enums\OrderStatus;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->string('transaction')->nullable();
             $table->integer('quantity');
-            $table->string('status')->default(SlotStatus::Pending->value);
+            $table->string('status')->default(OrderStatus::Pending->value)->nullable();
             $table->foreignIdFor(Event::class);
             $table->foreignIdFor(User::class);
             $table->timestamps();

@@ -18,22 +18,21 @@ use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 class EventData extends Data
 {
     public function __construct(
-        public readonly ?int $id,
+        public readonly ?string $id,
         public readonly string $name,
         public readonly string $slug,
         public readonly string $location,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
-        public readonly Carbon $date,
+        public readonly Carbon $start_at,
+        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
+        public readonly Carbon $end_at,
         public readonly string $description,
-        #[Min(1)]
-        public readonly float $price,
-        #[Min(1)]
-        public readonly int $seats,
         public readonly Lazy|UserData $author,
-        #[DataCollectionOf(SlotData::class)]
-        public readonly null|Lazy|DataCollection $slots,
+        #[DataCollectionOf(OrderData::class)]
+        public readonly null|Lazy|DataCollection $orders,
         public readonly null|Lazy|DataCollection $kinds,
         public readonly null|Lazy|DataCollection $artists,
+        public readonly null|Lazy|DataCollection $categories,
         #[WithCast(EnumCast::class)]
         public readonly ?EventStatus $status = EventStatus::Draft,
     ) {
@@ -44,9 +43,10 @@ class EventData extends Data
         return self::from([
             ...$event->toArray(),
             'author' => Lazy::create(fn () => UserData::from($event->author)),
-            'slots' => Lazy::create(fn () => SlotData::collection($event->slots)),
+            'orders' => Lazy::create(fn () => OrderData::collection($event->orders)),
             'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
+            'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),
         ]);
     }
 }

@@ -32,17 +32,16 @@ class EventController extends Controller
         return Inertia::render('Event/Show', [
             'event' => EventData::fromModel($event)->include(
                 'kinds',
-                'artists'
+                'artists',
+                'categories',
             ),
             'pspPublicKey' => config('services.stripe.public_key'),
         ]);
     }
 
-    public function preparePayment(string $id, EventPreparePaymentRequest $request)
+    public function preparePayment(Event $event, EventPreparePaymentRequest $request)
     {
         $this->abortIfNotJson();
-
-        $event = Event::findOrFail($id);
 
         $email = session('event.payment.email');
 
@@ -59,17 +58,27 @@ class EventController extends Controller
         /** @var StripeClient $stripe */
         $stripe = app(StripeService::class);
         $intent = $stripe->paymentIntents->create([
-            'amount' => $request->getTotalAmountUnits(),
+            'amount' => $request->getTotalAmountCents(),
             'currency' => 'eur',
             'automatic_payment_methods' => ['enabled' => true],
             'metadata' => [
                 'email' => $email,
                 'event' => $event->id,
+                'order' => json_encode($request->get('order')),
             ]
         ]);
 
         return [
             'client_secret' => $intent->client_secret,
+        ];
+    }
+
+    public function preparePrice(Event $event, EventPreparePaymentRequest $request)
+    {
+        $this->abortIfNotJson();
+
+        return [
+            'price' => $request->getTotalAmountUnits()
         ];
     }
 
