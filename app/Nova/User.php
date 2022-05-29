@@ -36,7 +36,9 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
+        'name',
+        'email',
     ];
 
     /**
@@ -74,9 +76,6 @@ class User extends Resource
             Boolean::make('Is Consumer', 'is_consumer'),
 
             HasMany::make('Events', 'events', Event::class),
-            HasMany::make('Orders', 'orders', Order::class),
-
-            Impersonate::make($this),
         ];
     }
 

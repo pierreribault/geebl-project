@@ -28,19 +28,11 @@ return new class extends Migration
         });
 
         Schema::table('tickets', function (Blueprint $table) {
+            $table->string('status')->default(TicketStatus::NonUsed->value);
             $table->decimal('price');
             $table->foreignIdFor(Event::class);
             $table->foreignIdFor(TicketCategory::class);
             $table->foreignIdFor(User::class)->nullable();
-        });
-
-        Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id')->unique();
-            $table->string('transaction');
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Event::class);
-            $table->string('status')->default('pending');
-            $table->timestamps();
         });
 
         Schema::create('ticket_categories', function (Blueprint $table) {

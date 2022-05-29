@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Nova\Artist;
-use App\Nova\Order;
 use App\Enums\EventStatus;
 use Spatie\TagsField\Tags;
 use Laravel\Nova\Fields\ID;
@@ -11,13 +10,12 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
 class Event extends Resource
 {
@@ -64,9 +62,9 @@ class Event extends Resource
             BelongsTo::make('Author', 'author', User::class),
             Tags::make('Kinds')->type('kinds')->required(),
             BelongsToMany::make('Artists', 'artists', Artist::class),
-            HasMany::make('Orders', 'orders', Order::class),
             HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
             HasMany::make('Tickets', 'tickets', Ticket::class),
+            // Medialibrary::make('Cover', 'cover', 'public')->single()->required(),
         ];
     }
 

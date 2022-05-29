@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\Views\LandingViewController;
+use App\Models\Ticket;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,10 @@ Route::get('events/{event}', [EventController::class, 'show'])->name('events.sho
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
 Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.prepare-payment');
 Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
+
+Route::get('test', function () {
+    return view('tickets.view-pdf', ['ticket' => Ticket::all()->first()]);
+});
 
 Route::middleware([
     'auth:sanctum',

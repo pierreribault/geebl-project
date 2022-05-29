@@ -28,8 +28,6 @@ class EventData extends Data
         public readonly Carbon $end_at,
         public readonly string $description,
         public readonly Lazy|UserData $author,
-        #[DataCollectionOf(OrderData::class)]
-        public readonly null|Lazy|DataCollection $orders,
         public readonly null|Lazy|DataCollection $kinds,
         public readonly null|Lazy|DataCollection $artists,
         public readonly null|Lazy|DataCollection $categories,
@@ -43,7 +41,6 @@ class EventData extends Data
         return self::from([
             ...$event->toArray(),
             'author' => Lazy::create(fn () => UserData::from($event->author)),
-            'orders' => Lazy::create(fn () => OrderData::collection($event->orders)),
             'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
             'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),

@@ -14,14 +14,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Event extends Model
+class Event extends Model implements HasMedia
 {
     use HasFactory;
     use WithData;
     use Searchable;
     use HasTags;
     use UuidPrimaryKey;
+    use InteractsWithMedia;
     
     protected $fillable = [
         'name',
@@ -57,11 +60,6 @@ class Event extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function orders(): ?HasMany
-    {
-        return $this->hasMany(Order::class);
     }
 
     public function tickets(): ?HasMany

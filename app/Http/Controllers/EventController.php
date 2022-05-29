@@ -49,11 +49,11 @@ class EventController extends Controller
          * @todo: move to an action
          */
 
-        if (! $email) {
-            return ValidationException::withMessages([
-                'email' => ['Please provide an email address.'],
-            ]);
-        }
+        // if (! $email) {
+        //     return ValidationException::withMessages([
+        //         'email' => ['Please provide an email address.'],
+        //     ]);
+        // }
 
         /** @var StripeClient $stripe */
         $stripe = app(StripeService::class);

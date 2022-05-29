@@ -3,46 +3,37 @@
 namespace App\Models;
 
 use App\Data\TicketData;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Str;
+use App\Traits\UuidPrimaryKey;
 use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Model;
+use App\Actions\Tickets\GeneratePdfAction;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ticket extends Model implements HasMedia
 {
+    use UuidPrimaryKey;
     use HasFactory;
     use WithData;
     use InteractsWithMedia;
 
-    public const QRCODE_MEDIA_COLLECTION = 'qrcode';
-
     protected $fillable = [
-        'order_id',
         'event_id',
         'user_id',
         'ticket_category_id',
-        'qrcode',
         'status',
         'price'
     ];
 
     protected $dataClass = TicketData::class;
 
-    protected static function boot(): void
+    protected static function booted()
     {
-        parent::boot();
-
-        static::creating(static fn ($model) => $model->uuid = (string) Str::uuid());
-    }
-
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
+        static::created(function ($ticket) {
+            app(GeneratePdfAction::class)->generate($ticket);
+        });
     }
 
     public function event(): BelongsTo
@@ -58,13 +49,5 @@ class Ticket extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(TicketCategory::class, 'ticket_category_id', 'id');
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this
-            ->addMediaCollection(self::QRCODE_MEDIA_COLLECTION)
-            ->useDisk(self::QRCODE_MEDIA_COLLECTION)
-            ->singleFile();
     }
 }

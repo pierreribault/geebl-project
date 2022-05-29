@@ -88,11 +88,6 @@ class User extends Authenticatable
         return $this->hasMany(Event::class, 'author_id');
     }
 
-    public function orders(): ?HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
     //===> STATUS <==================================//
 
     public function isProfesionnal(): bool

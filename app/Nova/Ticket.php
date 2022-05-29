@@ -2,17 +2,13 @@
 
 namespace App\Nova;
 
+use App\Enums\TicketStatus;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\Status;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
 class Ticket extends Resource
 {
@@ -49,15 +45,13 @@ class Ticket extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            
-            Status::make('Status', 'status')->sortable(),
-            Images::make('QRCode', 'qrcode')->temporary(now()->addMinutes(5))->exceptOnForms(),
+            Select::make('Status')->options(TicketStatus::getKeysValues()),
             HasOne::make('Category', 'category', TicketCategory::class)->sortable(),
             HasOne::make('User', 'user', User::class)->sortable(),
             HasOne::make('Event', 'event', Event::class)->sortable(),
-            HasOne::make('Order', 'order', Order::class)->sortable(),
+            // Medialibrary::make('Invoice', 'invoice', 'public'),
             Currency::make('Price')
-            ->currency('eur')
+                ->currency('eur')
         ];
     }
 

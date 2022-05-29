@@ -15,10 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->unique();
-            $table->foreignIdFor(Order::class);
-            $table->boolean('used')->default(false);
+            $table->uuid('id');
             $table->timestamps();
         });
     }

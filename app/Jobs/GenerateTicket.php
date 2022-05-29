@@ -4,12 +4,10 @@ namespace App\Jobs;
 
 use App\Actions\QRCode\GenerateQRCode;
 use App\Models\Event;
-use App\Models\Order;
 use App\Models\Ticket;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -28,7 +26,6 @@ class GenerateTicket implements ShouldQueue
     public function __construct(
         protected TicketCategory $ticketCategory,
         protected Event $event,
-        protected Order $order = null,
         protected User $user = null,
     )
     {
@@ -44,7 +41,6 @@ class GenerateTicket implements ShouldQueue
         $action = app(GenerateQRCode::class);
 
         $tickets = Ticket::factory()
-            ->for($this->order)
             ->for($this->category)
             ->for($this->user)
             ->for($this->event)

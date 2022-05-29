@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Events\ChargeSucceeded;
-use App\Models\Order;
-use App\Listeners\CreateOrder;
-use App\Observers\OrderObserver;
+use App\Listeners\OnChargeSucceeded;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         ChargeSucceeded::class => [
-            CreateOrder::class,
+            OnChargeSucceeded::class,
         ],
     ];
 
@@ -34,7 +32,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Order::observe(OrderObserver::class);
+        //
     }
 
     /**

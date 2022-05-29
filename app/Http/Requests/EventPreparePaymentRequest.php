@@ -19,6 +19,13 @@ class EventPreparePaymentRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'email' => session('event.payment.email'),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,6 +34,7 @@ class EventPreparePaymentRequest extends FormRequest
     public function rules()
     {
         return [
+            // 'email' => 'required|email',
             'order' => 'required|array',
             'order.*.quantity' => 'required|integer|min:1|max:10',
             'order.*.id' => ['required', 'uuid', (new Exists('ticket_categories', 'id'))->where('event_id', $this->route('event')->id)],
