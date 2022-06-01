@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Seller;
 use App\Enums\NewsStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class News extends Model
 {
@@ -18,7 +17,7 @@ class News extends Model
         'date',
         'slug',
         'status',
-        'seller_id'
+        'redactor_id',
     ];
 
     protected $casts = [
@@ -26,8 +25,14 @@ class News extends Model
         'date' => 'date:Y-m-d',
     ];
 
-    public function seller(): BelongsToMany
+    public function redactor(): BelongsTo
     {
-        return $this->belongsToMany(Seller::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function event(): ?BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
 }

@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class News extends Resource
@@ -47,11 +48,12 @@ class News extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Title', 'title')->sortable()->required(),
-            Text::make('Description', 'description')->sortable()->required()->hideFromIndex(),
-            Select::make('Status', 'status')->options(NewsStatus::toSelectArray())->sortable(),
-            Date::make('Date', 'date')->sortable(),
             Text::make('Slug', 'slug'),
-            BelongsToMany::make('')
+            Text::make('Description', 'description')->sortable()->required()->hideFromIndex(),
+            Select::make('Status', 'status')->options(NewsStatus::toSelectArray())->sortable()->required(),
+            Date::make('Date', 'date')->sortable()->required(),
+            BelongsTo::make('Event', 'event')->sortable()->required(),
+            BelongsTo::make('Redactor', 'redactor', User::class),
         ];
     }
 
@@ -97,5 +99,23 @@ class News extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query;
+        }
+
+        return $query->whereRelation('redactor', 'id', $request->user()->id);
+    }
+
+    public static function relatableUsers(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query->isRedactor();
+        }
+
+        return $query->isRedactor()->isInCompany(Auth::user()->company);
     }
 }

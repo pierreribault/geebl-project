@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
                 ->has(
                     User::factory()
                         ->has(Event::factory()->count(3))
-                        ->has(News::factory())
                         ->redactor()
                 )
                 ->create();

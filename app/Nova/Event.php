@@ -118,6 +118,6 @@ class Event extends Resource
             return $query;
         }
 
-        return $query->whereRelation('author.company', 'id', $request->user()->company->id);
+        return $query->whereRelation('author', 'id', $request->user()->company->id);
     }
 }

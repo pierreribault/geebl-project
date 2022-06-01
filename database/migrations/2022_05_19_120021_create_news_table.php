@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\Seller;
+use App\Models\User;
+use App\Models\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +21,8 @@ return new class () extends Migration {
             $table->date('date');
             $table->string('slug')->nullable();
             $table->string('status');
-            $table->foreignIdFor(Seller::class);
+            $table->foreignIdFor(User::class, 'redactor_id');
+            $table->foreignIdFor(Event::class);
             $table->timestamps();
         });
     }

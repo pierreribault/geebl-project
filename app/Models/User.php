@@ -83,9 +83,14 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
-    public function events(): ?HasMany
+    public function events(): HasMany
     {
         return $this->hasMany(Event::class, 'author_id');
+    }
+
+    public function slots(): HasMany
+    {
+        return $this->hasMany(Slot::class);
     }
 
     //===> STATUS <==================================//
@@ -155,6 +160,11 @@ class User extends Authenticatable
     public function scopeIsConsumer($query)
     {
         return $query->isProfesionnal()->where('is_consumer', true);
+    }
+
+    public function scopeIsInCompany($query, Company $company)
+    {
+        return $query->whereRelation('company', 'id', $company->id);
     }
 
     //===> PERMISSIONS <==================================//
