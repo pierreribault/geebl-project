@@ -2,36 +2,31 @@
 
 namespace App\Nova;
 
-use App\Nova\Artist;
-use App\Enums\EventStatus;
-use Spatie\TagsField\Tags;
+use App\Enums\NewsStatus;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
-class Event extends Resource
+class News extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Event::class;
+    public static $model = \App\Models\News::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -51,20 +46,14 @@ class Event extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
-            Text::make('Name', 'name')->sortable()->required(),
-            Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:events,slug,'. $this->resource->id)->sortable(),
-            Text::make('Location', 'location')->sortable()->required(),
-            Date::make('Start at', 'start_at')->sortable()->required(),
-            Date::make('End at', 'end_at')->sortable()->required(),
-            Text::make('Description', 'description')->sortable()->required(),
-            Select::make('Status', 'status')->options(EventStatus::getKeysValues())->sortable(),
-            BelongsTo::make('Author', 'author', User::class),
-            Tags::make('Kinds')->type('kinds')->required(),
-            BelongsToMany::make('Artists', 'artists', Artist::class),
-            HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
-            HasMany::make('Tickets', 'tickets', Ticket::class),
-            // Medialibrary::make('Cover', 'cover', 'public')->single()->required(),
+            ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Title', 'title')->sortable()->required(),
+            Text::make('Slug', 'slug'),
+            Text::make('Description', 'description')->sortable()->required()->hideFromIndex(),
+            Select::make('Status', 'status')->options(NewsStatus::toSelectArray())->sortable()->required(),
+            Date::make('Date', 'date')->sortable()->required(),
+            BelongsTo::make('Event', 'event')->sortable()->required(),
+            BelongsTo::make('Redactor', 'redactor', User::class),
         ];
     }
 
@@ -118,6 +107,15 @@ class Event extends Resource
             return $query;
         }
 
-        return $query->whereRelation('author', 'id', $request->user()->company->id);
+        return $query->whereRelation('redactor', 'id', $request->user()->id);
+    }
+
+    public static function relatableUsers(NovaRequest $request, $query)
+    {
+        if ($request->user()->isAdmin()) {
+            return $query->isRedactor();
+        }
+
+        return $query->isRedactor()->isInCompany(Auth::user()->company);
     }
 }

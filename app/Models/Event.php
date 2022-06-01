@@ -25,7 +25,7 @@ class Event extends Model implements HasMedia
     use HasTags;
     use UuidPrimaryKey;
     use InteractsWithMedia;
-    
+
     protected $fillable = [
         'name',
         'slug',
@@ -75,6 +75,11 @@ class Event extends Model implements HasMedia
     public function artists(): ?BelongsToMany
     {
         return $this->belongsToMany(Artist::class);
+    }
+
+    public function news(): ?HasMany
+    {
+        return $this->hasMany(News::class);
     }
 
     public function scopeCarousel($query, $key, $value = null)

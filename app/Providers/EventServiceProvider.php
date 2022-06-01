@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use App\Events\ChargeSucceeded;
 use App\Listeners\OnChargeSucceeded;
+use App\Models\News;
+use App\Models\Slot;
+use App\Models\Ticket;
+use App\Observers\NewsObserver;
+use App\Observers\SlotObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -32,7 +37,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Slot::observe(SlotObserver::class);
+        News::observe(NewsObserver::class);
     }
 
     /**
