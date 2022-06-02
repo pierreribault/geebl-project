@@ -37,6 +37,7 @@ class Event extends Model implements HasMedia
         'seats',
         'author_id',
         'company_id',
+        'city_id',
         'status',
     ];
 
@@ -82,6 +83,11 @@ class Event extends Model implements HasMedia
         return $this->hasMany(News::class);
     }
 
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function scopeCarousel($query, $key, $value = null)
     {
         if ($key === Carousels::Trending) {
@@ -100,5 +106,14 @@ class Event extends Model implements HasMedia
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        $array['city_id'] = $this->city->id;
+
+        return $array;
     }
 }

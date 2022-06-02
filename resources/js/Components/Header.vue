@@ -7,7 +7,7 @@ const searchInput = ref(null);
 
 const state = reactive({
     queryText: "",
-    queryCity: "Paris",
+    city: {},
     loading: false,
     dropdownResultsOpen: false,
     searchEventsModalOpen: false,
@@ -17,7 +17,7 @@ const state = reactive({
 });
 
 const setCity = async (city) => {
-    state.queryCity = city
+    state.city = city;
     state.dropdownResultsOpen = false;
 }
 
@@ -25,7 +25,8 @@ const search = async () => {
     state.loading = true;
     const response = await axios.get("/api/events/search", {
         params: {
-            query: `${state.queryText}+${state.queryCity}`,
+            query: `${state.queryText}`,
+            city: `${state.city.id}`
         }
     });
 
@@ -34,6 +35,7 @@ const search = async () => {
 }
 
 onMounted(() => {
+    state.city = usePage().props.value.localizations.current
     searchInput.value.focus()
 })
 
@@ -126,7 +128,7 @@ const openSearchEventsModal = async () => {
                                         type="button"
                                         class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                                         id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                        {{ state.queryCity }}
+                                        {{ state.city.name }}
                                         <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
@@ -139,11 +141,11 @@ const openSearchEventsModal = async () => {
                                 <div v-bind:class="{ invisible: !state.dropdownResultsOpen }"
                                     class="origin-top-left z-10 absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
                                     role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                    <div v-bind:key="country" v-for="(country, key) in $page.props.localizations"
+                                    <div v-bind:key="country" v-for="(country, key) in $page.props.localizations.all"
                                         class="py-1" role="none">
                                         <a class="text-gray-700 font-bold uppercase block px-4 py-2 text-sm"
                                             role="menuitem">{{ country.name }}</a>
-                                        <a v-bind:key="city" v-for="(city) in country.cities" @click="setCity(city.name)"
+                                        <a v-bind:key="city" v-for="(city) in country.cities" @click="setCity(city)"
                                             class="text-gray-700 block px-4 py-2 text-sm cursor-pointer" role="menuitem"
                                             tabindex="-1" id="menu-item-0">{{ city.name }}
                                         </a>

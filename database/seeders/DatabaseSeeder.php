@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
 use App\Models\Company;
+use App\Models\Country;
 use App\Models\Event;
 use App\Models\News;
 use App\Models\User;
@@ -17,8 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CitySeeder::class);
-
         User::factory()->admin()->create(['email' => 'test@test.fr']);
 
         for ($i = 0; $i < 10; $i++) {
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 ->has(User::factory()->consumer())
                 ->has(
                     User::factory()
-                        ->has(Event::factory()->count(3))
+                        ->has(Event::factory()->for(City::factory()->for(Country::factory())))
                         ->redactor()
                 )
                 ->create();

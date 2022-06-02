@@ -7,6 +7,7 @@ use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -48,6 +49,7 @@ class City extends Resource
             ID::make(__('ID'), 'id')->sortable()->hide(),
             Text::make(__('Name'), 'name')->sortable()->required(),
             BelongsTo::make(__('Country'), 'country', Country::class)->sortable(),
+            HasMany::make(__('Events'), 'events', Event::class)->sortable()
         ];
     }
 

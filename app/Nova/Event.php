@@ -66,6 +66,7 @@ class Event extends Resource
             HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
             HasMany::make('Tickets', 'tickets', Ticket::class),
             Files::make('Cover', 'cover')->required(),
+            BelongsTo::make('City', 'city', City::class)->sortable(),
         ];
     }
 

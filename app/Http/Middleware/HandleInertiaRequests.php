@@ -2,11 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Data\CountryData;
 use App\Models\Country;
-use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Data\CountryData;
 use Tightenco\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use App\Services\LocalizationService;
+use App\Services\LocalizationServices;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -47,6 +49,9 @@ class HandleInertiaRequests extends Middleware
 
     private function localizations()
     {
-        return CountryData::collection(Country::all())->include('cities')->toArray();
+        return [
+            'current' => app(LocalizationService::class)->getCityFromIp(),
+            'all' => CountryData::collection(Country::all())->include('cities')->toArray()
+        ];
     }
 }
