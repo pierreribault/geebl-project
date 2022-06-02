@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
 class Event extends Resource
@@ -64,7 +65,7 @@ class Event extends Resource
             BelongsToMany::make('Artists', 'artists', Artist::class),
             HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
             HasMany::make('Tickets', 'tickets', Ticket::class),
-            // Medialibrary::make('Cover', 'cover', 'public')->single()->required(),
+            Files::make('Cover', 'one_file')->required(),
         ];
     }
 

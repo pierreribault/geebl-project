@@ -92,6 +92,11 @@ class Event extends Model implements HasMedia
         return $query;
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cover')->singleFile();
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';

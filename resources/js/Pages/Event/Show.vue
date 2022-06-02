@@ -179,13 +179,13 @@ const freshPrice = async () => {
                   kind.name.en
               }}</span>
           </p>
-          <a class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-20 px-12 py-3 rounded text-white uppercase font-bold text-sm"
+          <a v-if="$page.props.event.categories.length > 0" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-20 px-12 py-3 rounded text-white uppercase font-bold text-sm"
             href="#tickets">Tickets</a>
         </div>
       </div>
     </div>
     <div class="mt-5">
-      <div id="tickets" class="container mx-auto">
+      <div v-if="$page.props.event.categories.length > 0" id="tickets" class="container mx-auto">
         <div class="p-4 max-w-md rounded-lg sm:p-8">
           <div class="flex justify-between items-center mb-4">
             <h5 class="text-xl font-bold leading-none text-white dark:text-white">Tickets</h5>
