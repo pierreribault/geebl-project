@@ -37,7 +37,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Slot::observe(SlotObserver::class);
         News::observe(NewsObserver::class);
     }
 
