@@ -160,7 +160,7 @@ const freshPrice = async () => {
       <div class="px-4 h-screen rounded flex items-end" id="event">
         <img style="box-shadow: inset 0em -2em 15px #121212;"
           class="absolute opacity-75 b-none left-0 top-0 w-full h-screen"
-          src="https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652210863%2Fproduction%2Fartworks%2Fjeu_p177tm.jpg&w=1920&q=75">
+          :src="$page.props.event.cover_url">
         <div class="container mx-auto pb-36 z-10">
           <h1 class="text-white font-bold text-4xl">{{ $page.props.event.name }}</h1>
           <p class="text-gray-400">{{ $page.props.event.date }}</p>

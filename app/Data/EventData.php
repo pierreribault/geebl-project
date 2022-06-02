@@ -11,8 +11,6 @@ use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 
 class EventData extends Data
@@ -27,6 +25,7 @@ class EventData extends Data
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon $end_at,
         public readonly string $description,
+        public readonly ?string $cover_url,
         public readonly Lazy|UserData $author,
         public readonly null|Lazy|DataCollection $kinds,
         public readonly null|Lazy|DataCollection $artists,
@@ -40,6 +39,7 @@ class EventData extends Data
     {
         return self::from([
             ...$event->toArray(),
+            'cover_url' => $event->getFirstMediaUrl('cover'),
             'author' => Lazy::create(fn () => UserData::from($event->author)),
             'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),

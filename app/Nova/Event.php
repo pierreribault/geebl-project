@@ -65,7 +65,7 @@ class Event extends Resource
             BelongsToMany::make('Artists', 'artists', Artist::class),
             HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
             HasMany::make('Tickets', 'tickets', Ticket::class),
-            Files::make('Cover', 'one_file')->required(),
+            Files::make('Cover', 'cover')->required(),
         ];
     }
 
