@@ -36,7 +36,7 @@ onMounted(() => {
 
 <template>
 
-  <Head title="Welcome" />
+  <Head title="💃 Tickets for Live Music Events" />
 
   <Header />
 

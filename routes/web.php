@@ -19,7 +19,7 @@ use App\Models\Ticket;
 |
 */
 
-Route::get('/', [LandingViewController::class, 'index'])->name('index');
+Route::get('/', [LandingViewController::class, 'home'])->name('home');
 
 /**
  * Events

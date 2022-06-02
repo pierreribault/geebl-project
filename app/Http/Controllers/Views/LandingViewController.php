@@ -11,8 +11,8 @@ use App\Models\Event;
 
 class LandingViewController extends Controller
 {
-    public function index()
+    public function home()
     {
-        return Inertia::render('Welcome');
+        return Inertia::render('Home');
     }
 }
