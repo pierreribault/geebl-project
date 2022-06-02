@@ -139,14 +139,13 @@ const openSearchEventsModal = async () => {
                                 <div v-bind:class="{ invisible: !state.dropdownResultsOpen }"
                                     class="origin-top-left z-10 absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
                                     role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                    <div v-bind:key="country" v-for="(cities, country) in $page.props.countries"
+                                    <div v-bind:key="country" v-for="(country, key) in $page.props.localizations"
                                         class="py-1" role="none">
                                         <a class="text-gray-700 font-bold uppercase block px-4 py-2 text-sm"
-                                            role="menuitem">{{ country
-                                            }}</a>
-                                        <a v-bind:key="city" v-for="(city) in cities" @click="setCity(city)"
+                                            role="menuitem">{{ country.name }}</a>
+                                        <a v-bind:key="city" v-for="(city) in country.cities" @click="setCity(city.name)"
                                             class="text-gray-700 block px-4 py-2 text-sm cursor-pointer" role="menuitem"
-                                            tabindex="-1" id="menu-item-0">{{ city }}
+                                            tabindex="-1" id="menu-item-0">{{ city.name }}
                                         </a>
                                     </div>
                                 </div>

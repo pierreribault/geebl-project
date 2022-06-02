@@ -2,20 +2,22 @@
 
 namespace App\Nova;
 
+use App\Nova\Country;
+use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Country extends Resource
+class City extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Country::class;
+    public static $model = \App\Models\City::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -31,7 +33,7 @@ class Country extends Resource
      */
     public static $search = [
         'id',
-        'name',
+        'name'
     ];
 
     /**
@@ -45,7 +47,7 @@ class Country extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable()->hide(),
             Text::make(__('Name'), 'name')->sortable()->required(),
-            HasMany::make(__('Cities'), 'cities', City::class),
+            BelongsTo::make(__('Country'), 'country', Country::class)->sortable(),
         ];
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Data\CountryData;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -39,12 +41,12 @@ class HandleInertiaRequests extends Middleware
                 return (new Ziggy)->toArray();
             },
 
-            'countries' => [
-                '🇫🇷 France' => [
-                    'Paris',
-                    'Angers',
-                ],
-            ]
+            'localizations' => $this->localizations(),
         ]);
+    }
+
+    private function localizations()
+    {
+        return CountryData::collection(Country::all())->include('cities')->toArray();
     }
 }

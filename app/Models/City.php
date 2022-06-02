@@ -6,17 +6,18 @@ use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class City extends Model
 {
     use UuidPrimaryKey;
     use HasFactory;
 
     protected $fillable = [
         'name',
+        'country_id',
     ];
 
-    public function cities()
+    public function country()
     {
-        return $this->hasMany(City::class);
+        return $this->belongsTo(Country::class);
     }
 }
