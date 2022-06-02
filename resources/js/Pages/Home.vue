@@ -1,26 +1,21 @@
 <script setup>
 import { ref, onMounted, reactive } from "vue";
+import { Inertia } from '@inertiajs/inertia'
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import axios from "axios";
 import Header from '../Components/Header.vue';
 import Footer from '../Components/Footer.vue';
 
 const state = reactive({
-  queryText: "",
-  queryCity: "Paris",
-  loading: false,
-  dropdownResultsOpen: false,
-  searchEventsModalOpen: false,
-  searchEvents: {},
   carousels: {},
 });
 
-const getCarousels = async () => {
+const getCarousels = async (city) => {
   const response = await axios.get("/api/carousels");
 
   if (response.data) {
     response.data.forEach(async (key) => {
-      const { data } = await axios.get(`/api/carousels/${key}`);
+      const { data } = await axios.get(`/api/carousels/${key}?city_id=${city.id}`);
       state.carousels[key] = data;
     });
   } else {
@@ -28,17 +23,13 @@ const getCarousels = async () => {
   }
 }
 
-onMounted(() => {
-  getCarousels();
-})
-
 </script>
 
 <template>
 
   <Head title="💃 Tickets for Live Music Events" />
 
-  <Header />
+  <Header @city-changed="getCarousels" />
 
   <div v-if="state.carousels" class="max-w-6xl mx-auto sm:px-6 lg:px-8">
       <div v-bind:key="index" v-for="(carousel, index) in state.carousels" class="

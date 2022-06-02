@@ -5,6 +5,8 @@ import axios from "axios";
 
 const searchInput = ref(null);
 
+const emit = defineEmits(['city-changed'])
+
 const state = reactive({
     queryText: "",
     city: {},
@@ -19,6 +21,7 @@ const state = reactive({
 const setCity = async (city) => {
     state.city = city;
     state.dropdownResultsOpen = false;
+    emit('city-changed', city)
 }
 
 const search = async () => {
@@ -35,7 +38,9 @@ const search = async () => {
 }
 
 onMounted(() => {
-    state.city = usePage().props.value.localizations.current
+    const city = usePage().props.value.localizations.current
+    state.city = city
+    emit('city-changed', city)
     searchInput.value.focus()
 })
 
