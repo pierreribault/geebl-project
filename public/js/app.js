@@ -21727,7 +21727,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var searchInput = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(null);
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
       queryText: "",
-      queryCity: "Paris",
+      city: {},
       loading: false,
       dropdownResultsOpen: false,
       searchEventsModalOpen: false,
@@ -21742,7 +21742,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                state.queryCity = city;
+                state.city = city;
                 state.dropdownResultsOpen = false;
 
               case 2:
@@ -21769,7 +21769,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/api/events/search", {
                   params: {
-                    query: "".concat(state.queryText, "+").concat(state.queryCity)
+                    query: "".concat(state.queryText),
+                    city: "".concat(state.city.id)
                   }
                 });
 
@@ -21792,6 +21793,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }();
 
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)(function () {
+      state.city = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.value.localizations.current;
       searchInput.value.focus();
     });
 
@@ -25292,7 +25294,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "menu-button",
     "aria-expanded": "true",
     "aria-haspopup": "true"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.queryCity) + " ", 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.city.name) + " ", 1
   /* TEXT */
   ), _hoisted_23])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
@@ -25302,14 +25304,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "aria-orientation": "vertical",
     "aria-labelledby": "menu-button",
     tabindex: "-1"
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.countries, function (cities, country) {
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.localizations.all, function (country, key) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: country,
       "class": "py-1",
       role: "none"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(country), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(country.name), 1
     /* TEXT */
-    ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(cities, function (city) {
+    ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(country.cities, function (city) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
         key: city,
         onClick: function onClick($event) {
@@ -25319,7 +25321,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         role: "menuitem",
         tabindex: "-1",
         id: "menu-item-0"
-      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(city), 9
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(city.name), 9
       /* TEXT, PROPS */
       , _hoisted_25);
     }), 128

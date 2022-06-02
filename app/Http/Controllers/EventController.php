@@ -23,7 +23,7 @@ class EventController extends Controller
     public function search(SearchRequest $request, SearchAction $searcher)
     {
         return EventResource::collection(
-            $searcher->search($request->getQuery())
+            $searcher->search($request->all())
         );
     }
 
