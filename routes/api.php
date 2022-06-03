@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CarouselController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 /**
  * Events
  */
 Route::get('events/search', [EventController::class, 'search']);
+
+/**
+ * Tickets
+ */
+Route::post('tickets/{ticket}/use', [TicketController::class, 'use']);
 
 /**
  * Carousels

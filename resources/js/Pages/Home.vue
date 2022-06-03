@@ -16,7 +16,9 @@ const getCarousels = async (city) => {
   if (response.data) {
     response.data.forEach(async (key) => {
       const { data } = await axios.get(`/api/carousels/${key}?city_id=${city.id}`);
-      state.carousels[key] = data;
+      if (data.data.length > 0) {
+        state.carousels[key] = data;
+      }
     });
   } else {
     state.carousels = {};
@@ -32,24 +34,25 @@ const getCarousels = async (city) => {
   <Header @city-changed="getCarousels" />
 
   <div v-if="state.carousels" class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-      <div v-bind:key="index" v-for="(carousel, index) in state.carousels" class="
+    <div v-bind:key="index" v-for="(carousel, index) in state.carousels" class="
           mt-12
           container
         ">
-        <h3 class="text-2xl font-bold text-white">{{ carousel.label }}</h3>
-        <div class="flex justify-between items-center mt-4">
-          <a v-bind:key="index" v-for="(event, index) in carousel.data" :href="'/events/' + event.slug"
-            class="flex relative h-40 w-60 shadow-md">
-            <img class="block min-h-full min-w-full absolute" src="https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652210863%2Fproduction%2Fartworks%2Fjeu_p177tm.jpg&w=1920&q=75">
-            <div class="block min-h-full min-w-full bg-black absolute opacity-25 rounded-xl"></div>
-            <div class="ml-2">
-              <h5 class="text-lg font-bold text-white max-w-xs relative top-24">{{ event.name }}</h5>
-              <p class="text-sm text-gray-300 relative top-24">{{ event.date }}</p>
-            </div>
-          </a>
-        </div>
+      <h3 class="text-2xl font-bold text-white">{{ carousel.label }}</h3>
+      <div class="flex justify-between items-center mt-4">
+        <a v-bind:key="index" v-for="(event, index) in carousel.data" :href="'/events/' + event.slug"
+          class="flex relative h-40 w-60 shadow-md">
+          <img class="block min-h-full min-w-full absolute"
+            src="https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652210863%2Fproduction%2Fartworks%2Fjeu_p177tm.jpg&w=1920&q=75">
+          <div class="block min-h-full min-w-full bg-black absolute opacity-25 rounded-xl"></div>
+          <div class="ml-2">
+            <h5 class="text-lg font-bold text-white max-w-xs relative top-24">{{ event.name }}</h5>
+            <p class="text-sm text-gray-300 relative top-24">{{ event.date }}</p>
+          </div>
+        </a>
       </div>
     </div>
+  </div>
 
   <Footer />
 </template>

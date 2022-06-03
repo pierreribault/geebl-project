@@ -9,9 +9,11 @@ use Spatie\LaravelData\Lazy;
 class TicketData extends Data
 {
     public function __construct(
-        public readonly ?int $id,
-        public readonly string $uuid,
-        public readonly bool $used = false
+        public readonly ?string $id,
+        public readonly string $status,
+        public readonly null|Lazy|UserData $user,
+        public readonly Lazy|EventData $event,
+        public readonly Lazy|EventData $category,
     ) {
     }
 
@@ -19,7 +21,9 @@ class TicketData extends Data
     {
         return self::from([
             ...$ticket->toArray(),
-            'category' => Lazy::create(static fn () => CategoryData::from($ticket->category)),
+            'user' => Lazy::when(fn () => $ticket->user instanceof UserData, fn() => UserData::from($ticket->user)),
+            'event' => Lazy::create(static fn () => EventData::from($ticket->event)),
+            'category' => Lazy::create(static fn () => TicketCategoryData::from($ticket->category)),
         ]);
     }
 }

@@ -37,7 +37,6 @@ class Event extends Model implements HasMedia
         'seats',
         'author_id',
         'company_id',
-        'city_id',
         'status',
     ];
 
@@ -63,6 +62,11 @@ class Event extends Model implements HasMedia
         return $this->belongsTo(Company::class);
     }
 
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function tickets(): ?HasMany
     {
         return $this->hasMany(Ticket::class);
@@ -83,16 +87,25 @@ class Event extends Model implements HasMedia
         return $this->hasMany(News::class);
     }
 
-    public function city(): BelongsTo
+    public function scopePublished($query)
     {
-        return $this->belongsTo(City::class);
+        return $query->where('status', EventStatus::Published);
     }
 
     public function scopeCarousel($query, $key, $value = null)
     {
-        if ($key === Carousels::Trending) {
-            return $query->where('status', EventStatus::Published)
-                ->orderBy('created_at', 'desc');
+        // should be moved into a service
+        if ($key === Carousels::Trending->value) {
+            return $query
+                ->published()
+                ->withCount('tickets')
+                ->orderBy('tickets_count', 'desc');
+        }
+
+        if ($key === Carousels::House->value) {
+            return $query
+                ->published()
+                ->withAllTags(['house'], 'kinds');
         }
 
         return $query;
@@ -106,14 +119,5 @@ class Event extends Model implements HasMedia
     public function getRouteKeyName(): string
     {
         return 'slug';
-    }
-
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        $array['city_id'] = $this->city->id;
-
-        return $array;
     }
 }

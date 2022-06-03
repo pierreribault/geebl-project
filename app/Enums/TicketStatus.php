@@ -10,5 +10,6 @@ enum TicketStatus: String
 
     case NonUsed = 'non-used';
     case Used = 'used';
+    case ReUsed = 're-used';
     case Refunded = 'refunded';
 }

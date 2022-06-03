@@ -24197,7 +24197,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             case 2:
                               _yield$axios$get = _context.sent;
                               data = _yield$axios$get.data;
-                              state.carousels[key] = data;
+
+                              if (data.data.length > 0) {
+                                state.carousels[key] = data;
+                              }
 
                             case 5:
                             case "end":
@@ -24283,42 +24286,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
  // ----------------------------------------------------------------------------------------------------------------
 // Core                                                                                                  Core
+// ----------------------------------------------------------------------------------------------------------------
+// Data                                                                                                  Data
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
-    (0,vue__WEBPACK_IMPORTED_MODULE_5__.onMounted)(function () {
-      toggleLoadingOverlay();
-    }); // ----------------------------------------------------------------------------------------------------------------
-    // Data                                                                                                  Data
-
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_5__.reactive)({
       overlay: {
         active: false,
         text: '',
         icon: ''
       },
-      // should be removed when the tickets will be refactored
-      event: {
-        name: 'test',
-        image_url: 'https://shotgun.live/_next/image?url=https://res.cloudinary.com/shotgun/image/upload/v1652210863/production/artworks/jeu_p177tm.jpg&w=1920&q=75'
-      },
-      ticket: {
-        name: 'Thibeault Chenu',
-        type: 'Regular'
-      }
+      ticket: {}
     }); // ----------------------------------------------------------------------------------------------------------------
     // Overlay                                                                                                  Overlay
-
-    var toggleLoadingOverlay = function toggleLoadingOverlay() {
-      state.overlay.active = !state.overlay.active;
-      state.overlay.text = state.overlay.text !== 'Loading ...' ? 'Loading ...' : '';
-    };
 
     var toggleCapturedTicketOverlay = function toggleCapturedTicketOverlay() {
       state.overlay.active = !state.overlay.active;
       state.overlay.text = state.overlay.text !== 'Valid' ? 'Valid' : '';
+    };
+
+    var toggleAlreadyUsedTicketOverlay = function toggleAlreadyUsedTicketOverlay() {
+      state.overlay.active = !state.overlay.active;
+      state.overlay.text = state.overlay.text !== 'Valid (used)' ? 'Valid (used)' : '';
     };
 
     var toggleUncapturedTicketOverlay = function toggleUncapturedTicketOverlay() {
@@ -24328,28 +24320,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // Decoder                                                                                                  Decoder
 
 
-    var init = function init() {
-      toggleLoadingOverlay();
-    };
-
     var onDecode = /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value) {
-        var response;
+        var _yield$axios$post, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().post('validator', {
-                  value: value
-                });
+                state.overlay.active = false;
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/tickets/".concat(value, "/use"));
 
-              case 2:
-                response = _context.sent;
-                state.overlay.active = true; // if (response.status === 200) {
-                // }
+              case 3:
+                _yield$axios$post = _context.sent;
+                data = _yield$axios$post.data;
+                state.overlay.active = true;
+                state.ticket = data;
 
-              case 4:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -24364,10 +24353,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     var __returned__ = {
       state: state,
-      toggleLoadingOverlay: toggleLoadingOverlay,
       toggleCapturedTicketOverlay: toggleCapturedTicketOverlay,
+      toggleAlreadyUsedTicketOverlay: toggleAlreadyUsedTicketOverlay,
       toggleUncapturedTicketOverlay: toggleUncapturedTicketOverlay,
-      init: init,
       onDecode: onDecode,
       Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Head,
       axios: (axios__WEBPACK_IMPORTED_MODULE_2___default()),
@@ -29206,24 +29194,25 @@ var _hoisted_2 = {
 var _hoisted_3 = {
   "class": "h-60 flex flex-col"
 };
-
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  "class": "h-40",
-  src: "https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652978697%2Fproduction%2Fartworks%2F281745963_143964308179678_3501364114518875116_n_p9geld.jpg&w=3840&q=75"
-}, null, -1
-/* HOISTED */
-);
-
+var _hoisted_4 = ["src"];
 var _hoisted_5 = {
   "class": "text-center h-20 flex items-center justify-center flex-col"
 };
 var _hoisted_6 = {
+  key: 0
+};
+var _hoisted_7 = {
   "class": "text-gray-400"
 };
-
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_8 = {
+  "class": "mt-2 mb-2 text-gray-300 text-xs"
+};
+var _hoisted_9 = {
+  key: 0,
   "class": "h-20 flex justify-center items-center text-white bg-green-400"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
   fill: "none",
@@ -29234,12 +29223,36 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
   d: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "ml-2 text-sm font-medium"
-}, " Valide ")], -1
+})], -1
 /* HOISTED */
 );
 
+var _hoisted_11 = {
+  "class": "ml-2 text-sm font-medium"
+};
+var _hoisted_12 = {
+  key: 1,
+  "class": "h-20 flex justify-center items-center text-white bg-blue-400"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-6 w-6",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor",
+  "stroke-width": "2"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  d: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_14 = {
+  "class": "ml-2 text-sm font-medium"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Head"], {
     title: "Validator"
@@ -29249,14 +29262,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.state.overlay.active = false;
     }),
     "class": "translate-y-12 bg-white rounded shadow text-black mt-6 absolute z-10 h-80 w-80 rounded flex flex-col"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.name), 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+    "class": "h-40",
+    src: $setup.state.ticket.event.cover_url
+  }, null, 8
+  /* PROPS */
+  , _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [$setup.state.ticket.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h3", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.user.name), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.type), 1
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.category.name), 1
   /* TEXT */
-  )])]), _hoisted_7])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["QrStream"], {
-    onInit: $setup.init,
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.id), 1
+  /* TEXT */
+  )])]), $setup.state.ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.state.ticket.status === 're-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["QrStream"], {
+    camera: $setup.state.camera,
+    onInit: _ctx.init,
     onDecode: $setup.onDecode
-  })])])], 64
+  }, null, 8
+  /* PROPS */
+  , ["camera", "onInit"])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
