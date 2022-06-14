@@ -43,6 +43,8 @@ class Event extends Resource
         'id',
     ];
 
+    public static $group = "Utilisateur";
+
     /**
      * Get the fields displayed by the resource.
      *

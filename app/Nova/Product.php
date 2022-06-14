@@ -2,20 +2,24 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\HasMany;
+use App\Nova\User;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Company extends Resource
+class Product extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Company::class;
+    public static $model = \App\Models\Product::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -30,11 +34,10 @@ class Company extends Resource
      * @var array
      */
     public static $search = [
-        'name',
-        'location'
+        'id',
     ];
 
-    public static $group = "Utilisateur";
+    public static $group = "Transaction";
 
     /**
      * Get the fields displayed by the resource.
@@ -45,11 +48,14 @@ class Company extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
-            Text::make('Name', 'name')->sortable(),
-            Text::make('CRN', 'crn')->sortable(),
-            Text::make('Location', 'location')->sortable(),
-            HasMany::make('Users', 'users', User::class),
+            ID::make(__('ID'), 'id')->sortable(),
+            Text::make('Nom', 'name')->sortable(),
+            Textarea::make('Description', 'description')->sortable(),
+            Number::make('Quantity', 'quantity')->sortable(),
+            Number::make('Price', 'price')->sortable(),
+            Text::make('Slug', 'slug')->sortable()->exceptOnForms()->required(),
+            DateTime::make('Date', 'created_at')->format('DD/MM/YYYY')->sortable(),
+            BelongsTo::make('Admin', 'user', User::class),
         ];
     }
 
@@ -95,14 +101,5 @@ class Company extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        if ($request->user()->isAdmin()) {
-            return $query;
-        }
-
-        return $query->where('id', $request->user()->company->id);
     }
 }

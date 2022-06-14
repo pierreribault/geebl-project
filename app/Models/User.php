@@ -3,19 +3,20 @@
 namespace App\Models;
 
 use App\Data\UserData;
-use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
+use App\Models\Invoice;
+use App\Models\Product;
 use Spatie\LaravelData\WithData;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
 
 class User extends Authenticatable
 {
@@ -91,6 +92,16 @@ class User extends Authenticatable
     public function slots(): HasMany
     {
         return $this->hasMany(Slot::class);
+    }
+
+    public function invoices(): ?HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function products(): ?HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 
     //===> STATUS <==================================//
@@ -177,5 +188,15 @@ class User extends Authenticatable
     public function canBeImpersonated(?AuthAuthenticatable $impersonator = null)
     {
         return !$this->is_admin;
+    }
+
+    public function invoice(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function product(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }

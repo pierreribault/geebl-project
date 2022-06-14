@@ -2,27 +2,34 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\HasMany;
+use App\Enums\InvoiceStatus;
+use App\Nova\User;
+use App\Nova\Company;
+use App\Nova\Product;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Company extends Resource
+class Invoice extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Company::class;
+    public static $model = \App\Models\Invoice::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -30,11 +37,11 @@ class Company extends Resource
      * @var array
      */
     public static $search = [
-        'name',
-        'location'
+        'quantity',
+        'status'
     ];
 
-    public static $group = "Utilisateur";
+    public static $group = "Transaction";
 
     /**
      * Get the fields displayed by the resource.
@@ -45,11 +52,14 @@ class Company extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
-            Text::make('Name', 'name')->sortable(),
-            Text::make('CRN', 'crn')->sortable(),
-            Text::make('Location', 'location')->sortable(),
-            HasMany::make('Users', 'users', User::class),
+            ID::make(__('ID'), 'id')->sortable(),
+            BelongsTo::make('Product', 'product', Product::class),
+            Text::make('Quantity', 'quantity')->sortable()->required(),
+            Select::make('Status', 'status')->options(InvoiceStatus::toSelectArray())->sortable()->required(),
+            Date::make('Purchase date', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable()->required(),
+            Text::make('Price', 'price')->sortable()->exceptOnForms()->required(),
+            BelongsTo::make('Admin', 'user', User::class),
+            BelongsTo::make('Company', 'company', Company::class),
         ];
     }
 
@@ -103,6 +113,6 @@ class Company extends Resource
             return $query;
         }
 
-        return $query->where('id', $request->user()->company->id);
+        return $query->whereRelation('company', 'id', $request->user()->company->id);
     }
 }
