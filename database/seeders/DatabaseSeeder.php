@@ -26,16 +26,20 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             Invoice::factory()
             ->for(User::factory())
-            ->for(Product::factory()->for(User::factory()->admin()))
+            ->for(Product::factory())
             ->for(
                 Company::factory()
                     ->has(User::factory()->owner())
                     ->has(User::factory()->reviewer())
                     ->has(User::factory()->consumer())
                     ->has(
-                        User::factory()
-                            ->has(Event::factory()->count(3))
-                            ->redactor()
+                        User::factory()->has(
+                            Event::factory()
+                                ->count(3)
+                                ->for(
+                                    City::factory()->for(Country::factory())
+                                )
+                        )->redactor()
                     )
             )
             ->create();

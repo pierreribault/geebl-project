@@ -7,7 +7,9 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production --mix-config=webpack.ssr.mix.js && mix --production"
+        "production": "mix --production --mix-config=webpack.ssr.mix.js && mix --production",
+        "build-product-quantity": "cd nova-components/ProductQuantity && npm run dev",
+        "build-product-quantity-prod": "cd nova-components/ProductQuantity && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/inertia": "^0.11.0",

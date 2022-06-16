@@ -17,11 +17,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->unique();
             $table->string('transaction')->nullable();
             $table->integer('quantity');
             $table->string('status');
-            $table->foreignIdFor(Product::class);
+            $table->foreignUuid('product_id')->constrained();
             $table->foreignIdFor(Company::class);
             $table->foreignIdFor(User::class);
             $table->timestamps();
