@@ -26,7 +26,7 @@ Route::get('/', [LandingViewController::class, 'home'])->name('home');
  */
 Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
-Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.prepare-payment');
+Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.setup-email');
 Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
 
 Route::get('test', function () {

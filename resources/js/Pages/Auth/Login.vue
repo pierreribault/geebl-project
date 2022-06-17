@@ -33,7 +33,7 @@ const submit = () => {
 
     <Head title="Log in" />
 
-    <JetAuthenticationCard style="background-color: #121212">
+    <JetAuthenticationCard>
         <template #logo>
             <svg height="30" viewBox="0 0 524 202" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
