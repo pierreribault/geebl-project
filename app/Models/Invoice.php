@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\Invoices\GeneratePdfAction;
+use App\Data\InvoiceData;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -19,6 +21,7 @@ class Invoice extends Model implements HasMedia
     use HasFactory;
     use UuidPrimaryKey;
     use InteractsWithMedia;
+    use WithData;
 
     protected $fillable = [
         'transaction',
@@ -34,6 +37,8 @@ class Invoice extends Model implements HasMedia
     protected $appends = [
         'badge',
     ];
+
+    protected $dataClass = InvoiceData::class;
 
     protected static function booted()
     {

@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\Views\LandingViewController;
 use App\Models\Ticket;
@@ -41,6 +42,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
 });
 
 /**
