@@ -24,6 +24,7 @@ class Invoice extends Model implements HasMedia
         'transaction',
         'quantity',
         'status',
+        'price',
     ];
 
     protected $casts = [
@@ -31,7 +32,6 @@ class Invoice extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'price',
         'badge',
     ];
 
@@ -55,11 +55,6 @@ class Invoice extends Model implements HasMedia
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function getPriceAttribute()
-    {
-        return number_format($this->product->price * $this->quantity, 2, '.', '');
     }
 
     public function getBadgeAttribute()

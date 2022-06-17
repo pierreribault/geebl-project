@@ -6,14 +6,14 @@ use App\Enums\InvoiceStatus;
 use App\Nova\User;
 use App\Nova\Company;
 use App\Nova\Filters\Product\StatusFilter;
+use App\Nova\Metrics\InvoicesPerDay;
+use App\Nova\Metrics\TotalSalesPrice;
 use App\Nova\Product;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Select;
@@ -59,8 +59,9 @@ class Invoice extends Resource
             Select::make('Status', 'status')->options(InvoiceStatus::toSelectArray())->sortable()->required()->hideFromIndex(),
             Badge::make('Status', 'badge')->map(InvoiceStatus::colors()),
             BelongsTo::make('Product', 'product', Product::class),
+            Currency::make('Price', 'price')->currency('eur')->sortable()->required(),
             Text::make('Quantity', 'quantity')->sortable()->required(),
-            Currency::make('Price', 'price')->currency('eur')->sortable()->exceptOnForms()->required(),
+            Currency::make('Total', 'total')->currency('eur')->sortable()->exceptOnForms()->required(),
             Date::make('Purchase date', 'created_at')->format('DD/MM/YYYY - hh:mm')->sortable()->required(),
             BelongsTo::make('Customer', 'user', User::class),
             BelongsTo::make('Company', 'company', Company::class),
@@ -76,7 +77,10 @@ class Invoice extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new InvoicesPerDay(),
+            new TotalSalesPrice(),
+        ];
     }
 
     /**

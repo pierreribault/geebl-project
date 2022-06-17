@@ -35,6 +35,8 @@ class Artist extends Resource
         'name'
     ];
 
+    public static $group = "Events";
+
     /**
      * Get the fields displayed by the resource.
      *

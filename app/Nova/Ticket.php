@@ -35,6 +35,8 @@ class Ticket extends Resource
         'id',
     ];
 
+    public static $group = "Events";
+
     /**
      * Get the fields displayed by the resource.
      *

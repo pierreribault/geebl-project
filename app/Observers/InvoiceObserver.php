@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Invoice;
-use App\Models\Product;
 
 class InvoiceObserver
 {

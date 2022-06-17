@@ -34,6 +34,8 @@ class Country extends Resource
         'name',
     ];
 
+    public static $group = "Localization";
+
     /**
      * Get the fields displayed by the resource.
      *
