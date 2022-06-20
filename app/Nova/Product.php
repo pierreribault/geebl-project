@@ -2,15 +2,16 @@
 
 namespace App\Nova;
 
-use App\Nova\User;
-use Laravel\Nova\Fields\ID;
+use App\Enums\ProductStatus;
+use App\Nova\Filters\Product\OutOfStockFilter;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Slug;
 
 class Product extends Resource
 {
@@ -48,14 +49,13 @@ class Product extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Nom', 'name')->sortable(),
+            Badge::make('Status', 'badge')->map(ProductStatus::colors()),
+            Text::make('Name', 'name')->sortable(),
+            Slug::make('Slug', 'slug')->from('name')->sortable()->required()->hideFromIndex(),
             Textarea::make('Description', 'description')->sortable(),
             Number::make('Quantity', 'quantity')->sortable(),
-            Number::make('Price', 'price')->sortable(),
-            Text::make('Slug', 'slug')->sortable()->exceptOnForms()->required(),
-            DateTime::make('Date', 'created_at')->format('DD/MM/YYYY')->sortable(),
-            BelongsTo::make('Admin', 'user', User::class),
+            Currency::make('Price')->currency('eur')->sortable(),
+            Images::make('Image'),
         ];
     }
 
@@ -78,7 +78,9 @@ class Product extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return array_filter([
+            OutOfStockFilter::onlyOnIndex(),
+        ]);
     }
 
     /**

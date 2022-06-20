@@ -26,6 +26,8 @@ class UserData extends Data
         public readonly null|Lazy|CompanyData $company,
         #[DataCollectionOf(EventData::class)]
         public readonly null|Lazy|DataCollection $events,
+        #[DataCollectionOf(InvoiceData::class)]
+        public readonly null|Lazy|DataCollection $invoices,
         public readonly bool $is_admin = false,
         public readonly bool $is_owner = false,
         public readonly bool $is_redactor = false,
@@ -40,6 +42,7 @@ class UserData extends Data
             ...$user->toArray(),
             'company' => Lazy::create(static fn () => CompanyData::from($user->company)),
             'events' => Lazy::create(static fn () => EventData::collection($user->events)),
+            'invoices' => Lazy::create(static fn () => InvoiceData::collection($user->invoices)),
         ]);
     }
 }

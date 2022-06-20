@@ -2,24 +2,32 @@
 
 namespace App\Models;
 
+use App\Actions\Invoices\GeneratePdfAction;
+use App\Data\InvoiceData;
 use App\Models\User;
-use App\Models\Seller;
 use App\Models\Company;
 use App\Models\Product;
-use Illuminate\Support\Str;
 use App\Enums\InvoiceStatus;
+use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\LaravelData\WithData;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Invoice extends Model
+class Invoice extends Model implements HasMedia
 {
     use HasFactory;
+    use UuidPrimaryKey;
+    use InteractsWithMedia;
+    use WithData;
 
     protected $fillable = [
         'transaction',
         'quantity',
         'status',
+        'price',
     ];
 
     protected $casts = [
@@ -27,8 +35,17 @@ class Invoice extends Model
     ];
 
     protected $appends = [
-        'price'
+        'badge',
     ];
+
+    protected $dataClass = InvoiceData::class;
+
+    protected static function booted()
+    {
+        static::created(function ($ticket) {
+            app(GeneratePdfAction::class)->generate($ticket);
+        });
+    }
 
     public function product(): BelongsTo
     {
@@ -45,8 +62,8 @@ class Invoice extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function getPriceAttribute()
+    public function getBadgeAttribute()
     {
-        return number_format($this->product->price * $this->quantity, 2, '.', '');
+        return $this->status->value;
     }
 }

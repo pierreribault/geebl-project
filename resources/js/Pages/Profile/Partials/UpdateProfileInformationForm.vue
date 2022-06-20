@@ -72,7 +72,7 @@ const clearPhotoFileInput = () => {
 </script>
 
 <template>
-    <JetFormSection @submitted="updateProfileInformation">
+    <JetFormSection @submitted="updateProfileInformation" class="text-white">
         <template #title>
             Profile Information
         </template>

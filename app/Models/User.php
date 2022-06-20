@@ -94,14 +94,9 @@ class User extends Authenticatable
         return $this->hasMany(Slot::class);
     }
 
-    public function invoices(): ?HasMany
+    public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
-    }
-
-    public function products(): ?HasMany
-    {
-        return $this->hasMany(Product::class);
     }
 
     //===> STATUS <==================================//
@@ -193,10 +188,5 @@ class User extends Authenticatable
     public function invoice(): HasMany
     {
         return $this->hasMany(Invoice::class);
-    }
-
-    public function product(): HasMany
-    {
-        return $this->hasMany(Product::class);
     }
 }

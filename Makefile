@@ -6,4 +6,4 @@ ssr:
 	@npx mix --mix-config=webpack.ssr.mix.js
 
 watch:
-	@yarn mix hot
+	@yarn hot

@@ -1,5 +1,5 @@
 <template>
-    <footer class="absolute w-full bottom-0" style="background-color: #171717">
+    <footer class="w-full bottom-0 bg-back">
         <div class="p-4 sm:p-6 max-w-6xl mx-auto sm:px-6 lg:px-8 pt-5">
             <div class="container mx-auto flex justify-between">
                 <div class="md:mb-0">
