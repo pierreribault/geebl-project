@@ -1090,6 +1090,10 @@ select {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
 }
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -1900,6 +1904,10 @@ select {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 .font-medium {
   font-weight: 500;

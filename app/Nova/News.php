@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class News extends Resource
@@ -37,6 +38,8 @@ class News extends Resource
         'id',
     ];
 
+    public static $group = "Events";
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -48,11 +51,11 @@ class News extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Title', 'title')->sortable()->required(),
-            Text::make('Slug', 'slug'),
+            Slug::make('Slug')->from('title')->sortable()->required(),
             Text::make('Description', 'description')->sortable()->required()->hideFromIndex(),
             Select::make('Status', 'status')->options(NewsStatus::toSelectArray())->sortable()->required(),
             Date::make('Date', 'date')->sortable()->required(),
-            BelongsTo::make('Event', 'event')->sortable()->required(),
+            BelongsTo::make('Event', 'event')->sortable(),
             BelongsTo::make('Redactor', 'redactor', User::class),
         ];
     }
@@ -107,7 +110,7 @@ class News extends Resource
             return $query;
         }
 
-        return $query->whereRelation('redactor', 'id', $request->user()->id);
+        return $query->whereRelation('redactor.company', 'id', $request->user()->company->id);
     }
 
     public static function relatableUsers(NovaRequest $request, $query)
