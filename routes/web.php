@@ -32,6 +32,7 @@ Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail
 Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
 
 Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
 
 Route::get('test', function () {
     return view('tickets.view-pdf', ['ticket' => Ticket::all()->first()]);

@@ -6,21 +6,14 @@ import { Head, Link, usePage } from "@inertiajs/inertia-vue3";
 import Markdown from "vue3-markdown-it";
 
 const article = usePage().props.value.article;
-const date = usePage().props.value.date;
 </script>
 
 <template>
     <AppLayout :title="article.title">
-        <template #header>
-            <h2 class="font-semibold text-xl text-white leading-tight">
-                Article
-            </h2>
-        </template>
-
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <h1 class="text-white text-3xl">{{ article.title }}</h1>
-                <p class="text-gray-300">{{ date }} by {{ article.redactor.name }}</p>
+                <p class="text-gray-300">{{ article.beautiful_date }} by {{ article.redactor.name }}</p>
                 <div>
                     <img v-if="article.article_url" class=" w-full overflow-hidden sm:rounded-lg my-5"
                         :src="article.article_url" :alt="article.title">

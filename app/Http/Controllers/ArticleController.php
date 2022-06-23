@@ -17,7 +17,13 @@ class ArticleController extends Controller
 
         return Inertia::render('Article/Show', [
             'article' => ArticleData::fromModel($article)->include('redactor'),
-            'date' => $article->date->toFormattedDateString(),
+        ]);
+    }
+
+    public function index()
+    {
+        return Inertia::render('Article/Index', [
+            'articles' => ArticleData::collection(Article::published()->get())->include('redactor'),
         ]);
     }
 }

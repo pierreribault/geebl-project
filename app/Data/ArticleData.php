@@ -10,7 +10,7 @@ use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
-
+use Illuminate\Support\Str;
 class ArticleData extends Data
 {
     public function __construct(
@@ -35,5 +35,13 @@ class ArticleData extends Data
             'article_url' => $article->getFirstMediaUrl('article'),
             'redactor' => Lazy::create(fn () => UserData::from($article->redactor)),
         ]);
+    }
+
+    public function with(): array
+    {
+        return [
+            'beautiful_date' => $this->date->toFormattedDateString(),
+            'short_content' => Str::limit($this->content, 400),
+        ];
     }
 }

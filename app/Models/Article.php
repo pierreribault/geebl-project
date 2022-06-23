@@ -60,6 +60,11 @@ class Article extends Model implements HasMedia
         return 'slug';
     }
 
+    public function scopePublished($query): void
+    {
+        $query->where('status', ArticleStatus::Published);
+    }
+
     public function isPublished(): bool
     {
         return $this->status === ArticleStatus::Published;
