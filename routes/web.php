@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
@@ -29,6 +30,9 @@ Route::get('events/{event}', [EventController::class, 'show'])->name('events.sho
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
 Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.setup-email');
 Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
+
+Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
 
 Route::get('test', function () {
     return view('tickets.view-pdf', ['ticket' => Ticket::all()->first()]);

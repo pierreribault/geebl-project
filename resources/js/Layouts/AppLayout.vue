@@ -185,6 +185,9 @@ const openSearchEventsModal = async () => {
                                 <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Events
                                 </JetNavLink>
+                                <JetNavLink :href="route('articles.index')" :active="route().current('articles.index')">
+                                    Articles
+                                </JetNavLink>
                                 <JetNavLink :href="route('profile.show')" :active="route().current('profile.show')">
                                     Profile
                                 </JetNavLink>
