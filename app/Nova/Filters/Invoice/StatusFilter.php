@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nova\Filters\Product;
+namespace App\Nova\Filters\Invoice;
 
 use App\Enums\InvoiceStatus;
 use App\Traits\Nova\Filters\HasVisibility;

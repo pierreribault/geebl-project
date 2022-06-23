@@ -108,8 +108,8 @@ const openSearchEventsModal = async () => {
                         <a :href="'/events/' + event.slug"
                             class="block p-10 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{
-                                event.name
-                                }}</h5>
+                            event.name
+                            }}</h5>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-900 dark:text-white">{{ event.date }}</span>
                                 <a :href="'/events/' + event.slug"
@@ -182,13 +182,18 @@ const openSearchEventsModal = async () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <JetNavLink :href="route('home')" :active="route().current('home')">
                                     Events
                                 </JetNavLink>
                                 <JetNavLink :href="route('articles.index')" :active="route().current('articles.index')">
                                     Articles
                                 </JetNavLink>
-                                <JetNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                                <JetNavLink :href="route('shop.index')" :active="route().current('shop.index')"
+                                    v-if="$page.props.user">
+                                    Shop
+                                </JetNavLink>
+                                <JetNavLink :href=" route('profile.show')" :active="route().current('profile.show')"
+                                    v-if="$page.props.user">
                                     Profile
                                 </JetNavLink>
                             </div>

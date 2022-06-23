@@ -11,6 +11,7 @@ use Spatie\LaravelData\Casts\EnumCast;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Illuminate\Support\Str;
+
 class ArticleData extends Data
 {
     public function __construct(

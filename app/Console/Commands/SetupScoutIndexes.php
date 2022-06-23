@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Event;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Scout;
 
 class SetupScoutIndexes extends Command
 {

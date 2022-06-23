@@ -3,7 +3,6 @@
 namespace App\Data;
 
 use Carbon\Carbon;
-use App\Data\TagData;
 use App\Models\Event;
 use App\Enums\EventStatus;
 use Spatie\LaravelData\Data;

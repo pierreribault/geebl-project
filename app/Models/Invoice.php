@@ -4,9 +4,6 @@ namespace App\Models;
 
 use App\Actions\Invoices\GeneratePdfAction;
 use App\Data\InvoiceData;
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Product;
 use App\Enums\InvoiceStatus;
 use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;

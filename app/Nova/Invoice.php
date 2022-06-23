@@ -3,12 +3,9 @@
 namespace App\Nova;
 
 use App\Enums\InvoiceStatus;
-use App\Nova\User;
-use App\Nova\Company;
-use App\Nova\Filters\Product\StatusFilter;
+use App\Nova\Filters\Invoice\StatusFilter;
 use App\Nova\Metrics\InvoicesPerDay;
 use App\Nova\Metrics\TotalSalesPrice;
-use App\Nova\Product;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;

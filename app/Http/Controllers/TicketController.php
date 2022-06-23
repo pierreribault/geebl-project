@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Http\Controllers\Controller;
 use App\Actions\Tickets\UseAction;
 use App\Data\TicketData;
 use Illuminate\Support\Facades\Auth;

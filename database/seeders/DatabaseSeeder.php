@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use App\Models\Country;
-use App\Models\News;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Company;
