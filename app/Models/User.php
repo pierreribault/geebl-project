@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Data\EventData;
+use App\Data\TicketData;
 use App\Data\UserData;
 use Spatie\LaravelData\WithData;
 use Laravel\Sanctum\HasApiTokens;
@@ -187,5 +189,28 @@ class User extends Authenticatable
     public function invoice(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    ///===> OTHERS <==================================//
+
+    public function getTransactions()
+    {
+        return $this->tickets()->select('transaction')->groupBy('transaction')->get()->pluck('transaction');
+    }
+
+    public function getTransactionsDetails()
+    {
+        return $this->getTransactions()->map(function ($transaction) {
+            $tickets = Ticket::where('transaction', $transaction)->get();
+
+            return [
+                'transaction' => $transaction,
+                'event' => EventData::from($tickets->first()->event)->toArray(),
+                'status' => $tickets->first()->status,
+                'tickets' => TicketData::collection($tickets)->include('category.name')->toArray(),
+                'count' => $tickets->count(),
+                'total' => $tickets->sum('price'),
+            ];
+        });
     }
 }

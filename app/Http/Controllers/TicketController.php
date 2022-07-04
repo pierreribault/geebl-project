@@ -15,7 +15,7 @@ class TicketController extends Controller
         $user = Auth::user()->getData()->include('tickets');
 
         return Inertia::render('Tickets/Show', [
-            'user' => $user,
+            'transactions' => Auth::user()->getTransactionsDetails(),
         ]);
     }
 

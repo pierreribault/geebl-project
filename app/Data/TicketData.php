@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Actions\Tickets\GenerateQRCode;
 use App\Models\Ticket;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
@@ -26,5 +27,12 @@ class TicketData extends Data
             'event' => Lazy::create(static fn () => EventData::from($ticket->event)),
             'category' => Lazy::create(static fn () => TicketCategoryData::from($ticket->category)),
         ]);
+    }
+
+    public function with(): array
+    {
+        return [
+            'qrcode' => (new GenerateQRCode())->generate($this),
+        ];
     }
 }
