@@ -14,6 +14,7 @@ class TicketCategoryData extends Data
         public string $name,
         public ?string $description,
         public float $price,
+        public int $available_count,
         #[DataCollectionOf(EventData::class)]
         public Lazy|EventData $event,
     ) {

@@ -75,8 +75,6 @@ onMounted(() => {
     //searchInput.value.focus()
 })
 
-console.log(Ziggy.routes);
-
 const openSearchEventsModal = async () => {
     state.searchEventsModalOpen = true
 }
@@ -197,10 +195,6 @@ const openSearchEventsModal = async () => {
                                     v-if="$page.props.user">
                                     Shop
                                 </JetNavLink>
-                                <JetNavLink :href=" route('profile.show')" :active="route().current('profile.show')"
-                                    v-if="$page.props.user">
-                                    Profile
-                                </JetNavLink>
                             </div>
                         </div>
 
@@ -248,6 +242,11 @@ const openSearchEventsModal = async () => {
                                             Dashboard
                                         </a>
 
+                                        <a class="block w-full px-4 py-2 text-sm leading-5 text-gray-300 text-left hover:text-white focus:outline-none focus:bg-gray-100 transition"
+                                            :href="route('profile.show')">
+                                            Profile
+                                        </a>
+
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <JetDropdownLink as="button">
@@ -291,9 +290,6 @@ const openSearchEventsModal = async () => {
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <JetResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </JetResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->

@@ -11,6 +11,7 @@ class TicketData extends Data
     public function __construct(
         public readonly ?string $id,
         public readonly string $status,
+        public readonly ?string $transaction,
         public readonly null|Lazy|UserData $user,
         public readonly Lazy|EventData $event,
         public readonly Lazy|EventData $category,

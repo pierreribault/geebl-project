@@ -126,8 +126,6 @@ const pay = async () => {
         invoice: state.payment.invoice,
     });
 
-    console.log(data);
-
     if (data.status === "succeeded") {
         window.location = data.redirect;
     }
@@ -158,7 +156,9 @@ const freshPrice = () => {
                                 <p class="text-white">Quantity</p>
                                 <div
                                     class="inline-flex items-center text-base font-semibold text-white dark:text-white">
-                                    <MinusPlus v-on:plus="plus($event)" v-on:minus="minus($event)" />
+                                    <MinusPlus v-bind:count="state.count"
+                                        v-on:plus="plus($event)"
+                                        v-on:minus="minus($event)" />
                                 </div>
                             </div>
                             <div class="flex justify-between my-5">

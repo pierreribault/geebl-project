@@ -1082,6 +1082,9 @@ select {
 .col-span-6 {
   grid-column: span 6 / span 6;
 }
+.m-auto {
+  margin: auto;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -1882,6 +1885,9 @@ select {
 .pb-36 {
   padding-bottom: 9rem;
 }
+.pb-52 {
+  padding-bottom: 13rem;
+}
 .text-left {
   text-align: left;
 }
@@ -2641,6 +2647,11 @@ select {
   .sm\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .sm\:pt-0 {

@@ -6,12 +6,17 @@ use App\Models\Ticket;
 use App\Actions\Tickets\UseAction;
 use App\Data\TicketData;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TicketController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->getData()->include('ticket');
+        $user = Auth::user()->getData()->include('tickets');
+
+        return Inertia::render('Tickets/Show', [
+            'user' => $user,
+        ]);
     }
 
     public function use(Ticket $ticket, UseAction $useAction)

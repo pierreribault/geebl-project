@@ -1,0 +1,28 @@
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import Welcome from '@/Jetstream/Welcome.vue';
+import { usePage } from '@inertiajs/inertia-vue3';
+
+const user = usePage().props.value.user;
+
+console.log(user);
+
+</script>
+
+<template>
+    <AppLayout title="Tickets">
+        <template #header>
+            <h2 class="font-semibold text-xl text-white leading-tight">
+                My Tickets
+            </h2>
+        </template>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <Welcome />
+                </div>
+            </div>
+        </div>
+    </AppLayout>
+</template>
