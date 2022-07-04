@@ -2,17 +2,16 @@
 
 namespace App\Mail;
 
-use App\Actions\Tickets\GeneratePdfAction;
 use App\Models\Event;
 use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 
 class TicketsShipped extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private Event $event;
 

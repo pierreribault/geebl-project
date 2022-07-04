@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +17,7 @@ class StripeController extends Controller
     {
         try {
             $event = StripeEvent::constructFrom($request->all());
-        } catch(\UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException $e) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 

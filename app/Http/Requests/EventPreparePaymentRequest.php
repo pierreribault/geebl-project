@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Models\TicketCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Exists;
-use Illuminate\Validation\Rules\In;
 
 class EventPreparePaymentRequest extends FormRequest
 {

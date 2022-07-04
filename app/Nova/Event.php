@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Nova\Artist;
 use App\Enums\EventStatus;
 use App\Nova\Metrics\NewTickets;
 use Spatie\TagsField\Tags;
@@ -17,7 +16,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
-use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
 
 class Event extends Resource
 {
@@ -43,6 +41,8 @@ class Event extends Resource
     public static $search = [
         'id',
     ];
+
+    public static $group = "Events";
 
     /**
      * Get the fields displayed by the resource.

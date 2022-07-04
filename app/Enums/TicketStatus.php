@@ -8,6 +8,7 @@ enum TicketStatus: String
 {
     use ArrayRender;
 
+    case Pending = 'pending';
     case NonUsed = 'non-used';
     case Used = 'used';
     case ReUsed = 're-used';

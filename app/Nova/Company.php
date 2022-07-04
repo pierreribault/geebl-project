@@ -34,6 +34,8 @@ class Company extends Resource
         'location'
     ];
 
+    public static $group = "Utilisateur";
+
     /**
      * Get the fields displayed by the resource.
      *

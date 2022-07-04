@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Invoice;
+use App\Models\Ticket;
+use App\Observers\InvoiceObserver;
+use App\Observers\TicketObserver;
 use App\Services\StripeService;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +33,9 @@ class AppServiceProvider extends ServiceProvider
                 config('services.stripe.secret_key')
             ))->client;
         });
+
+        Invoice::observe(InvoiceObserver::class);
+
+        Ticket::observe(TicketObserver::class);
     }
 }

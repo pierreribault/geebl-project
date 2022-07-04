@@ -20,7 +20,6 @@
 </head>
 
 <body
-style="background-color: #121212"
 class="relative
     items-top
     justify-center

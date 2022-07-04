@@ -9,7 +9,6 @@ use App\Data\CountryData;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use App\Services\LocalizationService;
-use App\Services\LocalizationServices;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -41,7 +40,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'ziggy' => function () {
-                return (new Ziggy)->toArray();
+                return (new Ziggy())->toArray();
             },
 
             'localizations' => $this->localizations(),

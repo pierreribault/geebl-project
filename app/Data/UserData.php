@@ -19,13 +19,19 @@ class UserData extends Data
     public function __construct(
         public readonly ?int $id,
         public readonly string $name,
-        #[Required, Email, Unique('users', 'email')]
+        #[Required,
+        Email,
+        Unique('users', 'email')]
         public readonly string $email,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon $birthday,
         public readonly null|Lazy|CompanyData $company,
         #[DataCollectionOf(EventData::class)]
         public readonly null|Lazy|DataCollection $events,
+        #[DataCollectionOf(InvoiceData::class)]
+        public readonly null|Lazy|DataCollection $invoices,
+        #[DataCollectionOf(TicketData::class)]
+        public readonly null|Lazy|DataCollection $tickets,
         public readonly bool $is_admin = false,
         public readonly bool $is_owner = false,
         public readonly bool $is_redactor = false,
@@ -40,6 +46,8 @@ class UserData extends Data
             ...$user->toArray(),
             'company' => Lazy::create(static fn () => CompanyData::from($user->company)),
             'events' => Lazy::create(static fn () => EventData::collection($user->events)),
+            'invoices' => Lazy::create(static fn () => InvoiceData::collection($user->invoices)),
+            'tickets' => Lazy::create(static fn () => TicketData::collection($user->tickets)),
         ]);
     }
 }

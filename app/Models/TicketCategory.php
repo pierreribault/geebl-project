@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Event;
 use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -25,7 +25,7 @@ trait UuidPrimaryKey
     {
         return false;
     }
-    
+
     /**
      * Get the auto-incrementing key type.
      *

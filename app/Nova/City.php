@@ -2,14 +2,11 @@
 
 namespace App\Nova;
 
-use App\Nova\Country;
-use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class City extends Resource
 {
@@ -36,6 +33,8 @@ class City extends Resource
         'id',
         'name'
     ];
+
+    public static $group = "Localization";
 
     /**
      * Get the fields displayed by the resource.

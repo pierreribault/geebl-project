@@ -2,12 +2,10 @@
 
 namespace App\Nova;
 
-use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Artist extends Resource
 {
@@ -34,6 +32,8 @@ class Artist extends Resource
         'id',
         'name'
     ];
+
+    public static $group = "Events";
 
     /**
      * Get the fields displayed by the resource.

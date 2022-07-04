@@ -6,7 +6,6 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Country extends Resource
 {
@@ -33,6 +32,8 @@ class Country extends Resource
         'id',
         'name',
     ];
+
+    public static $group = "Localization";
 
     /**
      * Get the fields displayed by the resource.

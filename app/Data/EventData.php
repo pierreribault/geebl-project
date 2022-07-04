@@ -3,7 +3,6 @@
 namespace App\Data;
 
 use Carbon\Carbon;
-use App\Data\TagData;
 use App\Models\Event;
 use App\Enums\EventStatus;
 use Spatie\LaravelData\Data;
@@ -45,5 +44,12 @@ class EventData extends Data
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
             'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),
         ]);
+    }
+
+    public function with(): array
+    {
+        return [
+            'beautiful_date' => $this->start_at->toFormattedDateString(),
+        ];
     }
 }

@@ -55,7 +55,7 @@ const updatePassword = () => {
                     ref="currentPasswordInput"
                     v-model="form.current_password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full text-white"
                     autocomplete="current-password"
                 />
                 <JetInputError :message="form.errors.current_password" class="mt-2" />
@@ -68,7 +68,7 @@ const updatePassword = () => {
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full text-white"
                     autocomplete="new-password"
                 />
                 <JetInputError :message="form.errors.password" class="mt-2" />
@@ -80,7 +80,7 @@ const updatePassword = () => {
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full text-white"
                     autocomplete="new-password"
                 />
                 <JetInputError :message="form.errors.password_confirmation" class="mt-2" />

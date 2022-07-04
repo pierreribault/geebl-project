@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
+use App\Data\EventData;
+use App\Data\TicketData;
 use App\Data\UserData;
-use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
 use Spatie\LaravelData\WithData;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Notifications\Notifiable;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthAuthenticatable;
 
 class User extends Authenticatable
 {
@@ -44,6 +44,8 @@ class User extends Authenticatable
         'is_reviewer',
         'is_consumer',
     ];
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -88,9 +90,14 @@ class User extends Authenticatable
         return $this->hasMany(Event::class, 'author_id');
     }
 
-    public function slots(): HasMany
+    public function tickets(): HasMany
     {
-        return $this->hasMany(Slot::class);
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 
     //===> STATUS <==================================//
@@ -177,5 +184,33 @@ class User extends Authenticatable
     public function canBeImpersonated(?AuthAuthenticatable $impersonator = null)
     {
         return !$this->is_admin;
+    }
+
+    public function invoice(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    ///===> OTHERS <==================================//
+
+    public function getTransactions()
+    {
+        return $this->tickets()->select('transaction')->groupBy('transaction')->get()->pluck('transaction');
+    }
+
+    public function getTransactionsDetails()
+    {
+        return $this->getTransactions()->map(function ($transaction) {
+            $tickets = Ticket::where('transaction', $transaction)->get();
+
+            return [
+                'transaction' => $transaction,
+                'event' => EventData::from($tickets->first()->event)->toArray(),
+                'status' => $tickets->first()->status,
+                'tickets' => TicketData::collection($tickets)->include('category.name')->toArray(),
+                'count' => $tickets->count(),
+                'total' => $tickets->sum('price'),
+            ];
+        });
     }
 }
