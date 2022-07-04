@@ -8,6 +8,7 @@ use App\Nova\Metrics\InvoicesPerDay;
 use App\Nova\Metrics\TotalSalesPrice;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
@@ -75,8 +76,12 @@ class Invoice extends Resource
     public function cards(Request $request)
     {
         return [
-            new InvoicesPerDay(),
-            new TotalSalesPrice(),
+            (new InvoicesPerDay)->canSee(function ($request) {
+                return Auth::user()->isAdmin();
+            }),
+            (new TotalSalesPrice)->canSee(function ($request) {
+                return Auth::user()->isAdmin();
+            }),
         ];
     }
 

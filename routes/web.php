@@ -76,4 +76,6 @@ Route::group(['prefix' => 'articles'], function () {
 Route::group(['prefix' => 'shop'], function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');
     Route::get('{product}', [ShopController::class, 'show'])->name('shop.show');
+    Route::post('{product}/payment/setup', [ShopController::class, 'preparePayment'])->name('shop.prepare-payment');
+    Route::post('{product}/payment/verify', [ShopController::class, 'verifyPayment'])->name('shop.verify-payment');
 });

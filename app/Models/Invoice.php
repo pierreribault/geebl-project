@@ -25,6 +25,10 @@ class Invoice extends Model implements HasMedia
         'quantity',
         'status',
         'price',
+        'total',
+        'product_id',
+        'company_id',
+        'user_id',
     ];
 
     protected $casts = [
