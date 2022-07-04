@@ -45,4 +45,11 @@ class EventData extends Data
             'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),
         ]);
     }
+
+    public function with(): array
+    {
+        return [
+            'beautiful_date' => $this->start_at->toFormattedDateString(),
+        ];
+    }
 }
