@@ -88,9 +88,9 @@ class User extends Authenticatable
         return $this->hasMany(Event::class, 'author_id');
     }
 
-    public function slots(): HasMany
+    public function tickets(): HasMany
     {
-        return $this->hasMany(Slot::class);
+        return $this->hasMany(Ticket::class);
     }
 
     public function invoices(): HasMany

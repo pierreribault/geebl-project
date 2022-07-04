@@ -6,13 +6,18 @@ use Inertia\Inertia;
 use App\Models\Event;
 use App\Actions\Events\SearchAction;
 use App\Data\EventData;
+use App\Enums\TicketStatus;
 use App\Http\Requests\EventPreparePaymentRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\Events\SearchRequest;
 use App\Http\Requests\EventSetupEmailRequest;
+use App\Models\Ticket;
+use App\Models\TicketCategory;
 use App\Services\StripeService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Stripe\StripeClient;
 
@@ -37,15 +42,12 @@ class EventController extends Controller
         ]);
     }
 
+
     public function preparePayment(Event $event, EventPreparePaymentRequest $request)
     {
         $this->abortIfNotJson();
 
         $email = session('event.payment.email');
-
-        /**
-         * @todo: move to an action
-         */
 
         /** @var StripeClient $stripe */
         $stripe = app(StripeService::class);
@@ -60,8 +62,21 @@ class EventController extends Controller
             ]
         ]);
 
+        collect($request->get('order'))->each(function ($order) use ($event, $intent) {
+            $category = TicketCategory::where('id', $order['id'])->firstOrFail();
+
+            Ticket::factory()->count($order['quantity'])->pending()->create([
+                'user_id' => Auth::id(),
+                'event_id' => $event->id,
+                'ticket_category_id' => $category->id,
+                'transaction' => $intent->id,
+                'price' => $category->price,
+            ]);
+        });
+
         return [
             'client_secret' => $intent->client_secret,
+            'transaction' => $intent->id,
         ];
     }
 
@@ -81,5 +96,54 @@ class EventController extends Controller
         Session::put('event.payment.email', $request->getEmail());
 
         return new JsonResponse(null, Response::HTTP_OK);
+    }
+
+    public function verifyPayment(Event $event, Request $request)
+    {
+        $this->abortIfNotJson();
+
+        $transaction = $request->get('order');
+
+        /** @var StripeClient $stripe */
+        $stripe = app(StripeService::class);
+
+        $intent = $stripe->paymentIntents->retrieve($transaction);
+
+        if ($intent->status === 'succeeded') {
+            Ticket::where('transaction', $transaction)->update([
+                'status' => TicketStatus::NonUsed,
+            ]);
+        }
+
+        return [
+            'status' => $intent->status,
+            'redirect' => route('user.tickets')
+        ];
+    }
+
+    public function retryPayment(Event $event, Request $request)
+    {
+        $this->abortIfNotJson();
+
+        $transaction = $request->get('transaction');
+
+        /** @var StripeClient $stripe */
+        $stripe = app(StripeService::class);
+
+        $intent = $stripe->paymentIntents->retrieve($transaction);
+
+        if ($intent->status === "succeeded" || $intent->status === "canceled") {
+            return [
+                'redirect' => route('events.show', $event->slug),
+            ];
+        }
+
+        $stripe->paymentIntents->cancel($transaction);
+
+        Ticket::where('transaction', $transaction)->delete();
+
+        return [
+            'order' => $intent->metadata->order,
+        ];
     }
 }

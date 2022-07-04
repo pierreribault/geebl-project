@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Number;
 
 class TicketCategory extends Resource
 {
@@ -50,6 +51,7 @@ class TicketCategory extends Resource
             Textarea::make(__('Description'), 'description')->hideFromIndex(),
             BelongsTo::make(__('Event'), 'event', Event::class)->sortable(),
             HasMany::make(__('Tickets'), 'tickets', Ticket::class),
+            Number::make('Quantity', 'available_count')->required(),
             Currency::make('Price')
                 ->currency('eur')
         ];

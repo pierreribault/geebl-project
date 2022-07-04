@@ -8,6 +8,7 @@ use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use App\Actions\Tickets\GeneratePdfAction;
+use App\Enums\TicketStatus;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +25,8 @@ class Ticket extends Model implements HasMedia
         'user_id',
         'ticket_category_id',
         'status',
-        'price'
+        'price',
+        'transaction',
     ];
 
     protected $dataClass = TicketData::class;
@@ -49,5 +51,12 @@ class Ticket extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(TicketCategory::class, 'ticket_category_id', 'id');
+    }
+
+    public function scopeUnfinishedPaymentProcess($query)
+    {
+        return $query
+            ->where('status', TicketStatus::Pending->value)
+            ->whereDate('created_at', '<=', now()->subMinutes(10));
     }
 }

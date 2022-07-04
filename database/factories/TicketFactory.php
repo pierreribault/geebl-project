@@ -35,4 +35,13 @@ class TicketFactory extends Factory
             ];
         });
     }
+
+    public function pending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => TicketStatus::Pending->value,
+            ];
+        });
+    }
 }

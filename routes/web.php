@@ -8,6 +8,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\Views\LandingViewController;
 use App\Models\Ticket;
 
@@ -31,6 +32,8 @@ Route::get('events/{event}', [EventController::class, 'show'])->name('events.sho
 Route::post('events/{event}/payment/setup', [EventController::class, 'preparePayment'])->name('events.prepare-payment');
 Route::post('events/{event}/payment/email', [EventController::class, 'setupEmail'])->name('events.setup-email');
 Route::post('events/{event}/payment/price', [EventController::class, 'preparePrice'])->name('events.prepare-price');
+Route::post('events/{event}/payment/verify', [EventController::class, 'verifyPayment'])->name('events.verify-payment');
+Route::post('events/{event}/payment/retry', [EventController::class, 'retryPayment'])->name('events.retry-payment');
 
 Route::get('test', function () {
     return view('tickets.view-pdf', ['ticket' => Ticket::all()->first()]);
@@ -41,9 +44,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/user/tickets', [TicketController::class, 'index'])->name('user.tickets');
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
 });
 

@@ -1,23 +1,26 @@
 <script setup>
-import { reactive, defineProps } from 'vue';
+import { reactive, defineProps, toRef } from 'vue';
+
+const props = defineProps({
+    count: Number
+})
 
 const state = reactive({
-    count: 0
+    count: toRef(props, 'count')
 });
 
 const emit = defineEmits(['plus', 'minus'])
 
 const minus = () => {
     if (state.count > 0) {
-        state.count--;
-        emit('minus', state.count)
+        emit('minus', state.count - 1)
     }
 }
 
 const plus = () => {
-    state.count++;
-    emit('plus', state.count)
+    emit('plus', state.count + 1)
 }
+
 </script>
 
 <template>
