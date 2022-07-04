@@ -4,12 +4,9 @@ namespace App\Models;
 
 use App\Data\ProductData;
 use App\Enums\ProductStatus;
-use App\Models\User;
-use App\Models\Invoice;
 use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
@@ -22,7 +19,7 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
     use WithData;
 
-    const minimumBeforeLowStock = 20;
+    public const minimumBeforeLowStock = 20;
 
     protected $fillable = [
         'name',
@@ -45,5 +42,20 @@ class Product extends Model implements HasMedia
     public function getBadgeAttribute(): string
     {
         return ProductStatus::available($this->quantity);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('quantity', '>', 0);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('product')->useDisk('product')->singleFile();
     }
 }

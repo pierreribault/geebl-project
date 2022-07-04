@@ -6,7 +6,6 @@ use App\Models\Event;
 use App\Enums\Carousels;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\CarouselResource;
-use App\Models\City;
 use Illuminate\Http\Request;
 
 class CarouselController extends Controller

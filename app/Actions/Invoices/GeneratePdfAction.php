@@ -3,7 +3,6 @@
 namespace App\Actions\Invoices;
 
 use App\Models\Invoice;
-use App\Models\Ticket;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class GeneratePdfAction

@@ -19,7 +19,9 @@ class UserData extends Data
     public function __construct(
         public readonly ?int $id,
         public readonly string $name,
-        #[Required, Email, Unique('users', 'email')]
+        #[Required,
+        Email,
+        Unique('users', 'email')]
         public readonly string $email,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon $birthday,

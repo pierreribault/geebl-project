@@ -2,15 +2,13 @@
 
 use App\Enums\TicketStatus;
 use App\Models\Event;
-use App\Models\Order;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *

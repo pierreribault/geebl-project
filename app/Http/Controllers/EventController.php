@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Actions\Events\SearchAction;
-use App\Actions\Tickets\CaptureAction;
 use App\Data\EventData;
 use App\Http\Requests\EventPreparePaymentRequest;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\Events\SearchRequest;
 use App\Http\Requests\EventSetupEmailRequest;
-use App\Models\Ticket;
 use App\Services\StripeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\ValidationException;
 use Stripe\StripeClient;
 
 class EventController extends Controller

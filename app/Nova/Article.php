@@ -57,10 +57,12 @@ class Article extends Resource
                 ->required()
                 ->displayUsing(fn ($text) => Str::limit($text, 50)),
 
-            Text::make('See the article', fn ($article) => $article->isPublished()
+            Text::make(
+                'See the article',
+                fn ($article) => $article->isPublished()
                 ? sprintf('<a href="%s" target="_blank">Link</a>', route('articles.show', $article->slug))
                 : 'Not yet published'
-                )->asHtml(),
+            )->asHtml()->onlyOnDetail(),
 
             Slug::make('Slug')
                 ->from('title')

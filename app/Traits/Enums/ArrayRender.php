@@ -2,7 +2,8 @@
 
 namespace App\Traits\Enums;
 
-trait ArrayRender {
+trait ArrayRender
+{
     public static function getKeysValues(): array
     {
         return collect(self::cases())->pluck('name', 'value')->toArray();

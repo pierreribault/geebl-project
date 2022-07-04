@@ -29,7 +29,6 @@ class FeatureContext extends DuskTestCase implements Context
      */
     public function __construct()
     {
-
         parent::setUp();
 
         $this->builder = new BrowserBuilder();

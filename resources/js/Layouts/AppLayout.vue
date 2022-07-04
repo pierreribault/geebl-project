@@ -64,6 +64,9 @@ const search = async () => {
     state.searchEvents = response.data.data;
 }
 
+const isProfessional = () => {
+    return usePage().props.value.user.is_admin || usePage().props.value.user.company_id != null;
+}
 
 onMounted(() => {
     const city = usePage().props.value.localizations.current
@@ -71,6 +74,8 @@ onMounted(() => {
     emit('city-changed', city)
     //searchInput.value.focus()
 })
+
+console.log(Ziggy.routes);
 
 const openSearchEventsModal = async () => {
     state.searchEventsModalOpen = true
@@ -182,13 +187,18 @@ const openSearchEventsModal = async () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <JetNavLink :href="route('home')" :active="route().current('home')">
                                     Events
                                 </JetNavLink>
                                 <JetNavLink :href="route('articles.index')" :active="route().current('articles.index')">
                                     Articles
                                 </JetNavLink>
-                                <JetNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                                <JetNavLink :href="route('shop.index')" :active="route().current('shop.index')"
+                                    v-if="$page.props.user">
+                                    Shop
+                                </JetNavLink>
+                                <JetNavLink :href=" route('profile.show')" :active="route().current('profile.show')"
+                                    v-if="$page.props.user">
                                     Profile
                                 </JetNavLink>
                             </div>
@@ -232,6 +242,11 @@ const openSearchEventsModal = async () => {
                                         </JetDropdownLink>
 
                                         <div class="border-t border-gray-600" />
+
+                                        <a class="block w-full px-4 py-2 text-sm leading-5 text-gray-300 text-left hover:text-white focus:outline-none focus:bg-gray-100 transition"
+                                            :href="route('nova.login')" v-if="isProfessional">
+                                            Dashboard
+                                        </a>
 
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">

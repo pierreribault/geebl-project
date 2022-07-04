@@ -3,15 +3,12 @@
 namespace App\Models;
 
 use App\Data\UserData;
-use App\Models\Invoice;
-use App\Models\Product;
 use Spatie\LaravelData\WithData;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +42,8 @@ class User extends Authenticatable
         'is_reviewer',
         'is_consumer',
     ];
+
+
 
     /**
      * The attributes that should be hidden for serialization.

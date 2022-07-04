@@ -4,9 +4,6 @@ namespace App\Models;
 
 use App\Actions\Invoices\GeneratePdfAction;
 use App\Data\InvoiceData;
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Product;
 use App\Enums\InvoiceStatus;
 use App\Traits\UuidPrimaryKey;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +25,10 @@ class Invoice extends Model implements HasMedia
         'quantity',
         'status',
         'price',
+        'total',
+        'product_id',
+        'company_id',
+        'user_id',
     ];
 
     protected $casts = [

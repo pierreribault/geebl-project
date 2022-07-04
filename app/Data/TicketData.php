@@ -21,7 +21,7 @@ class TicketData extends Data
     {
         return self::from([
             ...$ticket->toArray(),
-            'user' => Lazy::when(fn () => $ticket->user instanceof UserData, fn() => UserData::from($ticket->user)),
+            'user' => Lazy::when(fn () => $ticket->user instanceof UserData, fn () => UserData::from($ticket->user)),
             'event' => Lazy::create(static fn () => EventData::from($ticket->event)),
             'category' => Lazy::create(static fn () => TicketCategoryData::from($ticket->category)),
         ]);

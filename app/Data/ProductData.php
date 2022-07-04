@@ -4,6 +4,7 @@ namespace App\Data;
 
 use App\Models\Product;
 use Spatie\LaravelData\Data;
+use Illuminate\Support\Str;
 
 class ProductData extends Data
 {
@@ -14,6 +15,7 @@ class ProductData extends Data
         public readonly string $description,
         public readonly int $quantity,
         public readonly float $price,
+        public readonly string $product_url,
     ) {
     }
 
@@ -21,6 +23,14 @@ class ProductData extends Data
     {
         return self::from([
             ...$product->toArray(),
+            'product_url' => $product->getFirstMediaUrl('product'),
         ]);
+    }
+
+    public function with(): array
+    {
+        return [
+            'short_content' => Str::limit($this->description, 400),
+        ];
     }
 }

@@ -16,7 +16,7 @@ class UseAction
 
         // set a virtual status to indicate that the ticket was used
         if ($originalStatus === TicketStatus::Used->value) {
-            $ticket->status = TicketStatus::ReUsed->value; 
+            $ticket->status = TicketStatus::ReUsed->value;
         }
 
         return $ticket;

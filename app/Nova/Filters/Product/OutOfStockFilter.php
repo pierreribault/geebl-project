@@ -21,7 +21,7 @@ class OutOfStockFilter extends BooleanFilter
     public function apply(Request $request, $query, $value)
     {
         return ($value['out_of_stock'])
-            ? $query->where('quantity', '<=',  0)
+            ? $query->where('quantity', '<=', 0)
             : $query;
     }
 

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Slug;
 
 class Product extends Resource
@@ -52,10 +52,13 @@ class Product extends Resource
             Badge::make('Status', 'badge')->map(ProductStatus::colors()),
             Text::make('Name', 'name')->sortable(),
             Slug::make('Slug', 'slug')->from('name')->sortable()->required()->hideFromIndex(),
-            Textarea::make('Description', 'description')->sortable(),
+            Markdown::make('Description', 'description')->sortable(),
             Number::make('Quantity', 'quantity')->sortable(),
             Currency::make('Price')->currency('eur')->sortable(),
-            Images::make('Image'),
+            Images::make('Product image', 'product')
+                ->required()
+                ->croppingConfigs(['ratio' => 4 / 3])
+                ->mustCrop(),
         ];
     }
 

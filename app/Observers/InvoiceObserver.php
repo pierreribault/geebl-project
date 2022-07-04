@@ -2,7 +2,11 @@
 
 namespace App\Observers;
 
+use App\Enums\InvoiceStatus;
+use App\Mail\InvoiceCreated;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceObserver
 {
@@ -28,6 +32,13 @@ class InvoiceObserver
     public function updated(Invoice $invoice)
     {
         //
+    }
+
+    public function updating(Invoice $invoice)
+    {
+        if ($invoice->isDirty('status') && $invoice->status === InvoiceStatus::Completed) {
+            Mail::to(Auth::user())->send(new InvoiceCreated($invoice));
+        }
     }
 
     /**
