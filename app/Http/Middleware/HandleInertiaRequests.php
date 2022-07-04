@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Data\CityData;
 use App\Models\Country;
 use Inertia\Middleware;
 use App\Data\CountryData;
@@ -50,8 +51,8 @@ class HandleInertiaRequests extends Middleware
     private function localizations()
     {
         return [
-            'current' => app(LocalizationService::class)->getCityFromIp(),
-            'all' => CountryData::collection(Country::all())->include('cities')->toArray()
+            'current' => CityData::fromModel(app(LocalizationService::class)->getCityFromIp())->include('event'),
+            'all' => CountryData::collection(Country::all())->include('cities.event')->toArray()
         ];
     }
 }

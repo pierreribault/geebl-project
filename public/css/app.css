@@ -1249,6 +1249,21 @@ select {
 .h-60 {
   height: 15rem;
 }
+.max-h-10 {
+  max-height: 2.5rem;
+}
+.max-h-32 {
+  max-height: 8rem;
+}
+.max-h-40 {
+  max-height: 10rem;
+}
+.max-h-56 {
+  max-height: 14rem;
+}
+.max-h-60 {
+  max-height: 15rem;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -1498,6 +1513,9 @@ select {
 }
 .overflow-y-hidden {
   overflow-y: hidden;
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 .truncate {
   overflow: hidden;
@@ -2139,6 +2157,10 @@ select {
 .hover\:bg-blue-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(30 64 175 / var(--tw-bg-opacity));
+}
+.hover\:bg-red-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity));
 }
 .hover\:text-gray-500:hover {
   --tw-text-opacity: 1;

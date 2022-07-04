@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Artist;
 use App\Enums\EventStatus;
+use App\Nova\Metrics\NewTickets;
 use Spatie\TagsField\Tags;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -78,7 +79,9 @@ class Event extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new NewTickets())->onlyOnDetail(),
+        ];
     }
 
     /**

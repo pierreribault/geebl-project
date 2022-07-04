@@ -3,12 +3,15 @@
 namespace App\Nova;
 
 use App\Enums\TicketStatus;
+use App\Nova\Actions\RefundTicket;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Currency;
 use DmitryBubyakin\NovaMedialibraryField\Fields\Medialibrary;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Ticket extends Resource
 {
@@ -49,7 +52,9 @@ class Ticket extends Resource
             HasOne::make('Category', 'category', TicketCategory::class)->sortable(),
             HasOne::make('User', 'user', User::class)->sortable(),
             HasOne::make('Event', 'event', Event::class)->sortable(),
-            // Medialibrary::make('Invoice', 'invoice', 'public'),
+            Text::make('QRCode', function () {
+                return (string) QrCode::size(150)->generate($this->id);
+            })->asHtml()->hideFromIndex(),
             Currency::make('Price')
                 ->currency('eur')
         ];
@@ -96,7 +101,9 @@ class Ticket extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new RefundTicket
+        ];
     }
 
     /**

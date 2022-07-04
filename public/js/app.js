@@ -24166,36 +24166,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var expose = _ref.expose;
     expose();
     var state = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
+      city: {},
       carousels: {}
     });
 
-    var getCarousels = /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(city) {
-        var response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+    var handleCityChanged = /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(city) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
-                _context2.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/api/carousels");
+                state.city = city;
+                getCarousels();
 
               case 2:
-                response = _context2.sent;
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function handleCityChanged(_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    var getCarousels = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var city, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                city = state.city;
+                _context3.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/api/carousels");
+
+              case 3:
+                response = _context3.sent;
 
                 if (response.data) {
                   response.data.forEach( /*#__PURE__*/function () {
-                    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(key) {
+                    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(key) {
                       var _yield$axios$get, data;
 
-                      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+                      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
                         while (1) {
-                          switch (_context.prev = _context.next) {
+                          switch (_context2.prev = _context2.next) {
                             case 0:
-                              _context.next = 2;
+                              _context2.next = 2;
                               return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/api/carousels/".concat(key, "?city_id=").concat(city.id));
 
                             case 2:
-                              _yield$axios$get = _context.sent;
+                              _yield$axios$get = _context2.sent;
                               data = _yield$axios$get.data;
 
                               if (data.data.length > 0) {
@@ -24204,35 +24228,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                             case 5:
                             case "end":
-                              return _context.stop();
+                              return _context2.stop();
                           }
                         }
-                      }, _callee);
+                      }, _callee2);
                     }));
 
                     return function (_x2) {
-                      return _ref3.apply(this, arguments);
+                      return _ref4.apply(this, arguments);
                     };
                   }());
                 } else {
                   state.carousels = {};
                 }
 
-              case 4:
+              case 5:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2);
+        }, _callee3);
       }));
 
-      return function getCarousels(_x) {
-        return _ref2.apply(this, arguments);
+      return function getCarousels() {
+        return _ref3.apply(this, arguments);
       };
     }();
 
     var __returned__ = {
       state: state,
+      handleCityChanged: handleCityChanged,
       getCarousels: getCarousels,
       ref: vue__WEBPACK_IMPORTED_MODULE_1__.ref,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_1__.onMounted,
@@ -25287,7 +25312,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), _hoisted_23])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
       invisible: !$setup.state.dropdownResultsOpen
-    }, "origin-top-left z-10 absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"]),
+    }, "origin-top-left z-10 absolute left-0 mt-2 w-56 max-h-60 overflow-y-scroll rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"]),
     role: "menu",
     "aria-orientation": "vertical",
     "aria-labelledby": "menu-button",
@@ -25305,7 +25330,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: function onClick($event) {
           return $setup.setCity(city);
         },
-        "class": "text-gray-700 block px-4 py-2 text-sm cursor-pointer",
+        "class": "hover:bg-gray-100 text-gray-700 block px-4 py-2 text-sm cursor-pointer",
         role: "menuitem",
         tabindex: "-1",
         id: "menu-item-0"
@@ -29104,14 +29129,18 @@ var _hoisted_1 = {
   "class": "max-w-6xl mx-auto sm:px-6 lg:px-8"
 };
 var _hoisted_2 = {
-  "class": "text-2xl font-bold text-white"
+  key: 1,
+  "class": "max-w-6xl mx-auto sm:px-6 lg:px-8"
 };
 var _hoisted_3 = {
+  "class": "text-2xl font-bold text-white"
+};
+var _hoisted_4 = {
   "class": "flex justify-between items-center mt-4"
 };
-var _hoisted_4 = ["href"];
+var _hoisted_5 = ["href"];
 
-var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "block min-h-full min-w-full absolute",
     src: "https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652210863%2Fproduction%2Fartworks%2Fjeu_p177tm.jpg&w=1920&q=75"
@@ -29120,7 +29149,7 @@ var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "block min-h-full min-w-full bg-black absolute opacity-25 rounded-xl"
   }, null, -1
@@ -29128,38 +29157,40 @@ var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_7 = {
+var _hoisted_8 = {
   "class": "ml-2"
 };
-var _hoisted_8 = {
+var _hoisted_9 = {
   "class": "text-lg font-bold text-white max-w-xs relative top-24"
 };
-var _hoisted_9 = {
+var _hoisted_10 = {
   "class": "text-sm text-gray-300 relative top-24"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Head"], {
     title: "💃 Tickets for Live Music Events"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Header"], {
-    onCityChanged: $setup.getCarousels
-  }), $setup.state.carousels ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.state.carousels, function (carousel, index) {
+    onCityChanged: $setup.handleCityChanged
+  }), $setup.state.city ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(JSON.stringify($setup.state.city)), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.state.carousels ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.state.carousels, function (carousel, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
       "class": "mt-12 container"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(carousel.label), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(carousel.label), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(carousel.data, function (event, index) {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(carousel.data, function (event, index) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
         key: index,
         href: '/events/' + event.slug,
         "class": "flex relative h-40 w-60 shadow-md"
-      }, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.name), 1
+      }, [_hoisted_6, _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.name), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.date), 1
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event.date), 1
       /* TEXT */
       )])], 8
       /* PROPS */
-      , _hoisted_4);
+      , _hoisted_5);
     }), 128
     /* KEYED_FRAGMENT */
     ))])]);

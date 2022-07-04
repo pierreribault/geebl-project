@@ -24,7 +24,8 @@ class Ticket extends Model implements HasMedia
         'user_id',
         'ticket_category_id',
         'status',
-        'price'
+        'price',
+        'payment_intent_id',
     ];
 
     protected $dataClass = TicketData::class;
