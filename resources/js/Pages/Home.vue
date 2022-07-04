@@ -8,10 +8,17 @@ import Header from '../Components/Header.vue';
 import Footer from '../Components/Footer.vue';
 
 const state = reactive({
+  city: {},
   carousels: {},
 });
 
-const getCarousels = async (city) => {
+const handleCityChanged = async (city) => {
+  state.city = city;
+  getCarousels();
+}
+
+const getCarousels = async () => {
+  const city = state.city;
   const response = await axios.get("/api/carousels");
 
   if (response.data) {

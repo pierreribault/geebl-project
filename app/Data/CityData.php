@@ -12,6 +12,7 @@ class CityData extends Data
         public readonly ?string $id,
         public string $name,
         public readonly Lazy|CountryData $country,
+        public readonly null|Lazy|EventData $event,
     ) {
     }
 
@@ -19,7 +20,8 @@ class CityData extends Data
     {
         return self::from([
             ...$city->toArray(),
-            'country' => Lazy::create(static fn () => CountryData::from($city->country)),
+            'country' => Lazy::create(static fn () => CountryData::fromModel($city->country)),
+            'event' => Lazy::when(fn () => $city->event instanceof EventData, fn() => EventData::fromModel($city->event)),
         ]);
     }
 }

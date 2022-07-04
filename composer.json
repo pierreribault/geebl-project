@@ -25,6 +25,7 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "madewithlove/laravel-nova-uuid-support": "^1.4",
         "meilisearch/meilisearch-php": "^0.23.2",
+        "pkpass/pkpass": "^1.2",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-data": "^1.4",
         "spatie/laravel-medialibrary": "^10.0.0",

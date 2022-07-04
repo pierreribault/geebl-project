@@ -71,6 +71,7 @@ class OnChargeSucceeded
                     'event_id' => $this->event->id,
                     'status' => TicketStatus::NonUsed->value,
                     'ticket_category_id' => $item->id,
+                    'transaction' => $charge->payment_intent,
                 ]);
 
                 $tickets[] = $ticket;

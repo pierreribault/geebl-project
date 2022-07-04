@@ -20,7 +20,7 @@ class CountryData extends Data
     {
         return self::from([
             ...$country->toArray(),
-            'cities' => Lazy::create(static fn () => CityData::collection($country->cities)),
+            'cities' => Lazy::create(static fn () => CityData::collection($country->cities)->include('event')),
         ]);
     }
 }
