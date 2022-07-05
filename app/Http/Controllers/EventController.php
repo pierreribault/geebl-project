@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Actions\Events\SearchAction;
+use App\Actions\Tickets\RefundAction;
 use App\Data\EventData;
 use App\Enums\TicketStatus;
 use App\Http\Requests\EventPreparePaymentRequest;

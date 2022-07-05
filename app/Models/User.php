@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Data\EventData;
 use App\Data\TicketData;
 use App\Data\UserData;
+use App\Enums\TicketStatus;
 use Spatie\LaravelData\WithData;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -203,13 +204,24 @@ class User extends Authenticatable
         return $this->getTransactions()->map(function ($transaction) {
             $tickets = Ticket::where('transaction', $transaction)->get();
 
+            $status = $tickets->pluck('status')->unique();
+
+            $payment_status = match(true) {
+                $status->contains(TicketStatus::Refunded->value) => 'refunded',
+                $status->contains(TicketStatus::NonUsed->value) => 'completed',
+                $status->contains(TicketStatus::Used->value) => 'completed',
+                $status->contains(TicketStatus::ReUsed->value) => 'completed',
+                $status->contains(TicketStatus::Pending->value) => 'pending',
+            };
+
             return [
                 'transaction' => $transaction,
                 'event' => EventData::from($tickets->first()->event)->toArray(),
-                'status' => $tickets->first()->status,
+                'status' => $payment_status,
                 'tickets' => TicketData::collection($tickets)->include('category.name')->toArray(),
                 'count' => $tickets->count(),
                 'total' => $tickets->sum('price'),
+                'expire_in' => $tickets->first()->expiresIn(),
             ];
         });
     }

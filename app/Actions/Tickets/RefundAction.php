@@ -19,7 +19,7 @@ class RefundAction
         $stripe = app(StripeService::class);
 
         $stripe->refunds->create([
-            'payment_intent' => $ticket->payment_intent_id,
+            'payment_intent' => $ticket->transaction,
             'amount' => $ticket->price * 100,
         ]);
 

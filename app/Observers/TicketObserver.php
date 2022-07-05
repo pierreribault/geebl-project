@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\TicketStatus;
 use App\Models\Ticket;
 
 class TicketObserver
@@ -27,6 +28,14 @@ class TicketObserver
     public function updated(Ticket $ticket)
     {
         //
+    }
+
+    public function updating(Ticket $ticket)
+    {
+        if ($ticket->isDirty('status') && $ticket->status === TicketStatus::Refunded->value) {
+            $ticket->category->available_count += 1;
+            $ticket->category->save();
+        }
     }
 
     /**
