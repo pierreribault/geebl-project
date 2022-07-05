@@ -57,6 +57,14 @@ class Ticket extends Model implements HasMedia
     {
         return $query
             ->where('status', TicketStatus::Pending->value)
-            ->whereDate('created_at', '<=', now()->subMinutes(10));
+            ->where('created_at', '<=', now()->subMinutes(10));
+    }
+
+    public function expiresIn(): Int
+    {
+        $limit = $this->created_at->addMinutes(10);
+        $now = now();
+
+        return ($limit > $now) ? $limit->diffInMilliseconds($now) : 0;
     }
 }

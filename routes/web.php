@@ -80,3 +80,10 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('{product}/payment/setup', [ShopController::class, 'preparePayment'])->name('shop.prepare-payment');
     Route::post('{product}/payment/verify', [ShopController::class, 'verifyPayment'])->name('shop.verify-payment');
 });
+
+/**
+ * Tickets
+ */
+Route::group(['prefix' => 'tickets'], function () {
+    Route::post('refund', [TicketController::class, 'refundOrder'])->name('tickets.refund');
+});
