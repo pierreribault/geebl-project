@@ -76,8 +76,7 @@ console.log(transactions);
                 <div v-if="!transactions.length">
                     <p class="text-white">You don't have tickets yet</p>
                 </div>
-                <div v-for="(transaction, key) in $page.props.transactions" :key="key"
-                    class="w-full my-5">
+                <div v-for="(transaction, key) in $page.props.transactions" :key="key" class="w-full my-5">
                     <div class="flex">
                         <a :href="route('events.show', { slug: transaction.event.slug})" class=" h-32 w-auto md:w-1/4">
                             <img :src="transaction.event.cover_url"
@@ -103,6 +102,10 @@ console.log(transactions);
                                         class="whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-sky-300 text-sky-700">
                                         Refunded
                                     </span>
+                                    <span v-if="transaction.status === 'partial-refunded'"
+                                        class="whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-orange-300 text-orange-700">
+                                        Partial-refunded
+                                    </span>
                                 </div>
                             </div>
 
@@ -112,7 +115,8 @@ console.log(transactions);
                                     <p class="text-gray-300">Total price: {{ transaction.total }}€</p>
                                     <p class="text-gray-300">Quantity: {{ transaction.count }}</p>
                                 </div>
-                                <div v-if="transaction.status !== 'refunded'">
+                                <div
+                                    v-if="transaction.status !== 'refunded' && transaction.status !== 'partial-refunded'">
                                     <p class="text-white font-bold mb-2">Actions</p>
                                     <JetDangerButton v-if="transaction.status === 'completed'"
                                         @click="confirmCancelOrder(transaction.transaction)">
@@ -128,7 +132,8 @@ console.log(transactions);
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4" v-if="transaction.status === 'completed'">
+                    <div class="mt-4"
+                        v-if="transaction.status === 'completed' || transaction.status === 'partial-refunded'">
                         <h3 class=" text-white text-xl text-bold mb-2">Tickets of event</h3>
                         <div class="grid gap-x-12 gap-y-8 grid-cols-4">
                             <div v-for="ticket in transaction.tickets" :key="ticket.id"
@@ -145,6 +150,10 @@ console.log(transactions);
                                     <span v-if="ticket.status === 'used'"
                                         class="whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-red-300 text-red-700">
                                         Used
+                                    </span>
+                                    <span v-if="ticket.status === 'refunded'"
+                                        class="whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-sky-300 text-sky-700">
+                                        Refunded
                                     </span>
                                 </div>
                                 <JetButton type="button" class="mt-4" v-if="ticket.status === 'non-used'">

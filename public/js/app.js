@@ -25220,11 +25220,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue3_qr_reader__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue3_qr_reader__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Components_Header_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Components/Header.vue */ "./resources/js/Components/Header.vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _Jetstream_DangerButton_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/DangerButton.vue */ "./resources/js/Jetstream/DangerButton.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -25275,17 +25277,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                if (!(value != "")) {
+                  _context.next = 9;
+                  break;
+                }
+
                 state.overlay.active = false;
-                _context.next = 3;
+                _context.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/tickets/".concat(value, "/use"));
 
-              case 3:
+              case 4:
                 _yield$axios$post = _context.sent;
                 data = _yield$axios$post.data;
+                console.log(data);
                 state.overlay.active = true;
                 state.ticket = data;
 
-              case 7:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -25298,12 +25306,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
     }();
 
+    var refund = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var _yield$axios$post2, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().post("/api/tickets/".concat(state.ticket.id, "/refund"));
+
+              case 2:
+                _yield$axios$post2 = _context2.sent;
+                data = _yield$axios$post2.data;
+                state.overlay.active = true;
+                state.ticket = data;
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      return function refund() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
     var __returned__ = {
       state: state,
       toggleCapturedTicketOverlay: toggleCapturedTicketOverlay,
       toggleAlreadyUsedTicketOverlay: toggleAlreadyUsedTicketOverlay,
       toggleUncapturedTicketOverlay: toggleUncapturedTicketOverlay,
       onDecode: onDecode,
+      refund: refund,
       Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Head,
       axios: (axios__WEBPACK_IMPORTED_MODULE_2___default()),
       QrStream: vue3_qr_reader__WEBPACK_IMPORTED_MODULE_3__.QrStream,
@@ -25311,7 +25350,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       QrDropzone: vue3_qr_reader__WEBPACK_IMPORTED_MODULE_3__.QrDropzone,
       Header: _Components_Header_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
       reactive: vue__WEBPACK_IMPORTED_MODULE_5__.reactive,
-      onMounted: vue__WEBPACK_IMPORTED_MODULE_5__.onMounted
+      onMounted: vue__WEBPACK_IMPORTED_MODULE_5__.onMounted,
+      JetDangerButton: _Jetstream_DangerButton_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -30939,7 +30979,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "grid place-items-center h-screen max-w-6xl h-full mx-auto sm:px-6 lg:px-8"
+  "class": "bg-slate-900 grid place-items-center h-screen w-screen h-full mx-auto sm:px-6 lg:px-8"
 };
 var _hoisted_2 = {
   "class": "mt-8 bg-white relative flex justify-center items-center"
@@ -30962,7 +31002,7 @@ var _hoisted_8 = {
 };
 var _hoisted_9 = {
   key: 0,
-  "class": "h-20 flex justify-center items-center text-white bg-green-400"
+  "class": "h-12 flex justify-center items-center text-white bg-green-400 border border-transparent rounded-md font-semibold text-xs uppercase"
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
@@ -30985,7 +31025,7 @@ var _hoisted_11 = {
 };
 var _hoisted_12 = {
   key: 1,
-  "class": "h-20 flex justify-center items-center text-white bg-blue-400"
+  "class": "h-12 flex justify-center items-center text-white bg-blue-400 border border-transparent rounded-md font-semibold text-xs uppercase"
 };
 
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
@@ -31004,8 +31044,18 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_14 = {
-  "class": "ml-2 text-sm font-medium"
+  "class": "ml-2"
 };
+var _hoisted_15 = {
+  key: 2,
+  "class": "h-12 flex justify-center items-center text-white bg-orange-400 border border-transparent rounded-md font-semibold text-xs uppercase"
+};
+var _hoisted_16 = {
+  "class": "ml-2"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Refund");
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Head"], {
     title: "Validator"
@@ -31014,7 +31064,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $setup.state.overlay.active = false;
     }),
-    "class": "translate-y-12 bg-white rounded shadow text-black mt-6 absolute z-10 h-80 w-80 rounded flex flex-col"
+    "class": "bg-back rounded shadow text-black mt-6 absolute z-10 h-100 w-80 p-4 rounded flex flex-col"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "h-40",
     src: $setup.state.ticket.event.cover_url
@@ -31026,11 +31076,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.id), 1
   /* TEXT */
-  )])]), $setup.state.ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
+  )])]), $setup.state.ticket.status === 'used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
   /* TEXT */
   )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.state.ticket.status === 're-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
   /* TEXT */
-  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["QrStream"], {
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.state.ticket.status === 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.state.ticket.status), 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.state.ticket.status != 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["JetDangerButton"], {
+    key: 3,
+    onClick: $setup.refund,
+    "class": "mt-2"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_17];
+    }),
+    _: 1
+    /* STABLE */
+
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["QrStream"], {
     camera: $setup.state.camera,
     onInit: _ctx.init,
     onDecode: $setup.onDecode
@@ -32557,10 +32620,11 @@ var _hoisted_23 = {
   "class": "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-sky-300 text-sky-700"
 };
 var _hoisted_24 = {
-  "class": "flex justify-between"
+  key: 3,
+  "class": "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-orange-300 text-orange-700"
 };
 var _hoisted_25 = {
-  "class": "text-gray-300"
+  "class": "flex justify-between"
 };
 var _hoisted_26 = {
   "class": "text-gray-300"
@@ -32569,55 +32633,62 @@ var _hoisted_27 = {
   "class": "text-gray-300"
 };
 var _hoisted_28 = {
+  "class": "text-gray-300"
+};
+var _hoisted_29 = {
   key: 0
 };
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "text-white font-bold mb-2"
 }, "Actions", -1
 /* HOISTED */
 );
 
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel order ");
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel order ");
 
-var _hoisted_31 = ["href"];
+var _hoisted_32 = ["href"];
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Retry payment ");
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Retry payment ");
 
-var _hoisted_33 = {
+var _hoisted_34 = {
   key: 0,
   "class": "mt-4"
 };
 
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "text-white text-xl text-bold mb-2"
 }, "Tickets of event", -1
 /* HOISTED */
 );
 
-var _hoisted_35 = {
+var _hoisted_36 = {
   "class": "grid gap-x-12 gap-y-8 grid-cols-4"
 };
-var _hoisted_36 = ["innerHTML"];
-var _hoisted_37 = {
+var _hoisted_37 = ["innerHTML"];
+var _hoisted_38 = {
   "class": "text-gray-400 my-4"
 };
 
-var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Placement: ");
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Placement: ");
 
-var _hoisted_39 = {
+var _hoisted_40 = {
   "class": "text-white capitalize"
 };
-var _hoisted_40 = {
+var _hoisted_41 = {
   key: 0,
   "class": "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-green-300 text-green-700"
 };
-var _hoisted_41 = {
+var _hoisted_42 = {
   key: 1,
   "class": "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-red-300 text-red-700"
 };
+var _hoisted_43 = {
+  key: 2,
+  "class": "whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold bg-sky-300 text-sky-700"
+};
 
-var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Resell ");
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Resell ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AppLayout"], {
@@ -32699,20 +32770,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
         }, 1032
         /* PROPS, DYNAMIC_SLOTS */
-        , ["time"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), transaction.status === 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, " Refunded ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_25, "Date: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.event.beautiful_date), 1
+        , ["time"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), transaction.status === 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, " Refunded ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), transaction.status === 'partial-refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, " Partial-refunded ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_26, "Date: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.event.beautiful_date), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_26, "Total price: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.total) + "€", 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_27, "Total price: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.total) + "€", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_27, "Quantity: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.count), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_28, "Quantity: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(transaction.count), 1
         /* TEXT */
-        )]), transaction.status !== 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [_hoisted_29, transaction.status === 'completed' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["JetDangerButton"], {
+        )]), transaction.status !== 'refunded' && transaction.status !== 'partial-refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [_hoisted_30, transaction.status === 'completed' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["JetDangerButton"], {
           key: 0,
           onClick: function onClick($event) {
             return $setup.confirmCancelOrder(transaction.transaction);
           }
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [_hoisted_30];
+            return [_hoisted_31];
           }),
           _: 2
           /* DYNAMIC */
@@ -32728,14 +32799,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           type: "button"
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [_hoisted_32];
+            return [_hoisted_33];
           }),
           _: 1
           /* STABLE */
 
         })], 8
         /* PROPS */
-        , _hoisted_31)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), transaction.status === 'completed' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(transaction.tickets, function (ticket) {
+        , _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), transaction.status === 'completed' || transaction.status === 'partial-refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(transaction.tickets, function (ticket) {
           return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
             key: ticket.id,
             "class": "bg-back p-4 rounded text-center"
@@ -32744,15 +32815,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             innerHTML: ticket.qrcode
           }, null, 8
           /* PROPS */
-          , _hoisted_36), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ticket.category.name), 1
+          , _hoisted_37), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ticket.category.name), 1
           /* TEXT */
-          )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_40, " Non-Used ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ticket.status === 'used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_41, " Used ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["JetButton"], {
+          )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_41, " Non-Used ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ticket.status === 'used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_42, " Used ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ticket.status === 'refunded' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_43, " Refunded ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), ticket.status === 'non-used' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["JetButton"], {
             key: 0,
             type: "button",
             "class": "mt-4"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_42];
+              return [_hoisted_44];
             }),
             _: 1
             /* STABLE */

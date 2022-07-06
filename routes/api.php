@@ -30,6 +30,7 @@ Route::get('events/search', [EventController::class, 'search']);
  * Tickets
  */
 Route::post('tickets/{ticket}/use', [TicketController::class, 'use']);
+Route::post('tickets/{ticket}/refund', [TicketController::class, 'refund']);
 
 /**
  * Carousels
