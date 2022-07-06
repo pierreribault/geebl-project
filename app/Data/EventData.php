@@ -29,6 +29,7 @@ class EventData extends Data
         public readonly null|Lazy|DataCollection $kinds,
         public readonly null|Lazy|DataCollection $artists,
         public readonly null|Lazy|DataCollection $categories,
+        public readonly null|Lazy|DataCollection $news,
         #[WithCast(EnumCast::class)]
         public readonly ?EventStatus $status = EventStatus::Draft,
     ) {
@@ -43,6 +44,7 @@ class EventData extends Data
             'kinds' => Lazy::create(fn () => TagData::collection($event->tags)),
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
             'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),
+            'news' => Lazy::create(fn () => NewsData::collection($event->news()->published()->get())),
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\News;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -26,7 +27,7 @@ class UpadateNews extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(News $news)
     {
         return $this
             ->from('lejcles@test.com')

@@ -14,6 +14,7 @@ use App\Http\Requests\Events\SearchRequest;
 use App\Http\Requests\EventSetupEmailRequest;
 use App\Models\Ticket;
 use App\Models\TicketCategory;
+use App\Models\User;
 use App\Services\StripeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class EventController extends Controller
                 'kinds',
                 'artists',
                 'categories',
+                'news',
             ),
             'pspPublicKey' => config('services.stripe.public_key'),
         ]);
@@ -63,11 +65,11 @@ class EventController extends Controller
             ]
         ]);
 
-        collect($request->get('order'))->each(function ($order) use ($event, $intent) {
+        collect($request->get('order'))->each(function ($order) use ($event, $intent, $email) {
             $category = TicketCategory::where('id', $order['id'])->firstOrFail();
 
             Ticket::factory()->count($order['quantity'])->pending()->create([
-                'user_id' => Auth::id(),
+                'user_id' => User::whereEmail($email)->firstOrFail()->id,
                 'event_id' => $event->id,
                 'ticket_category_id' => $category->id,
                 'transaction' => $intent->id,
@@ -93,6 +95,15 @@ class EventController extends Controller
     public function setupEmail(EventSetupEmailRequest $request)
     {
         $this->abortIfNotJson();
+
+        $user = User::create([
+            'name' => fake()->name,
+            'email' => $request->get('email'),
+            'password' => bcrypt(fake()->password),
+        ]);
+
+        $token = app('auth.password.broker')->createToken($user);
+        $user->sendPasswordResetNotification($token);
 
         Session::put('event.payment.email', $request->getEmail());
 

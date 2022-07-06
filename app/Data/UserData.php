@@ -24,7 +24,7 @@ class UserData extends Data
         Unique('users', 'email')]
         public readonly string $email,
         #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
-        public readonly Carbon $birthday,
+        public readonly ?Carbon $birthday,
         public readonly null|Lazy|CompanyData $company,
         #[DataCollectionOf(EventData::class)]
         public readonly null|Lazy|DataCollection $events,

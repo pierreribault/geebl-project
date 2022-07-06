@@ -2,8 +2,12 @@
 
 namespace App\Observers;
 
+use App\Enums\NewsStatus;
+use App\Enums\TicketStatus;
+use App\Jobs\SendNewsEmail;
 use App\Models\News;
 use App\Mail\UpadateNews;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class NewsObserver
@@ -27,7 +31,18 @@ class NewsObserver
      */
     public function updated(News $news)
     {
-        Mail::to('test@mail.test')->send(new UpadateNews());
+        //
+    }
+
+    public function saving(News $news)
+    {
+        if ($news->isDirty('status') && $news->status === NewsStatus::Published) {
+            $news->date = now();
+
+            User::participentOfEvent($news->event)->get()->each(
+                fn ($user) => Mail::to($user)->queue(new UpadateNews($news))
+            );
+        }
     }
 
     /**

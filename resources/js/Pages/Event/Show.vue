@@ -6,6 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import Header from "../../Components/Header.vue";
 import MinusPlus from "../../Components/MinusPlus.vue";
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Markdown from "vue3-markdown-it";
 
 // ----------------------------------------------------------------------------------------------------------------
 // Core                                                                                                  Core
@@ -36,6 +37,8 @@ const state = reactive({
     transaction: null,
   },
 });
+
+console.log(usePage().props.value.event);
 
 const eventId = usePage().props.value.event.id;
 const eventName = usePage().props.value.event.name;
@@ -235,7 +238,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                 </div>
             </div>
             <div class="flex container m-auto justify-between">
-                <div>
+                <div class="w-2/3">
                     <!-- Description-->
                     <div>
                         <div id="description" class="container mx-auto">
@@ -244,9 +247,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                     <h5 class="text-xl font-bold leading-none text-white dark:text-white">Description
                                     </h5>
                                 </div>
-                                <div class="flow-root text-white">
-                                    {{ $page.props.event.description }}
-                                </div>
+                                <Markdown class="text-white" :source="$page.props.event.description" />
                             </div>
                         </div>
                     </div>
@@ -260,7 +261,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                     </h5>
                                 </div>
                                 <div class="flow-root text-white">
-                                    <p>📅 {{ $page.props.event.date }}</p>
+                                    <p>📅 {{ $page.props.event.beautiful_date }}</p>
                                     <p>📍 {{ $page.props.event.location }}</p>
                                 </div>
                             </div>
@@ -281,7 +282,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-sm font-medium truncate font-bold text-white">
                                                     {{ category.name }} <span class="text-gray-500"> - {{ category.price
-                                                        }}€</span>
+                                                    }}€</span>
                                                 </p>
                                                 <p v-if="category.description"
                                                     class="text-sm text-gray-500 truncate text-gray-400">
@@ -290,7 +291,8 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                             </div>
                                             <div
                                                 class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                <MinusPlus v-bind:count="state.payment.order[category.id]?.quantity ?? 0"
+                                                <MinusPlus
+                                                    v-bind:count="state.payment.order[category.id]?.quantity ?? 0"
                                                     v-on:plus="plus($event, category.id)"
                                                     v-on:minus="minus($event, category.id)" />
                                             </div>
@@ -318,7 +320,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                             <div v-if="state.payment.readyToAcceptEmail" class="flex flex-col justify-between">
                                 <input required v-model="state.payment.email"
                                     title="Si vous possédez un compte Geebl, votre ticket sera lié directement."
-                                    type="email" class="bg-white p-4 rounded border-gray-700 items-center space-x-4"
+                                    type="email" class="bg-back p-4 rounded border-gray-700 text-white items-center space-x-4"
                                     placeholder="Email" />
                                 <button @click="paymentEmail()" v-if="state.payment.readyToAcceptEmail"
                                     class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-2 px-12 py-3 rounded text-white uppercase font-bold text-sm"
@@ -332,7 +334,8 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                 <div ref="paymentElement" id="payment-element"></div>
                                 <div ref="paymentError" id="error-message"></div>
                             </form>
-                            <div v-if="state.payment.readyToAcceptPayment" class="flex justify-between items-center mt-3">
+                            <div v-if="state.payment.readyToAcceptPayment"
+                                class="flex justify-between items-center mt-3">
                                 <button @click="pay()" v-if="state.payment.readyToAcceptPayment"
                                     class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-2 px-12 py-3 rounded text-white uppercase font-bold text-sm"
                                     href="#tickets">
@@ -356,7 +359,21 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="container m-auto ">
+                <!-- News -->
+                <div class="py-4 sm:py-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h5 class="text-xl font-bold leading-none text-white dark:text-white">News</h5>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="text-white rounded bg-back p-4" v-for="actuality in $page.props.event.news"
+                            :key="actuality.id">
+                            <Markdown class="mb-5 text-white" :source="actuality.content" />
+                            <p class="text-grey-300">{{ actuality.beautiful_date }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </AppLayout>

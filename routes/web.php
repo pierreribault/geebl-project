@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrganizerController;
 use App\Http\Controllers\ShopController;
@@ -86,4 +87,8 @@ Route::group(['prefix' => 'shop'], function () {
  */
 Route::group(['prefix' => 'tickets'], function () {
     Route::post('refund', [TicketController::class, 'refundOrder'])->name('tickets.refund');
+});
+
+Route::group(['prefix' => 'companies'], function () {
+    Route::post('store', [CompanyController::class, 'store'])->name('companies.store');
 });

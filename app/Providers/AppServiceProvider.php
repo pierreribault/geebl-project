@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Invoice;
+use App\Models\News;
 use App\Models\Ticket;
 use App\Observers\InvoiceObserver;
+use App\Observers\NewsObserver;
 use App\Observers\TicketObserver;
 use App\Services\StripeService;
 use Illuminate\Support\ServiceProvider;
@@ -37,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
         Invoice::observe(InvoiceObserver::class);
 
         Ticket::observe(TicketObserver::class);
+
+        News::observe(NewsObserver::class);
     }
 }

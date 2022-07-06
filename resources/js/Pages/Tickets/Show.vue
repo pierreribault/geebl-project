@@ -14,7 +14,6 @@ import { usePage } from '@inertiajs/inertia-vue3';
 const user = usePage().props.value.user;
 const transactions = usePage().props.value.transactions;
 
-
 const cancelOrder = ref(false);
 const transactionToCancel = ref(null);
 
@@ -74,7 +73,11 @@ console.log(transactions);
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div v-for="(transaction, key) in $page.props.transactions" :key="key" class="w-full my-5">
+                <div v-if="!transactions.length">
+                    <p class="text-white">You don't have tickets yet</p>
+                </div>
+                <div v-for="(transaction, key) in $page.props.transactions" :key="key"
+                    class="w-full my-5">
                     <div class="flex">
                         <a :href="route('events.show', { slug: transaction.event.slug})" class=" h-32 w-auto md:w-1/4">
                             <img :src="transaction.event.cover_url"

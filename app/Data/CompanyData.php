@@ -16,7 +16,7 @@ class CompanyData extends Data
         public string $crn,
         public string $location,
         #[DataCollectionOf(UserData::class)]
-        public Lazy|DataCollection $users,
+        public null|Lazy|DataCollection $users,
     ) {
     }
 

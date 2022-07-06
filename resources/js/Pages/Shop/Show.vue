@@ -83,15 +83,15 @@ const paymentSetupPayment = async () => {
     state.payment.readyToAcceptPayment = true
 
     const appearance = {
-        theme: 'stripe',
+        theme: 'flat',
 
         variables: {
-            colorPrimary: '#0570de',
-            colorBackground: '#ffffff',
-            colorText: '#30313d',
+            colorPrimary: '#ffffff',
+            colorBackground: '#0f172a',
+            colorText: '#9ca3af',
             colorDanger: '#df1b41',
-            fontFamily: 'Ideal Sans, system-ui, sans-serif',
-            spacingUnit: '2px',
+            fontFamily: 'Nunito, ui-sans-serif, system-ui',
+            spacingUnit: '4px',
             borderRadius: '4px',
             // See all possible variables below
         }

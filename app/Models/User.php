@@ -6,6 +6,7 @@ use App\Data\EventData;
 use App\Data\TicketData;
 use App\Data\UserData;
 use App\Enums\TicketStatus;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Spatie\LaravelData\WithData;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -25,6 +26,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use CanResetPassword;
     use Impersonate;
     use WithData;
 
@@ -173,6 +175,14 @@ class User extends Authenticatable
     public function scopeIsInCompany($query, Company $company)
     {
         return $query->whereRelation('company', 'id', $company->id);
+    }
+
+    public function scopeParticipentOfEvent($query, Event $event)
+    {
+        return $query->whereHas('tickets', fn ($query) => $query
+            ->where('status', TicketStatus::NonUsed->value)
+            ->where('event_id', $event->id)
+        );
     }
 
     //===> PERMISSIONS <==================================//
