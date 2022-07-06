@@ -12,10 +12,7 @@ class News extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
         'date',
-        'slug',
         'status',
         'redactor_id',
     ];
@@ -33,5 +30,10 @@ class News extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', NewsStatus::Published);
     }
 }

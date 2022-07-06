@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Data\CompanyData;
 use App\Models\Company;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CompanyController
@@ -38,11 +41,18 @@ class CompanyController
      * @param CompanyData $data
      * @return Response
      */
-    public function store(CompanyData $data)
+    public function store(Request $request)
     {
-        Company::create($data->all());
+        $data = CompanyData::from([
+            'name' => $request->get('name'),
+            'crn' => $request->get('crn'),
+            'location' => $request->get('location'),
+        ]);
 
-        return redirect()->back()->with('success', 'Company created successfully');
+        $company = Company::create($data->all());
+        $company->users()->save(Auth::user());
+
+        return Inertia::location(route('nova.login'));
     }
 
     /**

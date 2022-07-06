@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -50,11 +51,9 @@ class News extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Title', 'title')->sortable()->required(),
-            Slug::make('Slug')->from('title')->sortable()->required(),
-            Text::make('Description', 'description')->sortable()->required()->hideFromIndex(),
+            Markdown::make('content')->required(),
             Select::make('Status', 'status')->options(NewsStatus::toSelectArray())->sortable()->required(),
-            Date::make('Date', 'date')->sortable()->required(),
+            Date::make('Date', 'date')->readonly(),
             BelongsTo::make('Event', 'event')->sortable(),
             BelongsTo::make('Redactor', 'redactor', User::class),
         ];

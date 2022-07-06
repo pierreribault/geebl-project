@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
+use Laravel\Nova\Fields\Markdown;
 
 class Event extends Resource
 {
@@ -59,11 +60,12 @@ class Event extends Resource
             Text::make('Location', 'location')->sortable()->required(),
             Date::make('Start at', 'start_at')->sortable()->required(),
             Date::make('End at', 'end_at')->sortable()->required(),
-            Text::make('Description', 'description')->sortable()->required(),
+            Markdown::make('Description', 'description')->sortable()->required(),
             Select::make('Status', 'status')->options(EventStatus::getKeysValues())->sortable(),
             BelongsTo::make('Author', 'author', User::class),
             Tags::make('Kinds')->type('kinds')->required(),
             BelongsToMany::make('Artists', 'artists', Artist::class),
+            HasMany::make('News', 'news', News::class),
             HasMany::make('Categories', 'ticketsCategories', TicketCategory::class),
             HasMany::make('Tickets', 'tickets', Ticket::class),
             Files::make('Cover', 'cover')->required(),

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-vue3';
 import JetApplicationMark from '@/Jetstream/ApplicationMark.vue';
 import JetBanner from '@/Jetstream/Banner.vue';
 import JetDropdown from '@/Jetstream/Dropdown.vue';
@@ -10,6 +10,12 @@ import JetNavLink from '@/Jetstream/NavLink.vue';
 import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
 import axios from "axios";
 import Footer from '../Components/Footer.vue';
+import JetDialogModal from '@/Jetstream/DialogModal.vue';
+import JetButton from '@/Jetstream/Button.vue';
+import JetDangerButton from '@/Jetstream/DangerButton.vue';
+import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
+import JetInput from '@/Jetstream/Input.vue';
+import JetInputError from '@/Jetstream/InputError.vue';
 
 defineProps({
     title: String,
@@ -29,6 +35,32 @@ const logout = () => {
     Inertia.post(route('logout'));
 };
 
+const createNewCompany = ref(false);
+
+const form = useForm({
+    name: '',
+    crn: '',
+    location: '',
+});
+
+const createModalCompany = (transaction) => {
+    createNewCompany.value = true;
+};
+
+const createCompany = async () => {
+    form.post(route('companies.store'), {
+        preserveScroll: true,
+        onSuccess: (res) => console.log(res.props.data),
+        onError: () => passwordInput.value.focus(),
+        onFinish: () => form.reset(),
+    });
+}
+
+const closeModalCompany = () => {
+    createNewCompany.value = false;
+
+    form.reset();
+};
 
 const searchInput = ref(null);
 
@@ -53,6 +85,7 @@ const setCity = async (city) => {
 
 const search = async () => {
     state.loading = true;
+
     const response = await axios.get("/api/events/search", {
         params: {
             query: `${state.queryText}`,
@@ -88,6 +121,36 @@ const openSearchEventsModal = async () => {
 
         <JetBanner />
 
+        <JetDialogModal :show="createNewCompany" @close="closeModalCompany">
+            <template #title>
+                Create your company
+            </template>
+
+            <template #content>
+                You will be able to invite your team to join your company and create events.
+
+                <div class="mt-4">
+                    <JetInput v-model="form.name" type="text" class="mt-1 block w-full" placeholder="Name" />
+                </div>
+                <div class="mt-4">
+                    <JetInput v-model="form.crn" type="text" class="mt-1 block w-full" placeholder="CRN" />
+                </div>
+                <div class="mt-4">
+                    <JetInput v-model="form.location" type="text" class="mt-1 block w-full" placeholder="Location" />
+                </div>
+            </template>
+
+            <template #footer>
+                <JetSecondaryButton @click="closeModalCompany">
+                    Abort
+                </JetSecondaryButton>
+
+                <JetButton class="ml-3" @click="createCompany">
+                    Create your company
+                </JetButton>
+            </template>
+        </JetDialogModal>
+
         <div v-bind:class="{ invisible: !state.searchEventsModalOpen }"
             class="h-full w-full z-50 absolute bg-slate-900">
             <div class="drop-shadow-md bg-back">
@@ -111,8 +174,8 @@ const openSearchEventsModal = async () => {
                         <a :href="'/events/' + event.slug"
                             class="block p-10 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{
-                            event.name
-                            }}</h5>
+                                event.name
+                                }}</h5>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-900 dark:text-white">{{ event.date }}</span>
                                 <a :href="'/events/' + event.slug"
@@ -192,7 +255,7 @@ const openSearchEventsModal = async () => {
                                     Articles
                                 </JetNavLink>
                                 <JetNavLink :href="route('shop.index')" :active="route().current('shop.index')"
-                                    v-if="$page.props.user">
+                                    v-if="$page.props.user && $page.props.user.company_id != null">
                                     Shop
                                 </JetNavLink>
                                 <JetNavLink :href="route('user.tickets')" :active="route().current('user.tickets')"
@@ -204,7 +267,9 @@ const openSearchEventsModal = async () => {
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative" v-if="$page.props.user">
+                            <JetButton v-if="$page.props.user && $page.props.user.company_id == null"
+                                @click="createModalCompany">Create Company</JetButton>
+                            <div class=" ml-3 relative" v-if="$page.props.user">
                                 <JetDropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos"
