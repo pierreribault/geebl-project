@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tickets\ForceRefundAction;
 use App\Actions\Tickets\RefundAction;
 use App\Models\Ticket;
 use App\Actions\Tickets\UseAction;
@@ -26,7 +27,18 @@ class TicketController extends Controller
     {
         $this->abortIfNotJson();
 
-        $useAction->use($ticket);
+        if ($ticket->status != TicketStatus::Refunded->value) {
+            $useAction->use($ticket);
+        }
+
+        return TicketData::from($ticket)->include('user', 'event', 'category');
+    }
+
+    public function refund(Ticket $ticket, ForceRefundAction $forceRefundAction)
+    {
+        $this->abortIfNotJson();
+
+        $forceRefundAction->refund($ticket);
 
         return TicketData::from($ticket)->include('user', 'event', 'category');
     }

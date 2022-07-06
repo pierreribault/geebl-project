@@ -217,6 +217,7 @@ class User extends Authenticatable
             $status = $tickets->pluck('status')->unique();
 
             $payment_status = match(true) {
+                $status->contains(TicketStatus::Refunded->value) && $status->count() != 1 => 'partial-refunded',
                 $status->contains(TicketStatus::Refunded->value) => 'refunded',
                 $status->contains(TicketStatus::NonUsed->value) => 'completed',
                 $status->contains(TicketStatus::Used->value) => 'completed',
