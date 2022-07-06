@@ -53,7 +53,7 @@ Route::middleware([
  * Organizers
  */
 Route::group(['prefix' => 'organizers'], function () {
-    Route::get('validator', [OrganizerController::class, 'validator']);
+    Route::get('validator', [OrganizerController::class, 'validator'])->name('organizers.validator');
     Route::post('validator', [OrganizerController::class, 'capture']);
 });
 

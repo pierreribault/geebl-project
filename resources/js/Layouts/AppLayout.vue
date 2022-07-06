@@ -21,6 +21,8 @@ defineProps({
     title: String,
 });
 
+console.log(usePage().props.value.user)
+
 const showingNavigationDropdown = ref(false);
 
 const switchToTeam = (team) => {
@@ -101,6 +103,8 @@ const isProfessional = () => {
     return usePage().props.value.user.is_admin || usePage().props.value.user.company_id != null;
 }
 
+console.log(isProfessional());
+
 onMounted(() => {
     const city = usePage().props.value.localizations.current
     state.city = city
@@ -174,8 +178,8 @@ const openSearchEventsModal = async () => {
                         <a :href="'/events/' + event.slug"
                             class="block p-10 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{
-                                event.name
-                                }}</h5>
+                            event.name
+                            }}</h5>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-900 dark:text-white">{{ event.date }}</span>
                                 <a :href="'/events/' + event.slug"
@@ -307,13 +311,19 @@ const openSearchEventsModal = async () => {
                                         <div class="border-t border-gray-600" />
 
                                         <a class="block w-full px-4 py-2 text-sm leading-5 text-gray-300 text-left hover:text-white focus:outline-none focus:bg-gray-100 transition"
-                                            :href="route('nova.login')" v-if="isProfessional">
+                                            :href="route('nova.login')" v-if="isProfessional()">
                                             Dashboard
                                         </a>
 
                                         <a class="block w-full px-4 py-2 text-sm leading-5 text-gray-300 text-left hover:text-white focus:outline-none focus:bg-gray-100 transition"
                                             :href="route('profile.show')">
                                             Profile
+                                        </a>
+
+                                        <a class="block w-full px-4 py-2 text-sm leading-5 text-gray-300 text-left hover:text-white focus:outline-none focus:bg-gray-100 transition"
+                                            v-if="$page.props.user && $page.props.user.is_consumer"
+                                            :href="route('organizers.validator')">
+                                            Scan
                                         </a>
 
                                         <!-- Authentication -->
