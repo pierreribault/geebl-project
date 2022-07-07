@@ -21,7 +21,7 @@ const products = usePage().props.value.products;
             <Link v-for="product in products" :key="product.id" :href="`/shop/${product.slug}`"
                 class="flex flex-col md:flex-row overflow-hidden my-6 text-white hover:text-gray-300">
             <div class="h-64 w-auto md:w-1/2">
-                <img class="inset-0 h-full w-full object-cover object-center" :src="product.product_url" />
+                <img class="inset-0 h-full w-full object-cover object-center rounded-xl" :src="product.product_url" />
             </div>
             <div class="w-full py-4 px-6 flex flex-col justify-between">
                 <h3 class="font-semibold text-lg leading-tight">{{ product.name }}</h3>

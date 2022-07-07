@@ -26,6 +26,43 @@ services:
             - redis
             - minio
             - selenium
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.datecron.schedule: "@every 1m"
+            ofelia.job-exec.datecron.command: "php artisan schedule:run"
+
+    laravel.horizon:
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.1/app
+        command: php artisan horizon
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: 'off'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
+            - redis
+            - minio
+            - selenium
+
+    ofelia:
+        image: mcuadros/ofelia:latest
+        depends_on:
+        - laravel.test
+        command: daemon --docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+
     pgsql:
         image: 'postgres:14'
         ports:
