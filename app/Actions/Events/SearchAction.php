@@ -2,6 +2,7 @@
 
 namespace App\Actions\Events;
 
+use App\Models\City;
 use App\Models\Event;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +19,6 @@ class SearchAction
         $query = $input['query'];
         $city = $input['city'];
 
-        return Event::search($query)->where('city_id', $city)->paginate();
+        return Event::search($query)->whereIn('city_id', [$city])->paginate();
     }
 }

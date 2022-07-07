@@ -26,6 +26,7 @@ class EventData extends Data
         public readonly string $description,
         public readonly ?string $cover_url,
         public readonly Lazy|UserData $author,
+        public readonly Lazy|string $city_id,
         public readonly null|Lazy|DataCollection $kinds,
         public readonly null|Lazy|DataCollection $artists,
         public readonly null|Lazy|DataCollection $categories,
@@ -45,6 +46,7 @@ class EventData extends Data
             'artists' => Lazy::create(fn () => ArtistData::collection($event->artists)),
             'categories' => Lazy::create(fn () => TicketCategoryData::collection($event->ticketsCategories)),
             'news' => Lazy::create(fn () => NewsData::collection($event->news()->published()->get())),
+            'city_id' => Lazy::create(fn () => CityData::from($event->city)->id),
         ]);
     }
 

@@ -52,6 +52,11 @@ class Event extends Model implements HasMedia
 
     protected $dataClass = EventData::class;
 
+    public function toSearchableArray()
+    {
+        return $this->getData()->include('city_id')->toArray();
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');

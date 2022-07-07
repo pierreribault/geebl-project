@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, toRef } from "vue";
 import { Inertia } from '@inertiajs/inertia'
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import axios from "axios";
@@ -18,6 +18,8 @@ const handleCityChanged = async (city) => {
 }
 
 const getCarousels = async () => {
+    console.log(state.city)
+
   const city = state.city;
   const response = await axios.get("/api/carousels");
 
@@ -36,7 +38,7 @@ const getCarousels = async () => {
 </script>
 
 <template>
-    <AppLayout @city-changed="getCarousels" title="💃 Tickets for Live Music Events">
+    <AppLayout @city-changed="handleCityChanged" title="💃 Tickets for Live Music Events">
 
         <div v-if="state.carousels" class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div v-bind:key="index" v-for="(carousel, index) in state.carousels" class="
