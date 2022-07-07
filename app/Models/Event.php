@@ -54,7 +54,11 @@ class Event extends Model implements HasMedia
 
     public function toSearchableArray()
     {
-        return $this->getData()->include('city_id')->toArray();
+        $data = $this->getData();
+        $data = $data->include('city_id');
+        $data = $data->include('artists');
+
+        return $data->toArray();
     }
 
     public function author(): BelongsTo
