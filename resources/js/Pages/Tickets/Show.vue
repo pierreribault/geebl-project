@@ -80,12 +80,12 @@ console.log(transactions);
                     <div class="flex">
                         <a :href="route('events.show', { slug: transaction.event.slug})" class=" h-32 w-auto md:w-1/4">
                             <img :src="transaction.event.cover_url"
-                                class="inset-0 h-full w-full object-cover object-center" />
+                                class="inset-0 h-full w-full object-cover object-center rounded-xl" />
                         </a>
                         <div class="ml-5 flex flex-col justify-between w-full">
                             <div class="flex">
-                                <h2 class="text-white font-bold text-lg">{{ transaction.event.name }} - <span
-                                        class="text-gray-500">#{{ transaction.transaction.toUpperCase() }}</span> /
+                                <h2 class="text-white font-bold text-lg">{{ transaction.event.name.substring(0,30) + "..." }} -
+                                    <span class="text-gray-500">#{{ transaction.transaction.toUpperCase() }}</span> /
                                 </h2>
                                 <div class="ml-2">
                                     <span v-if="transaction.status === 'completed'"
