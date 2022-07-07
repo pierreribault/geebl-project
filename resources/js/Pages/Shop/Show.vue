@@ -7,6 +7,7 @@ import axios from "axios";
 import { loadStripe } from '@stripe/stripe-js';
 import Header from "../../Components/Header.vue";
 import MinusPlus from "../../Components/MinusPlus.vue";
+import Markdown from "vue3-markdown-it";
 
 
 
@@ -39,6 +40,8 @@ const state = reactive({
 });
 
 const product = usePage().props.value.product;
+
+console.log(product)
 
 const plus = (count) => {
     state.count = state.count + 1;
@@ -156,8 +159,7 @@ const freshPrice = () => {
                                 <p class="text-white">Quantity</p>
                                 <div
                                     class="inline-flex items-center text-base font-semibold text-white dark:text-white">
-                                    <MinusPlus v-bind:count="state.count"
-                                        v-on:plus="plus($event)"
+                                    <MinusPlus v-bind:count="state.count" v-on:plus="plus($event)"
                                         v-on:minus="minus($event)" />
                                 </div>
                             </div>
@@ -193,15 +195,15 @@ const freshPrice = () => {
                                 </svg>
                                 <p class="ml-2 text-sm font-medium">
                                     Paiement réussi
+                                </p>
                                 <p class="text-sm font-medium">
                                     Vous recevrez un email de confirmation
-                                </p>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <Markdown class="mt-5 text-white" :source="product.description" />
                 </div>
+                <Markdown class="mt-5 text-white" :source="product.description" />
             </div>
         </div>
     </AppLayout>
