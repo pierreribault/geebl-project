@@ -17,7 +17,7 @@ class UpadateNews extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private News $news)
     {
         //
     }
@@ -27,11 +27,11 @@ class UpadateNews extends Mailable
      *
      * @return $this
      */
-    public function build(News $news)
+    public function build()
     {
         return $this
-            ->from('lejcles@test.com')
-            ->subject("Geebl: Update on your event")
-            ->view('emails.test', ['news' => $news]);
+            ->from('support@geebl.com')
+            ->subject("Geebl: Update for " . $this->news->event->name)
+            ->view('emails.test', ['content' => $this->news->content]);
     }
 }

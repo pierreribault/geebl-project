@@ -39,7 +39,7 @@ class NewsObserver
         if ($news->isDirty('status') && $news->status === NewsStatus::Published) {
             $news->date = now();
 
-            User::participentOfEvent($news->event)->get()->each(
+            User::participentOfEvent($news->event)->get()->unique('id')->each(
                 fn ($user) => Mail::to($user)->queue(new UpadateNews($news))
             );
         }
