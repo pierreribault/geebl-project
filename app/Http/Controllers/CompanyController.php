@@ -50,7 +50,12 @@ class CompanyController
         ]);
 
         $company = Company::create($data->all());
-        $company->users()->save(Auth::user());
+
+        $user = Auth::user();
+        $user->is_owner = true;
+        $user->save();
+
+        $company->users()->save($user);
 
         return Inertia::location(route('nova.login'));
     }

@@ -42,6 +42,7 @@ class User extends Authenticatable
         'email',
         'password',
         'birthday',
+        'company_id',
         'is_owner',
         'is_redactor',
         'is_reviewer',
