@@ -104,6 +104,7 @@ const paymentSetupPayment = async () => {
 
   const { data } = await axios.post(`/events/${eventSlug}/payment/setup`, {
     order: state.payment.order,
+    email: state.payment.email,
   });
 
   state.payment.readyToAcceptOrder = false

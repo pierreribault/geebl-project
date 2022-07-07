@@ -50,7 +50,7 @@ class EventController extends Controller
     {
         $this->abortIfNotJson();
 
-        $email = session('event.payment.email');
+        $email = session('event.payment.email') ?? $request->get('email');
 
         /** @var StripeClient $stripe */
         $stripe = app(StripeService::class);
