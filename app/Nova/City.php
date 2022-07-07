@@ -49,7 +49,7 @@ class City extends Resource
             Text::make(__('Name'), 'name')->sortable()->required(),
             BelongsTo::make(__('Country'), 'country', Country::class)->sortable(),
             HasMany::make(__('Events'), 'events', Event::class)->sortable(),
-            BelongsTo::make(__('Promoted Event'), 'event', Event::class)->sortable(),
+            BelongsTo::make(__('Promoted Event'), 'event', Event::class)->sortable()->nullable(),
         ];
     }
 
