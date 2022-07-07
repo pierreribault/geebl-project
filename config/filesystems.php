@@ -48,7 +48,7 @@ return [
             'throw' => false,
         ],
 
-        's3' => s3_config(),
+        's3' => s3_config('AWS_BUCKET', 'default'),
 
         'cover' => minio_config('MINIO_BUCKET_COVER', 'cover'),
 
