@@ -9,6 +9,7 @@ use App\Observers\InvoiceObserver;
 use App\Observers\NewsObserver;
 use App\Observers\TicketObserver;
 use App\Services\StripeService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
                 config('services.stripe.secret_key')
             ))->client;
         });
+
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         Invoice::observe(InvoiceObserver::class);
 
