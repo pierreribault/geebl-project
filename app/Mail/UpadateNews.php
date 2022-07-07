@@ -31,7 +31,7 @@ class UpadateNews extends Mailable
     {
         return $this
             ->from('lejcles@test.com')
-            ->subject('Update news')
-            ->view('emails.test');
+            ->subject("Geebl: Update on your event")
+            ->view('emails.test', ['news' => $news]);
     }
 }

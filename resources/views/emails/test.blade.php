@@ -1,1 +1,2 @@
-<h1>Non je ne suis pas un mail ! Ceci est une descente de police !</h1>
+<h1>News</h1>
+<p>{{ $news->content }}</p>
