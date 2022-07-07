@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\InviteUserToCompany;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -94,7 +95,9 @@ class Company extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            (new InviteUserToCompany())->onlyOnTableRow(),
+        ];
     }
 
     public static function indexQuery(NovaRequest $request, $query)
