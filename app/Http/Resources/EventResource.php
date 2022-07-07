@@ -20,7 +20,9 @@ class EventResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'start_at' => $this->start_at,
-            'end_at' => $this->end_at
+            'end_at' => $this->end_at,
+            'cover_url' => $this->getFirstMediaUrl('cover') ?? '',
+            'beautiful_date' => $this->start_at->toFormattedDateString(),
         ];
     }
 }

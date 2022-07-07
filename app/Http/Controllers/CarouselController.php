@@ -29,7 +29,7 @@ class CarouselController extends Controller
             'key' => $key,
             'label' => Carousels::label($key),
             'data' => EventResource::collection(
-                Event::carousel($key)->whereRelation('city', 'id', '=', $data['city_id'])->take(4)->get()
+                Event::carousel($key)->whereRelation('city', 'id', '=', $data['city_id'])->get()
             ),
         ]);
     }

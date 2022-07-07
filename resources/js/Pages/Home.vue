@@ -33,6 +33,10 @@ const getCarousels = async () => {
   } else {
     state.carousels = {};
   }
+
+
+
+    console.log(state.carousels)
 }
 
 </script>
@@ -46,15 +50,15 @@ const getCarousels = async () => {
           container
         ">
                 <h3 class="text-2xl font-bold text-white">{{ carousel.label }}</h3>
-                <div class="flex justify-between items-center mt-4">
+                <div class="grid grid-cols-3 gap-8 items-center mt-4">
                     <a v-bind:key="index" v-for="(event, index) in carousel.data" :href="'/events/' + event.slug"
-                        class="flex relative h-40 w-60 shadow-md">
-                        <img class="block min-h-full min-w-full absolute"
-                            src="https://shotgun.live/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fshotgun%2Fimage%2Fupload%2Fv1652210863%2Fproduction%2Fartworks%2Fjeu_p177tm.jpg&w=1920&q=75">
+                        class="flex relative h-60 w-full shadow-md rounded">
+                        <img class="inset-0 h-full w-full object-cover object-center absolute rounded-xl"
+                            :src="event.cover_url">
                         <div class="block min-h-full min-w-full bg-black absolute opacity-25 rounded-xl"></div>
-                        <div class="ml-2">
-                            <h5 class="text-lg font-bold text-white max-w-xs relative top-24">{{ event.name }}</h5>
-                            <p class="text-sm text-gray-300 relative top-24">{{ event.date }}</p>
+                        <div class="ml-2 flex flex-col mt-auto mb-4">
+                            <h5 class="text-lg font-bold text-white max-w-xs relative">{{ event.name }}</h5>
+                            <p class="text-sm text-gray-300 relative">{{ event.beautiful_date }}</p>
                         </div>
                     </a>
                 </div>
