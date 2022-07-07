@@ -23619,11 +23619,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                console.log(city);
                 state.city = city;
                 state.dropdownResultsOpen = false;
                 emit('city-changed', city);
 
-              case 3:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -23671,14 +23672,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }();
 
     var isProfessional = function isProfessional() {
+      if ((0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.user == null) {
+        return false;
+      }
+
       return (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.user.is_admin || (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.user.company_id != null;
     };
 
-    console.log(isProfessional());
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)(function () {
       var city = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.localizations.current;
       state.city = city;
-      emit('city-changed', city); //searchInput.value.focus()
+      emit('city-changed', city);
+      console.log(city); //searchInput.value.focus()
     });
 
     var openSearchEventsModal = /*#__PURE__*/function () {
@@ -25121,11 +25126,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                console.log(state.city);
                 city = state.city;
-                _context3.next = 3;
+                _context3.next = 4;
                 return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/api/carousels");
 
-              case 3:
+              case 4:
                 response = _context3.sent;
 
                 if (response.data) {
@@ -25164,7 +25170,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   state.carousels = {};
                 }
 
-              case 5:
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -25185,6 +25191,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       ref: vue__WEBPACK_IMPORTED_MODULE_2__.ref,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_2__.onMounted,
       reactive: vue__WEBPACK_IMPORTED_MODULE_2__.reactive,
+      toRef: vue__WEBPACK_IMPORTED_MODULE_2__.toRef,
       Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia,
       Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__.Head,
       Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_4__.Link,
@@ -30937,7 +30944,7 @@ var _hoisted_9 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AppLayout"], {
-    onCityChanged: $setup.getCarousels,
+    onCityChanged: $setup.handleCityChanged,
     title: "💃 Tickets for Live Music Events"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {

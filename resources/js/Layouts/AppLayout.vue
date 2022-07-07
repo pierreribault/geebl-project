@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, defineEmits } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link, useForm, usePage } from '@inertiajs/inertia-vue3';
 import JetApplicationMark from '@/Jetstream/ApplicationMark.vue';
@@ -80,6 +80,7 @@ const state = reactive({
 });
 
 const setCity = async (city) => {
+    console.log(city)
     state.city = city;
     state.dropdownResultsOpen = false;
     emit('city-changed', city)
@@ -100,15 +101,18 @@ const search = async () => {
 }
 
 const isProfessional = () => {
+    if (usePage().props.value.user == null) {
+        return false;
+    }
+
     return usePage().props.value.user.is_admin || usePage().props.value.user.company_id != null;
 }
-
-console.log(isProfessional());
 
 onMounted(() => {
     const city = usePage().props.value.localizations.current
     state.city = city
     emit('city-changed', city)
+    console.log(city)
     //searchInput.value.focus()
 })
 
@@ -463,7 +467,7 @@ const openSearchEventsModal = async () => {
 
             <!-- Page Content -->
             <main>
-                <slot />
+                <slot/>
             </main>
         </div>
 
