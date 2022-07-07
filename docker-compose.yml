@@ -26,6 +26,10 @@ services:
             - redis
             - minio
             - selenium
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.datecron.schedule: "@every 1m"
+            ofelia.job-exec.datecron.command: "php artisan schedule:run"
 
     laravel.horizon:
         build:
@@ -50,6 +54,14 @@ services:
             - redis
             - minio
             - selenium
+
+    ofelia:
+        image: mcuadros/ofelia:latest
+        depends_on:
+        - laravel.test
+        command: daemon --docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
 
     pgsql:
         image: 'postgres:14'
