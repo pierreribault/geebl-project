@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\Tickets\ForceRefundAction;
 use App\Actions\Tickets\RefundAction;
+use App\Actions\Tickets\TransferAction;
 use App\Models\Ticket;
 use App\Actions\Tickets\UseAction;
 use App\Data\TicketData;
 use App\Enums\TicketStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -60,5 +62,14 @@ class TicketController extends Controller
         return [
             'status' => 'refunded',
         ];
+    }
+
+    public function transfer(Request $request, Ticket $ticket, TransferAction $action)
+    {
+        $this->abortIfNotJson();
+
+        $action->transfer($ticket, User::whereEmail($request->get('email'))->firstOrFail());
+
+        return TicketData::from($ticket)->include('user', 'event', 'category');
     }
 }
