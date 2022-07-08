@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Data\TicketData;
+use App\Enums\TicketStatus;
 use App\Traits\UuidPrimaryKey;
 use Spatie\LaravelData\WithData;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use App\Actions\Tickets\GeneratePdfAction;
-use App\Enums\TicketStatus;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

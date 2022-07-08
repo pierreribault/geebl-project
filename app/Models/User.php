@@ -213,7 +213,7 @@ class User extends Authenticatable
     public function getTransactionsDetails()
     {
         return $this->getTransactions()->map(function ($transaction) {
-            $tickets = Ticket::where('transaction', $transaction)->get();
+            $tickets = Ticket::where('transaction', $transaction)->where('user_id', $this->id)->get();
 
             $status = $tickets->pluck('status')->unique();
 

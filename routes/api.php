@@ -31,6 +31,7 @@ Route::get('events/search', [EventController::class, 'search']);
  */
 Route::post('tickets/{ticket}/use', [TicketController::class, 'use']);
 Route::post('tickets/{ticket}/refund', [TicketController::class, 'refund']);
+Route::post('tickets/{ticket}/transfer', [TicketController::class, 'transfer'])->name('tickets.transfer');
 
 /**
  * Carousels
