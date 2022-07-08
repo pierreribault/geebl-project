@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Events\ChargeSucceeded;
-use App\Listeners\OnChargeSucceeded;
 use App\Models\News;
+use App\Events\ChargeSucceeded;
 use App\Observers\NewsObserver;
+use App\Events\TicketTransferred;
+use App\Listeners\OnChargeSucceeded;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\NotifyTicketTransferred;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -25,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
         ChargeSucceeded::class => [
             OnChargeSucceeded::class,
         ],
+
+        TicketTransferred::class => [
+            NotifyTicketTransferred::class,
+        ]
     ];
 
     /**

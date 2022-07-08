@@ -12,8 +12,8 @@ class LocalizationService
             $ip = request()->ip();
         }
 
-        $geo = geoip($ip);
+        // $geo = geoip($ip);
 
-        return City::where('name', $geo->city)->first() ?? City::first();
+        return City::first();
     }
 }
