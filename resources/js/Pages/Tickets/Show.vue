@@ -157,8 +157,8 @@ const closeModal = () => {
                         <div class="ml-5 flex flex-col justify-between w-full">
                             <div class="flex">
                                 <h2 class="text-white font-bold text-lg">{{ transaction.event.name.substring(0, 30) +
-                                        "..."
-                                }} -
+                                    "..."
+                                    }} -
                                     <span class="text-gray-500">#{{ transaction.transaction.toUpperCase() }}</span> /
                                 </h2>
                                 <div class="ml-2">
@@ -233,7 +233,8 @@ const closeModal = () => {
                                 <JetButton type="button" class="mt-4" v-if="ticket.status === 'non-used'">
                                     Resell
                                 </JetButton>
-                                <JetButton @click="createModalTransfer(ticket)" class="mt-4 ml-4">Transfer</JetButton>
+                                <JetButton v-if="ticket.status === 'non-used'" @click="createModalTransfer(ticket)"
+                                    class="mt-4 ml-4">Transfer</JetButton>
                             </div>
                         </div>
                     </div>
