@@ -44,7 +44,7 @@ const getCarousels = async () => {
 <template>
     <AppLayout @city-changed="handleCityChanged" title="💃 Tickets for Live Music Events">
 
-        <div v-if="state.carousels" class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div v-if="state.carousels" class="max-w-6xl mx-auto sm:px-6 lg:px-8 mb-8">
             <div v-bind:key="index" v-for="(carousel, index) in state.carousels" class="
           mt-12
           container
