@@ -12,6 +12,8 @@ class ArtistData extends Data
         public readonly ?string $id,
         public string $name,
         public string $slug,
+        public ?string $bio,
+        public readonly ?string $cover_url,
     ) {
     }
 
@@ -19,6 +21,7 @@ class ArtistData extends Data
     {
         return self::from([
             ...$artist->toArray(),
+            'cover_url' => $artist->getFirstMediaUrl('cover'),
             'events' => Lazy::create(static fn () => EventData::collection($artist->events)),
         ]);
     }

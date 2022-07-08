@@ -11,7 +11,7 @@ class ArtistController extends Controller
     public function show(Artist $artist)
     {
         return Inertia::render('Artist/Show', [
-            'artist' => ArtistData::fromModel($artist),
+            'artist' => ArtistData::fromModel($artist)->include('events'),
         ]);
     }
 }

@@ -7,12 +7,15 @@ use App\Traits\UuidPrimaryKey;
 use Spatie\LaravelData\WithData;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Artist extends Model
+class Artist extends Model implements HasMedia
 {
     use UuidPrimaryKey;
     use HasFactory;
     use WithData;
+    use InteractsWithMedia;
 
     public $timestamps = false;
 
@@ -20,8 +23,14 @@ class Artist extends Model
 
     protected $fillable = [
         'name',
+        'bio',
         'slug'
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cover')->useDisk('cover')->singleFile();
+    }
 
     public function events()
     {

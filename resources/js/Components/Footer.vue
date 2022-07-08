@@ -31,17 +31,6 @@
                 </div>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-white uppercase dark:text-white">Links</h2>
-                        <ul class="text-gray-600 dark:text-gray-400">
-                            <li class="mb-4">
-                                <a href="https://google.fr" class="hover:underline">A</a>
-                            </li>
-                            <li>
-                                <a href="https://google.fr" class="hover:underline">B</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
                         <h2 class="mb-6 text-sm font-semibold text-white uppercase dark:text-white">Follow us</h2>
                         <ul class="text-gray-600 dark:text-gray-400">
                             <li class="mb-4">

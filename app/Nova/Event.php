@@ -56,7 +56,11 @@ class Event extends Resource
         return [
             ID::make()->sortable()->canSee(fn ($request) => $request->user()->isAdmin()),
             Text::make('Name', 'name')->sortable()->required(),
-            Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:events,slug,'. $this->resource->id)->sortable(),
+            Slug::make(__('Slug'), 'slug')
+                ->from('name')
+                ->rules('required')
+                ->creationRules('unique:events,slug')
+                ->updateRules('unique:events,slug,{{resourceId}}'),
             Text::make('Location', 'location')->sortable()->required(),
             Date::make('Start at', 'start_at')->sortable()->required(),
             Date::make('End at', 'end_at')->sortable()->required(),

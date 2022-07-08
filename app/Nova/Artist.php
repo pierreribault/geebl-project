@@ -6,6 +6,8 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Files;
+use Laravel\Nova\Fields\Textarea;
 
 class Artist extends Resource
 {
@@ -29,7 +31,6 @@ class Artist extends Resource
      * @var array
      */
     public static $search = [
-        'id',
         'name'
     ];
 
@@ -44,9 +45,13 @@ class Artist extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Name'), 'name')->sortable()->required(),
-            Slug::make(__('Slug'), 'slug')->from('name')->rules('required', 'unique:artists,slug')->sortable(),
+            Textarea::make(__('Bio'), 'bio')->sortable()->nullable(),
+            Slug::make(__('Slug'), 'slug')->from('name')
+                ->rules('required')
+                ->creationRules('unique:artists,slug')
+                ->updateRules('unique:artists,slug,{{resourceId}}'),
+            Files::make('Cover', 'cover')->required(),
         ];
     }
 

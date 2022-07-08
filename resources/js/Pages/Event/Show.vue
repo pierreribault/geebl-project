@@ -218,7 +218,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                         <p v-if="$page.props.event.artists" class="text-gray-400 relative top-8">
                             <span class="text-sm uppercase">Lineup</span>
                             <span v-bind:key="key" v-for="(artist, key, index) in $page.props.event.artists">
-                                <Link :href="'/artists/' + artist.id" class="text-white px-3 py-1 text-sm">
+                                <Link :href="'/artists/' + artist.slug" class="text-white px-3 py-1 text-sm">
                                 {{ artist.name }}
                                 </Link>
                                 <span v-if="key !== $page.props.event.artists.length - 1" style="color: #c17afe"
@@ -283,7 +283,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-sm font-medium truncate font-bold text-white">
                                                     {{ category.name }} <span class="text-gray-500"> - {{ category.price
-                                                    }}€</span>
+                                                        }}€</span>
                                                 </p>
                                                 <p v-if="category.description"
                                                     class="text-sm text-gray-500 truncate text-gray-400">
@@ -321,7 +321,8 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                             <div v-if="state.payment.readyToAcceptEmail" class="flex flex-col justify-between">
                                 <input required v-model="state.payment.email"
                                     title="Si vous possédez un compte Geebl, votre ticket sera lié directement."
-                                    type="email" class="bg-back p-4 rounded border-gray-700 text-white items-center space-x-4"
+                                    type="email"
+                                    class="bg-back p-4 rounded border-gray-700 text-white items-center space-x-4"
                                     placeholder="Email" />
                                 <button @click="paymentEmail()" v-if="state.payment.readyToAcceptEmail"
                                     class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative top-2 px-12 py-3 rounded text-white uppercase font-bold text-sm"
