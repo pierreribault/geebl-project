@@ -11,4 +11,14 @@ class LandingViewController extends Controller
     {
         return Inertia::render('Home');
     }
+
+    public function terms()
+    {
+        return Inertia::render('Terms');
+    }
+
+    public function privacy()
+    {
+        return Inertia::render('Privacy');
+    }
 }

@@ -25,6 +25,8 @@ use App\Models\Ticket;
 */
 
 Route::get('/', [LandingViewController::class, 'home'])->name('home');
+Route::get('terms', [LandingViewController::class, 'terms'])->name('terms');
+Route::get('privacy', [LandingViewController::class, 'privacy'])->name('privacy');
 
 /**
  * Events
