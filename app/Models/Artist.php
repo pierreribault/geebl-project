@@ -6,13 +6,16 @@ use App\Data\ArtistData;
 use App\Traits\UuidPrimaryKey;
 use Spatie\LaravelData\WithData;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
 
-class Artist extends Model
+class Artist extends Model implements HasMedia
 {
     use UuidPrimaryKey;
     use HasFactory;
     use WithData;
+    use InteractsWithMedia;
 
     public $timestamps = false;
 
@@ -20,6 +23,7 @@ class Artist extends Model
 
     protected $fillable = [
         'name',
+        'bio',
         'slug'
     ];
 
@@ -31,5 +35,10 @@ class Artist extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cover')->useDisk('cover')->singleFile();
     }
 }

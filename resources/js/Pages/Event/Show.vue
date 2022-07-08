@@ -218,7 +218,7 @@ if (new URLSearchParams(window.location.search).has('payment_intent')) {
                         <p v-if="$page.props.event.artists" class="text-gray-400 relative top-8">
                             <span class="text-sm uppercase">Lineup</span>
                             <span v-bind:key="key" v-for="(artist, key, index) in $page.props.event.artists">
-                                <Link :href="'/artists/' + artist.id" class="text-white px-3 py-1 text-sm">
+                                <Link :href="'/artists/' + artist.slug" class="text-white px-3 py-1 text-sm">
                                 {{ artist.name }}
                                 </Link>
                                 <span v-if="key !== $page.props.event.artists.length - 1" style="color: #c17afe"
